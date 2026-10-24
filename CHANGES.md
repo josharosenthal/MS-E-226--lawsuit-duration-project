@@ -637,6 +637,22 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
   The references were found and checked by a research subagent. The first three were read for the relevant passages; the links were checked.
 - No code changed. The three variables are still built and stay in `05_feature_selection.R`'s covariate list.
 
+### 46. Project put on GitHub (private)
+- **Josh's request:** push the files to GitHub, as a private repository named "MS&E 226--lawsuit duration project". GitHub doesn't allow "&" or spaces in names, so it's `josharosenthal/MS-E-226--lawsuit-duration-project`, with the full title as its description.
+- **Contents:** code and docs only, as Josh chose:
+  - shell, Python and R scripts
+  - `EXPLAINER.md`, `CHANGES.md`, `FEATURE_SELECTION_GUIDE.md`, `BRIEF_for_Claude_Code.md`, `RUN_SUMMARY.md`
+  - `covariates.xlsx`
+  - `reference/` tables and `fjc_district_crosswalk.csv`
+- **Left out** via `.gitignore`:
+  - `misc/`: FarmShare outputs, including the holdout split and reports with judge and firm names and docket snippets
+  - any `.parquet` file
+  - the early output `closed_civil_by_cause_titlesection_usc.csv`
+  - rendered `.html` copies of the docs
+  - the empty `unzip` file, and Mac and R clutter
+- The staged files were scanned for passwords and keys before the push; none were found.
+- **Note:** the git repository lives inside the Dropbox folder. Avoid editing the same files on two machines at once.
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.
