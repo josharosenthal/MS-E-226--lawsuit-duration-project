@@ -1,0 +1,189 @@
+firm,attorneys,headcount_rank,rank_bucket,match_prefixes
+Dentons,5757,1,1-20,dentons
+DLA Piper,4827,2,1-20,dla piper
+Baker McKenzie,4451,3,1-20,baker mckenzie
+Kirkland & Ellis,4145,4,1-20,kirkland ellis
+Latham & Watkins,3724,5,1-20,latham watkins
+Norton Rose Fulbright,3358,6,1-20,norton rose
+A&O Shearman,3105,7,1-20,allen & overy | shearman & sterling | shearman and sterling | a & o shearman
+Greenberg Traurig,2810,8,1-20,greenberg traurig
+Hogan Lovells,2714,9,1-20,hogan lovells
+White & Case,2643,10,1-20,white case
+Jones Day,2438,11,1-20,jones day
+Eversheds Sutherland,2435,12,1-20,eversheds | sutherland asbill
+"Gibson, Dunn & Crutcher",2063,13,1-20,gibson dunn
+Sidley Austin,2045,14,1-20,sidley austin
+"Morgan, Lewis & Bockius",2043,15,1-20,morgan lewis
+Holland & Knight,1811,16,1-20,holland knight
+Simpson Thacher & Bartlett,1761,17,1-20,simpson thacher
+"Skadden, Arps, Slate, Meagher & Flom",1756,18,1-20,skadden
+Mayer Brown,1733,19,1-20,mayer brown
+K&L Gates,1696,20,1-20,k & l gates | kl gates
+Goodwin Procter,1666,21,21-40,goodwin procter
+Lewis Brisbois Bisgaard & Smith,1655,22,21-40,lewis brisbois
+Troutman Pepper Locke,1595,23,21-40,troutman | pepper hamilton | locke lord
+Ropes & Gray,1481,24,21-40,ropes gray
+Squire Patton Boggs,1458,25,21-40,squire patton
+Reed Smith,1427,26,21-40,reed smith
+Wilson Elser Moskowitz Edelman & Dicker,1400,27,21-40,wilson elser
+King & Spalding,1384,28,21-40,king spalding
+McDermott Will & Schulte (fka McDermott Will & Emery),1336,29,21-40,mcdermott will
+Littler Mendelson,1324,30,21-40,littler
+Covington & Burling,1311,31,21-40,covington burling
+Cooley,1304,32,21-40,cooley llp | cooley godward
+Quinn Emanuel Urquhart & Sullivan,1300,33,21-40,quinn emanuel
+Womble Bond Dickinson,1300,34,21-40,womble
+Paul Hastings,1272,35,21-40,paul hastings
+"Paul, Weiss, Rifkind, Wharton & Garrison",1250,36,21-40,paul weiss
+Taft Stettinius & Hollister,1250,37,21-40,taft stettinius
+Willkie Farr & Gallagher,1243,38,21-40,willkie farr
+Davis Polk & Wardwell,1237,39,21-40,davis polk
+"Weil, Gotshal & Manges",1228,40,21-40,weil gotshal
+Sheppard Mullin Richter & Hampton,1200,41,41-60,sheppard mullin
+Cleary Gottlieb Steen & Hamilton,1110,42,41-60,cleary gottlieb
+Foley & Lardner,1102,43,41-60,foley lardner
+Bryan Cave Leighton Paisner (BCLP),1100,44,41-60,bryan cave
+Ogletree Deakins,1100,45,41-60,ogletree
+Jackson Lewis,1071,46,41-60,jackson lewis
+Wilson Sonsini Goodrich & Rosati,1056,47,41-60,wilson sonsini
+Fox Rothschild,1034,48,41-60,fox rothschild
+Faegre Drinker Biddle & Reath,1031,49,41-60,faegre | drinker biddle
+BakerHostetler,1028,50,41-60,baker hostetler | bakerhostetler | baker & hostetler | baker and hostetler
+Milbank,1025,51,41-60,milbank
+Morrison & Foerster,1021,52,41-60,morrison foerster
+Perkins Coie,1020,53,41-60,perkins coie
+"Orrick, Herrington & Sutcliffe",1018,54,41-60,orrick herrington
+WilmerHale (Wilmer Cutler Pickering Hale and Dorr),983,55,41-60,wilmer cutler | wilmerhale | wilmer hale
+Nelson Mullins Riley & Scarborough,977,56,41-60,nelson mullins
+Alston & Bird,960,57,41-60,alston bird
+Arnold & Porter Kaye Scholer,959,58,41-60,arnold & porter | arnold and porter | kaye scholer
+Debevoise & Plimpton,944,59,41-60,debevoise plimpton
+McGuireWoods,944,60,41-60,mcguirewoods | mcguire woods
+Husch Blackwell,939,61,61-80,husch blackwell
+Winston & Strawn,928,62,61-80,winston strawn
+Sullivan & Cromwell,908,63,61-80,sullivan cromwell
+Seyfarth Shaw,894,64,61-80,seyfarth shaw
+Akin Gump Strauss Hauer & Feld,893,65,61-80,akin gump
+Cozen O'Connor,846,66,61-80,cozen o
+Proskauer Rose,829,67,61-80,proskauer rose
+Dechert,829,68,61-80,dechert
+Clark Hill,800,69,61-80,clark hill
+Fisher & Phillips,800,70,61-80,fisher phillips
+Venable,785,71,61-80,venable
+O'Melveny & Myers,778,72,61-80,o melveny
+Barnes & Thornburg,770,73,61-80,barnes thornburg
+Dinsmore & Shohl,750,74,61-80,dinsmore shohl
+Duane Morris,742,75,61-80,duane morris
+Hunton Andrews Kurth,731,76,61-80,hunton | andrews kurth
+"Fried, Frank, Harris, Shriver & Jacobson",718,77,61-80,fried frank
+Bradley Arant Boult Cummings,700,78,61-80,bradley arant
+Baker Donelson Bearman Caldwell & Berkowitz,700,79,61-80,baker donelson
+Ballard Spahr,699,80,61-80,ballard spahr
+Blank Rome,692,81,81-100,blank rome
+Pillsbury Winthrop Shaw Pittman,684,82,81-100,pillsbury winthrop
+Vinson & Elkins,681,83,81-100,vinson elkins
+Haynes and Boone,669,84,81-100,haynes boone
+Katten Muchin Rosenman,663,85,81-100,katten muchin
+Frost Brown Todd,650,86,81-100,frost brown
+Nixon Peabody,644,87,81-100,nixon peabody
+Baker Botts,639,88,81-100,baker botts
+Davis Wright Tremaine,635,89,81-100,davis wright
+Crowell & Moring,634,90,81-100,crowell moring
+Dorsey & Whitney,600,91,81-100,dorsey whitney
+Kutak Rock,600,92,81-100,kutak rock
+Akerman,594,93,81-100,akerman
+Kilpatrick Townsend & Stockton,589,94,81-100,kilpatrick townsend
+ArentFox Schiff,578,95,81-100,arent fox | arentfox
+"Cravath, Swaine & Moore",572,96,81-100,cravath swaine
+"Shook, Hardy & Bacon",554,97,81-100,shook hardy
+Snell & Wilmer,530,98,81-100,snell wilmer
+"Mintz, Levin, Cohn, Ferris, Glovsky and Popeo",527,99,81-100,mintz levin | mintz
+Marshall Dennehey,504,100,81-100,marshall dennehey
+Jackson Walker,500,101,101-120,jackson walker
+Dickinson Wright,500,102,101-120,dickinson wright
+Stinson LLP,485,103,101-120,stinson leonard street | stinson llp | stinson morrison
+Quarles & Brady,473,104,101-120,quarles brady
+Jenner & Block,470,105,101-120,jenner block
+Fenwick & West,453,106,101-120,fenwick west
+Loeb & Loeb,450,107,101-120,loeb loeb
+Saul Ewing,450,108,101-120,saul ewing
+Buchanan Ingersoll & Rooney,450,109,101-120,buchanan ingersoll
+Phelps Dunbar,450,110,101-120,phelps dunbar
+Holland & Hart,446,111,101-120,holland hart
+Thompson Coburn,440,112,101-120,thompson coburn
+Hinshaw & Culbertson,428,113,101-120,hinshaw culbertson
+"Cadwalader, Wickersham & Taft",427,114,101-120,cadwalader wickersham
+Fredrikson & Byron,425,115,101-120,fredrikson byron
+Williams & Connolly,422,116,101-120,williams connolly
+Fish & Richardson,400,117,101-120,fish richardson
+Lowenstein Sandler,400,118,101-120,lowenstein sandler
+McCarter & English,400,119,101-120,mccarter english
+Moore & Van Allen,400,120,101-120,moore van
+Vedder Price,400,121,121-140,vedder price
+Smith Gambrell & Russell,400,122,121-140,smith gambrell
+"Vorys, Sater, Seymour and Pease",375,123,121-140,vorys sater
+Lathrop GPM,370,124,121-140,lathrop | gray plant mooty
+Burr & Forman,370,125,121-140,burr forman
+Schulte Roth & Zabel,360,126,121-140,schulte roth
+Foley Hoag,350,127,121-140,foley hoag
+Jones Walker,350,128,121-140,jones walker
+Honigman,350,129,121-140,honigman
+Thompson Hine,347,130,121-140,thompson hine
+Manatt Phelps & Phillips,341,131,121-140,manatt phelps
+Phillips Lytle,340,132,121-140,phillips lytle
+Ice Miller,330,133,121-140,ice miller
+Dykema Gossett,330,134,121-140,dykema
+Carlton Fields,330,135,121-140,carlton fields
+Kramer Levin Naftalis & Frankel,325,136,121-140,kramer levin
+Wyatt Tarrant & Combs,325,137,121-140,wyatt tarrant
+Bracewell,318,138,121-140,bracewell
+Winstead PC,307,139,121-140,winstead
+Stoel Rives,306,140,121-140,stoel rives
+Cahill Gordon & Reindel,300,141,141-160,cahill gordon
+Knobbe Martens,300,142,141-160,knobbe martens
+Finnegan Henderson Farabow Garrett & Dunner,300,143,141-160,finnegan henderson
+Day Pitney,300,144,141-160,day pitney
+Harris Beach Murtha,300,145,141-160,harris beach | murtha cullina
+Eckert Seamans Cherin & Mellott,300,146,141-160,eckert seamans
+Wachtell Lipton Rosen & Katz,272,147,141-160,wachtell lipton
+Armstrong Teasdale,270,148,141-160,armstrong teasdale
+Allen Matkins Leck Gamble Mallory & Natsis,270,149,141-160,allen matkins
+Michael Best & Friedrich,268,150,141-160,michael best
+Robinson & Cole,265,151,141-160,robinson cole
+Adams and Reese,265,152,141-160,adams reese
+Wiley Rein,260,153,141-160,wiley rein
+Miller Canfield Paddock and Stone,260,154,141-160,miller canfield
+Williams Mullen,250,155,141-160,williams mullen
+Epstein Becker & Green,250,156,141-160,epstein becker
+Curtis Mallet-Prevost Colt & Mosle,250,157,141-160,curtis mallet
+Chapman and Cutler,240,158,141-160,chapman cutler
+Miles & Stockbridge,230,159,141-160,miles stockbridge
+Stevens & Lee,230,160,141-160,stevens lee
+Warner Norcross + Judd,230,161,161-180,warner norcross
+Hodgson Russ,230,162,161-180,hodgson russ
+White and Williams,225,163,161-180,white williams
+Brown Rudnick,215,164,161-180,brown rudnick
+Hughes Hubbard & Reed,206,165,161-180,hughes hubbard
+Choate Hall & Stewart,200,166,161-180,choate hall
+Robins Kaplan,200,167,161-180,robins kaplan
+Reinhart Boerner Van Deuren,200,168,161-180,reinhart boerner
+Patterson Belknap Webb & Tyler,200,169,161-180,patterson belknap
+Balch & Bingham,200,170,161-180,balch bingham
+Godfrey & Kahn,190,171,161-180,godfrey kahn
+Stites & Harbison,185,172,161-180,stites harbison
+Lane Powell,180,173,161-180,lane powell
+Clausen Miller,175,174,161-180,clausen miller
+Gibbons P.C.,170,175,161-180,gibbons
+Calfee Halter & Griswold,162,176,161-180,calfee halter
+Butzel Long,155,177,161-180,butzel long
+Nutter McClennen & Fish,152,178,161-180,nutter mcclennen
+Lewis Rice,150,179,161-180,lewis rice
+Bullivant Houser Bailey,150,180,161-180,bullivant houser
+Plunkett Cooney,130,181,181-200,plunkett cooney
+Irell & Manella,84,182,181-200,irell manella
+Cummings & Lockwood,69,183,181-200,cummings lockwood
+Steptoe LLP,,,"listed, headcount not given",steptoe & johnson llp | steptoe and johnson llp
+Kelley Drye & Warren,,,"listed, headcount not given",kelley drye
+Porter Wright Morris & Arthur,,,"listed, headcount not given",porter wright
+Milberg Coleman Bryson Phillips Grossman,,,"listed, headcount not given",milberg
+GrayRobinson,,,"listed, headcount not given",grayrobinson | gray robinson

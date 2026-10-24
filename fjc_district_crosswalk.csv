@@ -1,0 +1,95 @@
+fjc_district,district_name,scales_court
+00,Maine,med
+01,Massachusetts,mad
+02,New Hampshire,nhd
+03,Rhode Island,rid
+04,Puerto Rico,prd
+05,Connecticut,ctd
+06,New York - Northern,nynd
+07,New York - Eastern,nyed
+08,New York - Southern,nysd
+09,New York - Western,nywd
+10,Vermont,vtd
+11,Delaware,ded
+12,New Jersey,njd
+13,Pennsylvania - Eastern,paed
+14,Pennsylvania - Middle,pamd
+15,Pennsylvania - Western,pawd
+16,Maryland,mdd
+17,North Carolina - Eastern,nced
+18,North Carolina - Middle,ncmd
+19,North Carolina - Western,ncwd
+20,South Carolina,scd
+22,Virginia - Eastern,vaed
+23,Virginia - Western,vawd
+24,West Virginia - Northern,wvnd
+25,West Virginia - Southern,wvsd
+26,Alabama - Northern,alnd
+27,Alabama - Middle,almd
+28,Alabama - Southern,alsd
+29,Florida - Northern,flnd
+3A,Florida - Middle,flmd
+3C,Florida - Southern,flsd
+3E,Georgia - Northern,gand
+3G,Georgia - Middle,gamd
+3J,Georgia - Southern,gasd
+3L,Louisiana - Eastern,laed
+3N,Louisiana - Middle,lamd
+36,Louisiana - Western,lawd
+37,Mississippi - Northern,msnd
+38,Mississippi - Southern,mssd
+39,Texas - Northern,txnd
+40,Texas - Eastern,txed
+41,Texas - Southern,txsd
+42,Texas - Western,txwd
+43,Kentucky - Eastern,kyed
+44,Kentucky - Western,kywd
+45,Michigan - Eastern,mied
+46,Michigan - Western,miwd
+47,Ohio - Northern,ohnd
+48,Ohio - Southern,ohsd
+49,Tennessee - Eastern,tned
+50,Tennessee - Middle,tnmd
+51,Tennessee - Western,tnwd
+52,Illinois - Northern,ilnd
+53,Illinois - Central,ilcd
+54,Illinois - Southern,ilsd
+55,Indiana - Northern,innd
+56,Indiana - Southern,insd
+57,Wisconsin - Eastern,wied
+58,Wisconsin - Western,wiwd
+60,Arkansas - Eastern,ared
+61,Arkansas - Western,arwd
+62,Iowa - Northern,iand
+63,Iowa - Southern,iasd
+64,Minnesota,mnd
+65,Missouri - Eastern,moed
+66,Missouri - Western,mowd
+67,Nebraska,ned
+68,North Dakota,ndd
+69,South Dakota,sdd
+7-,Alaska,akd
+70,Arizona,azd
+71,California - Northern,cand
+72,California - Eastern,caed
+73,California - Central,cacd
+74,California - Southern,casd
+75,Hawaii,hid
+76,Idaho,idd
+77,Montana,mtd
+78,Nevada,nvd
+79,Oregon,ord
+80,Washington - Eastern,waed
+81,Washington - Western,wawd
+82,Colorado,cod
+83,Kansas,ksd
+84,New Mexico,nmd
+85,Oklahoma - Northern,oknd
+86,Oklahoma - Eastern,oked
+87,Oklahoma - Western,okwd
+88,Utah,utd
+89,Wyoming,wyd
+90,District of Columbia,dcd
+91,Virgin Islands,vid
+93,Guam,gud
+94,Northern Mariana Islands,nmid

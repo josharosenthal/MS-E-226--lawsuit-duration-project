@@ -1,0 +1,3150 @@
+fips,state,county,nchs_2013_code,nchs_2013_label,area_class
+01001,AL,Autauga County,3,medium metro,rural
+01003,AL,Baldwin County,4,small metro,rural
+01005,AL,Barbour County,6,noncore,rural
+01007,AL,Bibb County,2,large fringe metro,suburban
+01009,AL,Blount County,2,large fringe metro,suburban
+01011,AL,Bullock County,6,noncore,rural
+01013,AL,Butler County,6,noncore,rural
+01015,AL,Calhoun County,4,small metro,rural
+01017,AL,Chambers County,5,micropolitan,rural
+01019,AL,Cherokee County,6,noncore,rural
+01021,AL,Chilton County,2,large fringe metro,suburban
+01023,AL,Choctaw County,6,noncore,rural
+01025,AL,Clarke County,6,noncore,rural
+01027,AL,Clay County,6,noncore,rural
+01029,AL,Cleburne County,6,noncore,rural
+01031,AL,Coffee County,5,micropolitan,rural
+01033,AL,Colbert County,4,small metro,rural
+01035,AL,Conecuh County,6,noncore,rural
+01037,AL,Coosa County,5,micropolitan,rural
+01039,AL,Covington County,6,noncore,rural
+01041,AL,Crenshaw County,6,noncore,rural
+01043,AL,Cullman County,5,micropolitan,rural
+01045,AL,Dale County,5,micropolitan,rural
+01047,AL,Dallas County,5,micropolitan,rural
+01049,AL,DeKalb County,6,noncore,rural
+01051,AL,Elmore County,3,medium metro,rural
+01053,AL,Escambia County,6,noncore,rural
+01055,AL,Etowah County,4,small metro,rural
+01057,AL,Fayette County,6,noncore,rural
+01059,AL,Franklin County,6,noncore,rural
+01061,AL,Geneva County,4,small metro,rural
+01063,AL,Greene County,6,noncore,rural
+01065,AL,Hale County,4,small metro,rural
+01067,AL,Henry County,4,small metro,rural
+01069,AL,Houston County,4,small metro,rural
+01071,AL,Jackson County,5,micropolitan,rural
+01073,AL,Jefferson County,1,large central metro,urban
+01075,AL,Lamar County,6,noncore,rural
+01077,AL,Lauderdale County,4,small metro,rural
+01079,AL,Lawrence County,4,small metro,rural
+01081,AL,Lee County,4,small metro,rural
+01083,AL,Limestone County,3,medium metro,rural
+01085,AL,Lowndes County,3,medium metro,rural
+01087,AL,Macon County,6,noncore,rural
+01089,AL,Madison County,3,medium metro,rural
+01091,AL,Marengo County,6,noncore,rural
+01093,AL,Marion County,6,noncore,rural
+01095,AL,Marshall County,5,micropolitan,rural
+01097,AL,Mobile County,3,medium metro,rural
+01099,AL,Monroe County,6,noncore,rural
+01101,AL,Montgomery County,3,medium metro,rural
+01103,AL,Morgan County,4,small metro,rural
+01105,AL,Perry County,6,noncore,rural
+01107,AL,Pickens County,4,small metro,rural
+01109,AL,Pike County,5,micropolitan,rural
+01111,AL,Randolph County,6,noncore,rural
+01113,AL,Russell County,3,medium metro,rural
+01115,AL,St. Clair County,2,large fringe metro,suburban
+01117,AL,Shelby County,2,large fringe metro,suburban
+01119,AL,Sumter County,6,noncore,rural
+01121,AL,Talladega County,5,micropolitan,rural
+01123,AL,Tallapoosa County,6,noncore,rural
+01125,AL,Tuscaloosa County,4,small metro,rural
+01127,AL,Walker County,2,large fringe metro,suburban
+01129,AL,Washington County,6,noncore,rural
+01131,AL,Wilcox County,6,noncore,rural
+01133,AL,Winston County,6,noncore,rural
+02013,AK,Aleutians East Borough,6,noncore,rural
+02016,AK,Aleutians West Census Area,6,noncore,rural
+02020,AK,Anchorage Municipality,3,medium metro,rural
+02050,AK,Bethel Census Area,6,noncore,rural
+02060,AK,Bristol Bay Borough,6,noncore,rural
+02068,AK,Denali Borough,6,noncore,rural
+02070,AK,Dillingham Census Area,6,noncore,rural
+02090,AK,Fairbanks North Star Borough,4,small metro,rural
+02100,AK,Haines Borough,6,noncore,rural
+02105,AK,Hoonah-Angoon Census Area,6,noncore,rural
+02110,AK,Juneau City and Borough,5,micropolitan,rural
+02122,AK,Kenai Peninsula Borough,6,noncore,rural
+02130,AK,Ketchikan Gateway Borough,5,micropolitan,rural
+02150,AK,Kodiak Island Borough,6,noncore,rural
+02158,AK,Kusilvak Census Area,6,noncore,rural
+02164,AK,Lake and Peninsula Borough,6,noncore,rural
+02170,AK,Matanuska-Susitna Borough,3,medium metro,rural
+02180,AK,Nome Census Area,6,noncore,rural
+02185,AK,North Slope Borough,6,noncore,rural
+02188,AK,Northwest Arctic Borough,6,noncore,rural
+02195,AK,Petersburg Census Area,6,noncore,rural
+02198,AK,Prince of Wales-Hyder Census Area,6,noncore,rural
+02201,AK,Prince of Wales-Outer Ket,6,noncore,rural
+02220,AK,Sitka City and Borough,6,noncore,rural
+02230,AK,Skagway Municipality,6,noncore,rural
+02232,AK,Skagway-Hoonah-Angoon Census Area,6,noncore,rural
+02240,AK,Southeast Fairbanks Census Area,6,noncore,rural
+02261,AK,Valdez-Cordova Census Area,6,noncore,rural
+02270,AK,Wade Hampton Census Area,6,noncore,rural
+02275,AK,Wrangell City and Borough,6,noncore,rural
+02280,AK,Wrangell-Petersburg Census Area,6,noncore,rural
+02282,AK,Yakutat City and Borough,6,noncore,rural
+02290,AK,Yukon-Koyukuk Census Area,6,noncore,rural
+04001,AZ,Apache County,6,noncore,rural
+04003,AZ,Cochise County,4,small metro,rural
+04005,AZ,Coconino County,4,small metro,rural
+04007,AZ,Gila County,5,micropolitan,rural
+04009,AZ,Graham County,5,micropolitan,rural
+04011,AZ,Greenlee County,6,noncore,rural
+04012,AZ,La Paz County,6,noncore,rural
+04013,AZ,Maricopa County,1,large central metro,urban
+04015,AZ,Mohave County,4,small metro,rural
+04017,AZ,Navajo County,5,micropolitan,rural
+04019,AZ,Pima County,3,medium metro,rural
+04021,AZ,Pinal County,2,large fringe metro,suburban
+04023,AZ,Santa Cruz County,5,micropolitan,rural
+04025,AZ,Yavapai County,4,small metro,rural
+04027,AZ,Yuma County,4,small metro,rural
+05001,AR,Arkansas County,6,noncore,rural
+05003,AR,Ashley County,6,noncore,rural
+05005,AR,Baxter County,5,micropolitan,rural
+05007,AR,Benton County,3,medium metro,rural
+05009,AR,Boone County,5,micropolitan,rural
+05011,AR,Bradley County,6,noncore,rural
+05013,AR,Calhoun County,5,micropolitan,rural
+05015,AR,Carroll County,6,noncore,rural
+05017,AR,Chicot County,6,noncore,rural
+05019,AR,Clark County,5,micropolitan,rural
+05021,AR,Clay County,6,noncore,rural
+05023,AR,Cleburne County,6,noncore,rural
+05025,AR,Cleveland County,4,small metro,rural
+05027,AR,Columbia County,5,micropolitan,rural
+05029,AR,Conway County,6,noncore,rural
+05031,AR,Craighead County,4,small metro,rural
+05033,AR,Crawford County,3,medium metro,rural
+05035,AR,Crittenden County,2,large fringe metro,suburban
+05037,AR,Cross County,6,noncore,rural
+05039,AR,Dallas County,6,noncore,rural
+05041,AR,Desha County,6,noncore,rural
+05043,AR,Drew County,6,noncore,rural
+05045,AR,Faulkner County,3,medium metro,rural
+05047,AR,Franklin County,6,noncore,rural
+05049,AR,Fulton County,6,noncore,rural
+05051,AR,Garland County,4,small metro,rural
+05053,AR,Grant County,3,medium metro,rural
+05055,AR,Greene County,5,micropolitan,rural
+05057,AR,Hempstead County,6,noncore,rural
+05059,AR,Hot Spring County,5,micropolitan,rural
+05061,AR,Howard County,6,noncore,rural
+05063,AR,Independence County,5,micropolitan,rural
+05065,AR,Izard County,6,noncore,rural
+05067,AR,Jackson County,6,noncore,rural
+05069,AR,Jefferson County,4,small metro,rural
+05071,AR,Johnson County,6,noncore,rural
+05073,AR,Lafayette County,6,noncore,rural
+05075,AR,Lawrence County,6,noncore,rural
+05077,AR,Lee County,6,noncore,rural
+05079,AR,Lincoln County,4,small metro,rural
+05081,AR,Little River County,4,small metro,rural
+05083,AR,Logan County,6,noncore,rural
+05085,AR,Lonoke County,3,medium metro,rural
+05087,AR,Madison County,3,medium metro,rural
+05089,AR,Marion County,6,noncore,rural
+05091,AR,Miller County,4,small metro,rural
+05093,AR,Mississippi County,5,micropolitan,rural
+05095,AR,Monroe County,6,noncore,rural
+05097,AR,Montgomery County,6,noncore,rural
+05099,AR,Nevada County,6,noncore,rural
+05101,AR,Newton County,5,micropolitan,rural
+05103,AR,Ouachita County,5,micropolitan,rural
+05105,AR,Perry County,3,medium metro,rural
+05107,AR,Phillips County,5,micropolitan,rural
+05109,AR,Pike County,6,noncore,rural
+05111,AR,Poinsett County,4,small metro,rural
+05113,AR,Polk County,6,noncore,rural
+05115,AR,Pope County,5,micropolitan,rural
+05117,AR,Prairie County,6,noncore,rural
+05119,AR,Pulaski County,3,medium metro,rural
+05121,AR,Randolph County,6,noncore,rural
+05123,AR,St. Francis County,5,micropolitan,rural
+05125,AR,Saline County,3,medium metro,rural
+05127,AR,Scott County,6,noncore,rural
+05129,AR,Searcy County,6,noncore,rural
+05131,AR,Sebastian County,3,medium metro,rural
+05133,AR,Sevier County,6,noncore,rural
+05135,AR,Sharp County,6,noncore,rural
+05137,AR,Stone County,6,noncore,rural
+05139,AR,Union County,5,micropolitan,rural
+05141,AR,Van Buren County,6,noncore,rural
+05143,AR,Washington County,3,medium metro,rural
+05145,AR,White County,5,micropolitan,rural
+05147,AR,Woodruff County,6,noncore,rural
+05149,AR,Yell County,5,micropolitan,rural
+06001,CA,Alameda County,1,large central metro,urban
+06003,CA,Alpine County,6,noncore,rural
+06005,CA,Amador County,6,noncore,rural
+06007,CA,Butte County,4,small metro,rural
+06009,CA,Calaveras County,6,noncore,rural
+06011,CA,Colusa County,6,noncore,rural
+06013,CA,Contra Costa County,2,large fringe metro,suburban
+06015,CA,Del Norte County,5,micropolitan,rural
+06017,CA,El Dorado County,2,large fringe metro,suburban
+06019,CA,Fresno County,3,medium metro,rural
+06021,CA,Glenn County,6,noncore,rural
+06023,CA,Humboldt County,5,micropolitan,rural
+06025,CA,Imperial County,4,small metro,rural
+06027,CA,Inyo County,6,noncore,rural
+06029,CA,Kern County,3,medium metro,rural
+06031,CA,Kings County,4,small metro,rural
+06033,CA,Lake County,5,micropolitan,rural
+06035,CA,Lassen County,5,micropolitan,rural
+06037,CA,Los Angeles County,1,large central metro,urban
+06039,CA,Madera County,4,small metro,rural
+06041,CA,Marin County,2,large fringe metro,suburban
+06043,CA,Mariposa County,6,noncore,rural
+06045,CA,Mendocino County,5,micropolitan,rural
+06047,CA,Merced County,3,medium metro,rural
+06049,CA,Modoc County,6,noncore,rural
+06051,CA,Mono County,6,noncore,rural
+06053,CA,Monterey County,3,medium metro,rural
+06055,CA,Napa County,4,small metro,rural
+06057,CA,Nevada County,5,micropolitan,rural
+06059,CA,Orange County,1,large central metro,urban
+06061,CA,Placer County,2,large fringe metro,suburban
+06063,CA,Plumas County,6,noncore,rural
+06065,CA,Riverside County,1,large central metro,urban
+06067,CA,Sacramento County,1,large central metro,urban
+06069,CA,San Benito County,2,large fringe metro,suburban
+06071,CA,San Bernardino County,2,large fringe metro,suburban
+06073,CA,San Diego County,1,large central metro,urban
+06075,CA,San Francisco County,1,large central metro,urban
+06077,CA,San Joaquin County,3,medium metro,rural
+06079,CA,San Luis Obispo County,3,medium metro,rural
+06081,CA,San Mateo County,2,large fringe metro,suburban
+06083,CA,Santa Barbara County,3,medium metro,rural
+06085,CA,Santa Clara County,1,large central metro,urban
+06087,CA,Santa Cruz County,3,medium metro,rural
+06089,CA,Shasta County,4,small metro,rural
+06091,CA,Sierra County,6,noncore,rural
+06093,CA,Siskiyou County,6,noncore,rural
+06095,CA,Solano County,3,medium metro,rural
+06097,CA,Sonoma County,3,medium metro,rural
+06099,CA,Stanislaus County,3,medium metro,rural
+06101,CA,Sutter County,4,small metro,rural
+06103,CA,Tehama County,5,micropolitan,rural
+06105,CA,Trinity County,6,noncore,rural
+06107,CA,Tulare County,3,medium metro,rural
+06109,CA,Tuolumne County,5,micropolitan,rural
+06111,CA,Ventura County,3,medium metro,rural
+06113,CA,Yolo County,2,large fringe metro,suburban
+06115,CA,Yuba County,4,small metro,rural
+08001,CO,Adams County,2,large fringe metro,suburban
+08003,CO,Alamosa County,6,noncore,rural
+08005,CO,Arapahoe County,2,large fringe metro,suburban
+08007,CO,Archuleta County,6,noncore,rural
+08009,CO,Baca County,6,noncore,rural
+08011,CO,Bent County,6,noncore,rural
+08013,CO,Boulder County,3,medium metro,rural
+08014,CO,Broomfield County,2,large fringe metro,suburban
+08015,CO,Chaffee County,6,noncore,rural
+08017,CO,Cheyenne County,6,noncore,rural
+08019,CO,Clear Creek County,2,large fringe metro,suburban
+08021,CO,Conejos County,6,noncore,rural
+08023,CO,Costilla County,6,noncore,rural
+08025,CO,Crowley County,6,noncore,rural
+08027,CO,Custer County,6,noncore,rural
+08029,CO,Delta County,6,noncore,rural
+08031,CO,Denver County,1,large central metro,urban
+08033,CO,Dolores County,6,noncore,rural
+08035,CO,Douglas County,2,large fringe metro,suburban
+08037,CO,Eagle County,5,micropolitan,rural
+08039,CO,Elbert County,2,large fringe metro,suburban
+08041,CO,El Paso County,3,medium metro,rural
+08043,CO,Fremont County,5,micropolitan,rural
+08045,CO,Garfield County,5,micropolitan,rural
+08047,CO,Gilpin County,2,large fringe metro,suburban
+08049,CO,Grand County,6,noncore,rural
+08051,CO,Gunnison County,6,noncore,rural
+08053,CO,Hinsdale County,6,noncore,rural
+08055,CO,Huerfano County,6,noncore,rural
+08057,CO,Jackson County,6,noncore,rural
+08059,CO,Jefferson County,2,large fringe metro,suburban
+08061,CO,Kiowa County,6,noncore,rural
+08063,CO,Kit Carson County,6,noncore,rural
+08065,CO,Lake County,6,noncore,rural
+08067,CO,La Plata County,5,micropolitan,rural
+08069,CO,Larimer County,3,medium metro,rural
+08071,CO,Las Animas County,6,noncore,rural
+08073,CO,Lincoln County,6,noncore,rural
+08075,CO,Logan County,5,micropolitan,rural
+08077,CO,Mesa County,4,small metro,rural
+08079,CO,Mineral County,6,noncore,rural
+08081,CO,Moffat County,5,micropolitan,rural
+08083,CO,Montezuma County,6,noncore,rural
+08085,CO,Montrose County,5,micropolitan,rural
+08087,CO,Morgan County,5,micropolitan,rural
+08089,CO,Otero County,6,noncore,rural
+08091,CO,Ouray County,6,noncore,rural
+08093,CO,Park County,2,large fringe metro,suburban
+08095,CO,Phillips County,6,noncore,rural
+08097,CO,Pitkin County,5,micropolitan,rural
+08099,CO,Prowers County,6,noncore,rural
+08101,CO,Pueblo County,4,small metro,rural
+08103,CO,Rio Blanco County,6,noncore,rural
+08105,CO,Rio Grande County,6,noncore,rural
+08107,CO,Routt County,5,micropolitan,rural
+08109,CO,Saguache County,6,noncore,rural
+08111,CO,San Juan County,6,noncore,rural
+08113,CO,San Miguel County,6,noncore,rural
+08115,CO,Sedgwick County,6,noncore,rural
+08117,CO,Summit County,5,micropolitan,rural
+08119,CO,Teller County,3,medium metro,rural
+08121,CO,Washington County,6,noncore,rural
+08123,CO,Weld County,3,medium metro,rural
+08125,CO,Yuma County,6,noncore,rural
+09001,CT,Fairfield County,3,medium metro,rural
+09003,CT,Hartford County,1,large central metro,urban
+09005,CT,Litchfield County,5,micropolitan,rural
+09007,CT,Middlesex County,2,large fringe metro,suburban
+09009,CT,New Haven County,3,medium metro,rural
+09011,CT,New London County,3,medium metro,rural
+09013,CT,Tolland County,2,large fringe metro,suburban
+09015,CT,Windham County,3,medium metro,rural
+10001,DE,Kent County,4,small metro,rural
+10003,DE,New Castle County,2,large fringe metro,suburban
+10005,DE,Sussex County,3,medium metro,rural
+11001,DC,District of Columbia,1,large central metro,urban
+12001,FL,Alachua County,3,medium metro,rural
+12003,FL,Baker County,2,large fringe metro,suburban
+12005,FL,Bay County,4,small metro,rural
+12007,FL,Bradford County,6,noncore,rural
+12009,FL,Brevard County,3,medium metro,rural
+12011,FL,Broward County,2,large fringe metro,suburban
+12013,FL,Calhoun County,6,noncore,rural
+12015,FL,Charlotte County,4,small metro,rural
+12017,FL,Citrus County,4,small metro,rural
+12019,FL,Clay County,2,large fringe metro,suburban
+12021,FL,Collier County,3,medium metro,rural
+12023,FL,Columbia County,5,micropolitan,rural
+12027,FL,DeSoto County,5,micropolitan,rural
+12029,FL,Dixie County,6,noncore,rural
+12031,FL,Duval County,1,large central metro,urban
+12033,FL,Escambia County,3,medium metro,rural
+12035,FL,Flagler County,3,medium metro,rural
+12037,FL,Franklin County,6,noncore,rural
+12039,FL,Gadsden County,3,medium metro,rural
+12041,FL,Gilchrist County,3,medium metro,rural
+12043,FL,Glades County,6,noncore,rural
+12045,FL,Gulf County,4,small metro,rural
+12047,FL,Hamilton County,6,noncore,rural
+12049,FL,Hardee County,5,micropolitan,rural
+12051,FL,Hendry County,5,micropolitan,rural
+12053,FL,Hernando County,2,large fringe metro,suburban
+12055,FL,Highlands County,4,small metro,rural
+12057,FL,Hillsborough County,1,large central metro,urban
+12059,FL,Holmes County,6,noncore,rural
+12061,FL,Indian River County,4,small metro,rural
+12063,FL,Jackson County,6,noncore,rural
+12065,FL,Jefferson County,3,medium metro,rural
+12067,FL,Lafayette County,6,noncore,rural
+12069,FL,Lake County,2,large fringe metro,suburban
+12071,FL,Lee County,3,medium metro,rural
+12073,FL,Leon County,3,medium metro,rural
+12075,FL,Levy County,6,noncore,rural
+12077,FL,Liberty County,6,noncore,rural
+12079,FL,Madison County,6,noncore,rural
+12081,FL,Manatee County,3,medium metro,rural
+12083,FL,Marion County,3,medium metro,rural
+12085,FL,Martin County,3,medium metro,rural
+12086,FL,Miami-Dade County,1,large central metro,urban
+12087,FL,Monroe County,5,micropolitan,rural
+12089,FL,Nassau County,2,large fringe metro,suburban
+12091,FL,Okaloosa County,4,small metro,rural
+12093,FL,Okeechobee County,5,micropolitan,rural
+12095,FL,Orange County,1,large central metro,urban
+12097,FL,Osceola County,2,large fringe metro,suburban
+12099,FL,Palm Beach County,2,large fringe metro,suburban
+12101,FL,Pasco County,2,large fringe metro,suburban
+12103,FL,Pinellas County,1,large central metro,urban
+12105,FL,Polk County,3,medium metro,rural
+12107,FL,Putnam County,5,micropolitan,rural
+12109,FL,St. Johns County,2,large fringe metro,suburban
+12111,FL,St. Lucie County,3,medium metro,rural
+12113,FL,Santa Rosa County,3,medium metro,rural
+12115,FL,Sarasota County,3,medium metro,rural
+12117,FL,Seminole County,2,large fringe metro,suburban
+12119,FL,Sumter County,4,small metro,rural
+12121,FL,Suwannee County,6,noncore,rural
+12123,FL,Taylor County,6,noncore,rural
+12125,FL,Union County,6,noncore,rural
+12127,FL,Volusia County,3,medium metro,rural
+12129,FL,Wakulla County,3,medium metro,rural
+12131,FL,Walton County,4,small metro,rural
+12133,FL,Washington County,6,noncore,rural
+13001,GA,Appling County,6,noncore,rural
+13003,GA,Atkinson County,6,noncore,rural
+13005,GA,Bacon County,6,noncore,rural
+13007,GA,Baker County,4,small metro,rural
+13009,GA,Baldwin County,5,micropolitan,rural
+13011,GA,Banks County,6,noncore,rural
+13013,GA,Barrow County,2,large fringe metro,suburban
+13015,GA,Bartow County,2,large fringe metro,suburban
+13017,GA,Ben Hill County,5,micropolitan,rural
+13019,GA,Berrien County,6,noncore,rural
+13021,GA,Bibb County,4,small metro,rural
+13023,GA,Bleckley County,6,noncore,rural
+13025,GA,Brantley County,4,small metro,rural
+13027,GA,Brooks County,4,small metro,rural
+13029,GA,Bryan County,3,medium metro,rural
+13031,GA,Bulloch County,5,micropolitan,rural
+13033,GA,Burke County,3,medium metro,rural
+13035,GA,Butts County,2,large fringe metro,suburban
+13037,GA,Calhoun County,6,noncore,rural
+13039,GA,Camden County,5,micropolitan,rural
+13043,GA,Candler County,6,noncore,rural
+13045,GA,Carroll County,2,large fringe metro,suburban
+13047,GA,Catoosa County,3,medium metro,rural
+13049,GA,Charlton County,6,noncore,rural
+13051,GA,Chatham County,3,medium metro,rural
+13053,GA,Chattahoochee County,3,medium metro,rural
+13055,GA,Chattooga County,5,micropolitan,rural
+13057,GA,Cherokee County,2,large fringe metro,suburban
+13059,GA,Clarke County,4,small metro,rural
+13061,GA,Clay County,6,noncore,rural
+13063,GA,Clayton County,2,large fringe metro,suburban
+13065,GA,Clinch County,6,noncore,rural
+13067,GA,Cobb County,2,large fringe metro,suburban
+13069,GA,Coffee County,5,micropolitan,rural
+13071,GA,Colquitt County,5,micropolitan,rural
+13073,GA,Columbia County,3,medium metro,rural
+13075,GA,Cook County,6,noncore,rural
+13077,GA,Coweta County,2,large fringe metro,suburban
+13079,GA,Crawford County,4,small metro,rural
+13081,GA,Crisp County,5,micropolitan,rural
+13083,GA,Dade County,3,medium metro,rural
+13085,GA,Dawson County,2,large fringe metro,suburban
+13087,GA,Decatur County,5,micropolitan,rural
+13089,GA,DeKalb County,2,large fringe metro,suburban
+13091,GA,Dodge County,6,noncore,rural
+13093,GA,Dooly County,6,noncore,rural
+13095,GA,Dougherty County,4,small metro,rural
+13097,GA,Douglas County,2,large fringe metro,suburban
+13099,GA,Early County,6,noncore,rural
+13101,GA,Echols County,4,small metro,rural
+13103,GA,Effingham County,3,medium metro,rural
+13105,GA,Elbert County,6,noncore,rural
+13107,GA,Emanuel County,6,noncore,rural
+13109,GA,Evans County,6,noncore,rural
+13111,GA,Fannin County,6,noncore,rural
+13113,GA,Fayette County,2,large fringe metro,suburban
+13115,GA,Floyd County,4,small metro,rural
+13117,GA,Forsyth County,2,large fringe metro,suburban
+13119,GA,Franklin County,6,noncore,rural
+13121,GA,Fulton County,1,large central metro,urban
+13123,GA,Gilmer County,6,noncore,rural
+13125,GA,Glascock County,6,noncore,rural
+13127,GA,Glynn County,4,small metro,rural
+13129,GA,Gordon County,5,micropolitan,rural
+13131,GA,Grady County,6,noncore,rural
+13133,GA,Greene County,6,noncore,rural
+13135,GA,Gwinnett County,2,large fringe metro,suburban
+13137,GA,Habersham County,5,micropolitan,rural
+13139,GA,Hall County,4,small metro,rural
+13141,GA,Hancock County,5,micropolitan,rural
+13143,GA,Haralson County,2,large fringe metro,suburban
+13145,GA,Harris County,3,medium metro,rural
+13147,GA,Hart County,6,noncore,rural
+13149,GA,Heard County,2,large fringe metro,suburban
+13151,GA,Henry County,2,large fringe metro,suburban
+13153,GA,Houston County,4,small metro,rural
+13155,GA,Irwin County,6,noncore,rural
+13157,GA,Jackson County,5,micropolitan,rural
+13159,GA,Jasper County,2,large fringe metro,suburban
+13161,GA,Jeff Davis County,6,noncore,rural
+13163,GA,Jefferson County,6,noncore,rural
+13165,GA,Jenkins County,6,noncore,rural
+13167,GA,Johnson County,5,micropolitan,rural
+13169,GA,Jones County,4,small metro,rural
+13171,GA,Lamar County,2,large fringe metro,suburban
+13173,GA,Lanier County,4,small metro,rural
+13175,GA,Laurens County,5,micropolitan,rural
+13177,GA,Lee County,4,small metro,rural
+13179,GA,Liberty County,4,small metro,rural
+13181,GA,Lincoln County,3,medium metro,rural
+13183,GA,Long County,4,small metro,rural
+13185,GA,Lowndes County,4,small metro,rural
+13187,GA,Lumpkin County,6,noncore,rural
+13189,GA,McDuffie County,3,medium metro,rural
+13191,GA,McIntosh County,4,small metro,rural
+13193,GA,Macon County,6,noncore,rural
+13195,GA,Madison County,4,small metro,rural
+13197,GA,Marion County,3,medium metro,rural
+13199,GA,Meriwether County,2,large fringe metro,suburban
+13201,GA,Miller County,6,noncore,rural
+13205,GA,Mitchell County,6,noncore,rural
+13207,GA,Monroe County,4,small metro,rural
+13209,GA,Montgomery County,5,micropolitan,rural
+13211,GA,Morgan County,2,large fringe metro,suburban
+13213,GA,Murray County,4,small metro,rural
+13215,GA,Muscogee County,3,medium metro,rural
+13217,GA,Newton County,2,large fringe metro,suburban
+13219,GA,Oconee County,4,small metro,rural
+13221,GA,Oglethorpe County,4,small metro,rural
+13223,GA,Paulding County,2,large fringe metro,suburban
+13225,GA,Peach County,4,small metro,rural
+13227,GA,Pickens County,2,large fringe metro,suburban
+13229,GA,Pierce County,5,micropolitan,rural
+13231,GA,Pike County,2,large fringe metro,suburban
+13233,GA,Polk County,5,micropolitan,rural
+13235,GA,Pulaski County,4,small metro,rural
+13237,GA,Putnam County,6,noncore,rural
+13239,GA,Quitman County,6,noncore,rural
+13241,GA,Rabun County,6,noncore,rural
+13243,GA,Randolph County,6,noncore,rural
+13245,GA,Richmond County,3,medium metro,rural
+13247,GA,Rockdale County,2,large fringe metro,suburban
+13249,GA,Schley County,5,micropolitan,rural
+13251,GA,Screven County,6,noncore,rural
+13253,GA,Seminole County,6,noncore,rural
+13255,GA,Spalding County,2,large fringe metro,suburban
+13257,GA,Stephens County,5,micropolitan,rural
+13259,GA,Stewart County,6,noncore,rural
+13261,GA,Sumter County,5,micropolitan,rural
+13263,GA,Talbot County,6,noncore,rural
+13265,GA,Taliaferro County,6,noncore,rural
+13267,GA,Tattnall County,6,noncore,rural
+13269,GA,Taylor County,6,noncore,rural
+13271,GA,Telfair County,6,noncore,rural
+13273,GA,Terrell County,4,small metro,rural
+13275,GA,Thomas County,5,micropolitan,rural
+13277,GA,Tift County,5,micropolitan,rural
+13279,GA,Toombs County,5,micropolitan,rural
+13281,GA,Towns County,6,noncore,rural
+13283,GA,Treutlen County,6,noncore,rural
+13285,GA,Troup County,5,micropolitan,rural
+13287,GA,Turner County,6,noncore,rural
+13289,GA,Twiggs County,4,small metro,rural
+13291,GA,Union County,6,noncore,rural
+13293,GA,Upson County,5,micropolitan,rural
+13295,GA,Walker County,3,medium metro,rural
+13297,GA,Walton County,2,large fringe metro,suburban
+13299,GA,Ware County,5,micropolitan,rural
+13301,GA,Warren County,6,noncore,rural
+13303,GA,Washington County,6,noncore,rural
+13305,GA,Wayne County,5,micropolitan,rural
+13307,GA,Webster County,6,noncore,rural
+13309,GA,Wheeler County,6,noncore,rural
+13311,GA,White County,6,noncore,rural
+13313,GA,Whitfield County,4,small metro,rural
+13315,GA,Wilcox County,6,noncore,rural
+13317,GA,Wilkes County,6,noncore,rural
+13319,GA,Wilkinson County,6,noncore,rural
+13321,GA,Worth County,4,small metro,rural
+15001,HI,Hawaii County,5,micropolitan,rural
+15003,HI,Honolulu County,3,medium metro,rural
+15005,HI,Kalawao County,4,small metro,rural
+15007,HI,Kauai County,5,micropolitan,rural
+15009,HI,Maui County,4,small metro,rural
+16001,ID,Ada County,3,medium metro,rural
+16003,ID,Adams County,6,noncore,rural
+16005,ID,Bannock County,4,small metro,rural
+16007,ID,Bear Lake County,6,noncore,rural
+16009,ID,Benewah County,6,noncore,rural
+16011,ID,Bingham County,5,micropolitan,rural
+16013,ID,Blaine County,5,micropolitan,rural
+16015,ID,Boise County,3,medium metro,rural
+16017,ID,Bonner County,5,micropolitan,rural
+16019,ID,Bonneville County,4,small metro,rural
+16021,ID,Boundary County,6,noncore,rural
+16023,ID,Butte County,4,small metro,rural
+16025,ID,Camas County,5,micropolitan,rural
+16027,ID,Canyon County,3,medium metro,rural
+16029,ID,Caribou County,6,noncore,rural
+16031,ID,Cassia County,5,micropolitan,rural
+16033,ID,Clark County,6,noncore,rural
+16035,ID,Clearwater County,6,noncore,rural
+16037,ID,Custer County,6,noncore,rural
+16039,ID,Elmore County,5,micropolitan,rural
+16041,ID,Franklin County,4,small metro,rural
+16043,ID,Fremont County,5,micropolitan,rural
+16045,ID,Gem County,3,medium metro,rural
+16047,ID,Gooding County,6,noncore,rural
+16049,ID,Idaho County,6,noncore,rural
+16051,ID,Jefferson County,4,small metro,rural
+16053,ID,Jerome County,5,micropolitan,rural
+16055,ID,Kootenai County,4,small metro,rural
+16057,ID,Latah County,5,micropolitan,rural
+16059,ID,Lemhi County,6,noncore,rural
+16061,ID,Lewis County,6,noncore,rural
+16063,ID,Lincoln County,5,micropolitan,rural
+16065,ID,Madison County,5,micropolitan,rural
+16067,ID,Minidoka County,5,micropolitan,rural
+16069,ID,Nez Perce County,4,small metro,rural
+16071,ID,Oneida County,6,noncore,rural
+16073,ID,Owyhee County,3,medium metro,rural
+16075,ID,Payette County,5,micropolitan,rural
+16077,ID,Power County,6,noncore,rural
+16079,ID,Shoshone County,6,noncore,rural
+16081,ID,Teton County,5,micropolitan,rural
+16083,ID,Twin Falls County,5,micropolitan,rural
+16085,ID,Valley County,6,noncore,rural
+16087,ID,Washington County,6,noncore,rural
+17001,IL,Adams County,5,micropolitan,rural
+17003,IL,Alexander County,4,small metro,rural
+17005,IL,Bond County,2,large fringe metro,suburban
+17007,IL,Boone County,3,medium metro,rural
+17009,IL,Brown County,6,noncore,rural
+17011,IL,Bureau County,5,micropolitan,rural
+17013,IL,Calhoun County,2,large fringe metro,suburban
+17015,IL,Carroll County,6,noncore,rural
+17017,IL,Cass County,6,noncore,rural
+17019,IL,Champaign County,4,small metro,rural
+17021,IL,Christian County,5,micropolitan,rural
+17023,IL,Clark County,6,noncore,rural
+17025,IL,Clay County,6,noncore,rural
+17027,IL,Clinton County,2,large fringe metro,suburban
+17029,IL,Coles County,5,micropolitan,rural
+17031,IL,Cook County,1,large central metro,urban
+17033,IL,Crawford County,6,noncore,rural
+17035,IL,Cumberland County,5,micropolitan,rural
+17037,IL,DeKalb County,2,large fringe metro,suburban
+17039,IL,De Witt County,4,small metro,rural
+17041,IL,Douglas County,6,noncore,rural
+17043,IL,DuPage County,2,large fringe metro,suburban
+17045,IL,Edgar County,6,noncore,rural
+17047,IL,Edwards County,6,noncore,rural
+17049,IL,Effingham County,5,micropolitan,rural
+17051,IL,Fayette County,6,noncore,rural
+17053,IL,Ford County,4,small metro,rural
+17055,IL,Franklin County,6,noncore,rural
+17057,IL,Fulton County,5,micropolitan,rural
+17059,IL,Gallatin County,6,noncore,rural
+17061,IL,Greene County,6,noncore,rural
+17063,IL,Grundy County,2,large fringe metro,suburban
+17065,IL,Hamilton County,6,noncore,rural
+17067,IL,Hancock County,5,micropolitan,rural
+17069,IL,Hardin County,6,noncore,rural
+17071,IL,Henderson County,5,micropolitan,rural
+17073,IL,Henry County,3,medium metro,rural
+17075,IL,Iroquois County,6,noncore,rural
+17077,IL,Jackson County,4,small metro,rural
+17079,IL,Jasper County,6,noncore,rural
+17081,IL,Jefferson County,5,micropolitan,rural
+17083,IL,Jersey County,2,large fringe metro,suburban
+17085,IL,Jo Daviess County,6,noncore,rural
+17087,IL,Johnson County,6,noncore,rural
+17089,IL,Kane County,2,large fringe metro,suburban
+17091,IL,Kankakee County,4,small metro,rural
+17093,IL,Kendall County,2,large fringe metro,suburban
+17095,IL,Knox County,5,micropolitan,rural
+17097,IL,Lake County,2,large fringe metro,suburban
+17099,IL,La Salle County,5,micropolitan,rural
+17101,IL,Lawrence County,6,noncore,rural
+17103,IL,Lee County,5,micropolitan,rural
+17105,IL,Livingston County,5,micropolitan,rural
+17107,IL,Logan County,5,micropolitan,rural
+17109,IL,McDonough County,5,micropolitan,rural
+17111,IL,McHenry County,2,large fringe metro,suburban
+17113,IL,McLean County,4,small metro,rural
+17115,IL,Macon County,4,small metro,rural
+17117,IL,Macoupin County,2,large fringe metro,suburban
+17119,IL,Madison County,2,large fringe metro,suburban
+17121,IL,Marion County,5,micropolitan,rural
+17123,IL,Marshall County,3,medium metro,rural
+17125,IL,Mason County,6,noncore,rural
+17127,IL,Massac County,5,micropolitan,rural
+17129,IL,Menard County,4,small metro,rural
+17131,IL,Mercer County,3,medium metro,rural
+17133,IL,Monroe County,2,large fringe metro,suburban
+17135,IL,Montgomery County,6,noncore,rural
+17137,IL,Morgan County,5,micropolitan,rural
+17139,IL,Moultrie County,6,noncore,rural
+17141,IL,Ogle County,5,micropolitan,rural
+17143,IL,Peoria County,3,medium metro,rural
+17145,IL,Perry County,6,noncore,rural
+17147,IL,Piatt County,4,small metro,rural
+17149,IL,Pike County,6,noncore,rural
+17151,IL,Pope County,6,noncore,rural
+17153,IL,Pulaski County,6,noncore,rural
+17155,IL,Putnam County,5,micropolitan,rural
+17157,IL,Randolph County,6,noncore,rural
+17159,IL,Richland County,6,noncore,rural
+17161,IL,Rock Island County,3,medium metro,rural
+17163,IL,St. Clair County,2,large fringe metro,suburban
+17165,IL,Saline County,6,noncore,rural
+17167,IL,Sangamon County,4,small metro,rural
+17169,IL,Schuyler County,6,noncore,rural
+17171,IL,Scott County,5,micropolitan,rural
+17173,IL,Shelby County,6,noncore,rural
+17175,IL,Stark County,3,medium metro,rural
+17177,IL,Stephenson County,5,micropolitan,rural
+17179,IL,Tazewell County,3,medium metro,rural
+17181,IL,Union County,6,noncore,rural
+17183,IL,Vermilion County,4,small metro,rural
+17185,IL,Wabash County,6,noncore,rural
+17187,IL,Warren County,6,noncore,rural
+17189,IL,Washington County,6,noncore,rural
+17191,IL,Wayne County,6,noncore,rural
+17193,IL,White County,6,noncore,rural
+17195,IL,Whiteside County,5,micropolitan,rural
+17197,IL,Will County,2,large fringe metro,suburban
+17199,IL,Williamson County,4,small metro,rural
+17201,IL,Winnebago County,3,medium metro,rural
+17203,IL,Woodford County,3,medium metro,rural
+18001,IN,Adams County,5,micropolitan,rural
+18003,IN,Allen County,3,medium metro,rural
+18005,IN,Bartholomew County,4,small metro,rural
+18007,IN,Benton County,4,small metro,rural
+18009,IN,Blackford County,6,noncore,rural
+18011,IN,Boone County,2,large fringe metro,suburban
+18013,IN,Brown County,2,large fringe metro,suburban
+18015,IN,Carroll County,4,small metro,rural
+18017,IN,Cass County,5,micropolitan,rural
+18019,IN,Clark County,2,large fringe metro,suburban
+18021,IN,Clay County,4,small metro,rural
+18023,IN,Clinton County,5,micropolitan,rural
+18025,IN,Crawford County,6,noncore,rural
+18027,IN,Daviess County,5,micropolitan,rural
+18029,IN,Dearborn County,2,large fringe metro,suburban
+18031,IN,Decatur County,5,micropolitan,rural
+18033,IN,DeKalb County,5,micropolitan,rural
+18035,IN,Delaware County,4,small metro,rural
+18037,IN,Dubois County,5,micropolitan,rural
+18039,IN,Elkhart County,4,small metro,rural
+18041,IN,Fayette County,5,micropolitan,rural
+18043,IN,Floyd County,2,large fringe metro,suburban
+18045,IN,Fountain County,6,noncore,rural
+18047,IN,Franklin County,6,noncore,rural
+18049,IN,Fulton County,6,noncore,rural
+18051,IN,Gibson County,6,noncore,rural
+18053,IN,Grant County,5,micropolitan,rural
+18055,IN,Greene County,6,noncore,rural
+18057,IN,Hamilton County,2,large fringe metro,suburban
+18059,IN,Hancock County,2,large fringe metro,suburban
+18061,IN,Harrison County,2,large fringe metro,suburban
+18063,IN,Hendricks County,2,large fringe metro,suburban
+18065,IN,Henry County,5,micropolitan,rural
+18067,IN,Howard County,4,small metro,rural
+18069,IN,Huntington County,5,micropolitan,rural
+18071,IN,Jackson County,5,micropolitan,rural
+18073,IN,Jasper County,2,large fringe metro,suburban
+18075,IN,Jay County,6,noncore,rural
+18077,IN,Jefferson County,5,micropolitan,rural
+18079,IN,Jennings County,5,micropolitan,rural
+18081,IN,Johnson County,2,large fringe metro,suburban
+18083,IN,Knox County,5,micropolitan,rural
+18085,IN,Kosciusko County,5,micropolitan,rural
+18087,IN,LaGrange County,6,noncore,rural
+18089,IN,Lake County,2,large fringe metro,suburban
+18091,IN,LaPorte County,4,small metro,rural
+18093,IN,Lawrence County,5,micropolitan,rural
+18095,IN,Madison County,2,large fringe metro,suburban
+18097,IN,Marion County,1,large central metro,urban
+18099,IN,Marshall County,5,micropolitan,rural
+18101,IN,Martin County,6,noncore,rural
+18103,IN,Miami County,5,micropolitan,rural
+18105,IN,Monroe County,4,small metro,rural
+18107,IN,Montgomery County,5,micropolitan,rural
+18109,IN,Morgan County,2,large fringe metro,suburban
+18111,IN,Newton County,2,large fringe metro,suburban
+18113,IN,Noble County,5,micropolitan,rural
+18115,IN,Ohio County,2,large fringe metro,suburban
+18117,IN,Orange County,6,noncore,rural
+18119,IN,Owen County,4,small metro,rural
+18121,IN,Parke County,6,noncore,rural
+18123,IN,Perry County,6,noncore,rural
+18125,IN,Pike County,5,micropolitan,rural
+18127,IN,Porter County,2,large fringe metro,suburban
+18129,IN,Posey County,3,medium metro,rural
+18131,IN,Pulaski County,6,noncore,rural
+18133,IN,Putnam County,2,large fringe metro,suburban
+18135,IN,Randolph County,6,noncore,rural
+18137,IN,Ripley County,6,noncore,rural
+18139,IN,Rush County,6,noncore,rural
+18141,IN,St. Joseph County,3,medium metro,rural
+18143,IN,Scott County,2,large fringe metro,suburban
+18145,IN,Shelby County,2,large fringe metro,suburban
+18147,IN,Spencer County,6,noncore,rural
+18149,IN,Starke County,6,noncore,rural
+18151,IN,Steuben County,5,micropolitan,rural
+18153,IN,Sullivan County,4,small metro,rural
+18155,IN,Switzerland County,6,noncore,rural
+18157,IN,Tippecanoe County,4,small metro,rural
+18159,IN,Tipton County,6,noncore,rural
+18161,IN,Union County,2,large fringe metro,suburban
+18163,IN,Vanderburgh County,3,medium metro,rural
+18165,IN,Vermillion County,4,small metro,rural
+18167,IN,Vigo County,4,small metro,rural
+18169,IN,Wabash County,5,micropolitan,rural
+18171,IN,Warren County,6,noncore,rural
+18173,IN,Warrick County,3,medium metro,rural
+18175,IN,Washington County,2,large fringe metro,suburban
+18177,IN,Wayne County,5,micropolitan,rural
+18179,IN,Wells County,3,medium metro,rural
+18181,IN,White County,6,noncore,rural
+18183,IN,Whitley County,3,medium metro,rural
+19001,IA,Adair County,6,noncore,rural
+19003,IA,Adams County,6,noncore,rural
+19005,IA,Allamakee County,6,noncore,rural
+19007,IA,Appanoose County,6,noncore,rural
+19009,IA,Audubon County,6,noncore,rural
+19011,IA,Benton County,3,medium metro,rural
+19013,IA,Black Hawk County,4,small metro,rural
+19015,IA,Boone County,5,micropolitan,rural
+19017,IA,Bremer County,4,small metro,rural
+19019,IA,Buchanan County,6,noncore,rural
+19021,IA,Buena Vista County,5,micropolitan,rural
+19023,IA,Butler County,6,noncore,rural
+19025,IA,Calhoun County,6,noncore,rural
+19027,IA,Carroll County,6,noncore,rural
+19029,IA,Cass County,6,noncore,rural
+19031,IA,Cedar County,6,noncore,rural
+19033,IA,Cerro Gordo County,5,micropolitan,rural
+19035,IA,Cherokee County,6,noncore,rural
+19037,IA,Chickasaw County,6,noncore,rural
+19039,IA,Clarke County,6,noncore,rural
+19041,IA,Clay County,5,micropolitan,rural
+19043,IA,Clayton County,6,noncore,rural
+19045,IA,Clinton County,5,micropolitan,rural
+19047,IA,Crawford County,6,noncore,rural
+19049,IA,Dallas County,3,medium metro,rural
+19051,IA,Davis County,5,micropolitan,rural
+19053,IA,Decatur County,6,noncore,rural
+19055,IA,Delaware County,6,noncore,rural
+19057,IA,Des Moines County,5,micropolitan,rural
+19059,IA,Dickinson County,5,micropolitan,rural
+19061,IA,Dubuque County,4,small metro,rural
+19063,IA,Emmet County,6,noncore,rural
+19065,IA,Fayette County,6,noncore,rural
+19067,IA,Floyd County,6,noncore,rural
+19069,IA,Franklin County,6,noncore,rural
+19071,IA,Fremont County,6,noncore,rural
+19073,IA,Greene County,6,noncore,rural
+19075,IA,Grundy County,4,small metro,rural
+19077,IA,Guthrie County,3,medium metro,rural
+19079,IA,Hamilton County,6,noncore,rural
+19081,IA,Hancock County,6,noncore,rural
+19083,IA,Hardin County,6,noncore,rural
+19085,IA,Harrison County,3,medium metro,rural
+19087,IA,Henry County,6,noncore,rural
+19089,IA,Howard County,6,noncore,rural
+19091,IA,Humboldt County,6,noncore,rural
+19093,IA,Ida County,6,noncore,rural
+19095,IA,Iowa County,6,noncore,rural
+19097,IA,Jackson County,6,noncore,rural
+19099,IA,Jasper County,5,micropolitan,rural
+19101,IA,Jefferson County,5,micropolitan,rural
+19103,IA,Johnson County,4,small metro,rural
+19105,IA,Jones County,3,medium metro,rural
+19107,IA,Keokuk County,6,noncore,rural
+19109,IA,Kossuth County,6,noncore,rural
+19111,IA,Lee County,5,micropolitan,rural
+19113,IA,Linn County,3,medium metro,rural
+19115,IA,Louisa County,6,noncore,rural
+19117,IA,Lucas County,6,noncore,rural
+19119,IA,Lyon County,6,noncore,rural
+19121,IA,Madison County,3,medium metro,rural
+19123,IA,Mahaska County,5,micropolitan,rural
+19125,IA,Marion County,6,noncore,rural
+19127,IA,Marshall County,5,micropolitan,rural
+19129,IA,Mills County,3,medium metro,rural
+19131,IA,Mitchell County,6,noncore,rural
+19133,IA,Monona County,6,noncore,rural
+19135,IA,Monroe County,6,noncore,rural
+19137,IA,Montgomery County,6,noncore,rural
+19139,IA,Muscatine County,5,micropolitan,rural
+19141,IA,O'Brien County,6,noncore,rural
+19143,IA,Osceola County,6,noncore,rural
+19145,IA,Page County,6,noncore,rural
+19147,IA,Palo Alto County,6,noncore,rural
+19149,IA,Plymouth County,4,small metro,rural
+19151,IA,Pocahontas County,6,noncore,rural
+19153,IA,Polk County,3,medium metro,rural
+19155,IA,Pottawattamie County,3,medium metro,rural
+19157,IA,Poweshiek County,6,noncore,rural
+19159,IA,Ringgold County,6,noncore,rural
+19161,IA,Sac County,6,noncore,rural
+19163,IA,Scott County,3,medium metro,rural
+19165,IA,Shelby County,6,noncore,rural
+19167,IA,Sioux County,6,noncore,rural
+19169,IA,Story County,4,small metro,rural
+19171,IA,Tama County,6,noncore,rural
+19173,IA,Taylor County,6,noncore,rural
+19175,IA,Union County,6,noncore,rural
+19177,IA,Van Buren County,6,noncore,rural
+19179,IA,Wapello County,5,micropolitan,rural
+19181,IA,Warren County,3,medium metro,rural
+19183,IA,Washington County,4,small metro,rural
+19185,IA,Wayne County,6,noncore,rural
+19187,IA,Webster County,5,micropolitan,rural
+19189,IA,Winnebago County,6,noncore,rural
+19191,IA,Winneshiek County,6,noncore,rural
+19193,IA,Woodbury County,4,small metro,rural
+19195,IA,Worth County,5,micropolitan,rural
+19197,IA,Wright County,6,noncore,rural
+20001,KS,Allen County,6,noncore,rural
+20003,KS,Anderson County,6,noncore,rural
+20005,KS,Atchison County,5,micropolitan,rural
+20007,KS,Barber County,6,noncore,rural
+20009,KS,Barton County,5,micropolitan,rural
+20011,KS,Bourbon County,6,noncore,rural
+20013,KS,Brown County,6,noncore,rural
+20015,KS,Butler County,3,medium metro,rural
+20017,KS,Chase County,6,noncore,rural
+20019,KS,Chautauqua County,6,noncore,rural
+20021,KS,Cherokee County,6,noncore,rural
+20023,KS,Cheyenne County,6,noncore,rural
+20025,KS,Clark County,6,noncore,rural
+20027,KS,Clay County,6,noncore,rural
+20029,KS,Cloud County,6,noncore,rural
+20031,KS,Coffey County,6,noncore,rural
+20033,KS,Comanche County,6,noncore,rural
+20035,KS,Cowley County,5,micropolitan,rural
+20037,KS,Crawford County,5,micropolitan,rural
+20039,KS,Decatur County,6,noncore,rural
+20041,KS,Dickinson County,6,noncore,rural
+20043,KS,Doniphan County,4,small metro,rural
+20045,KS,Douglas County,4,small metro,rural
+20047,KS,Edwards County,6,noncore,rural
+20049,KS,Elk County,6,noncore,rural
+20051,KS,Ellis County,5,micropolitan,rural
+20053,KS,Ellsworth County,6,noncore,rural
+20055,KS,Finney County,5,micropolitan,rural
+20057,KS,Ford County,5,micropolitan,rural
+20059,KS,Franklin County,5,micropolitan,rural
+20061,KS,Geary County,5,micropolitan,rural
+20063,KS,Gove County,6,noncore,rural
+20065,KS,Graham County,6,noncore,rural
+20067,KS,Grant County,6,noncore,rural
+20069,KS,Gray County,6,noncore,rural
+20071,KS,Greeley County,6,noncore,rural
+20073,KS,Greenwood County,6,noncore,rural
+20075,KS,Hamilton County,6,noncore,rural
+20077,KS,Harper County,6,noncore,rural
+20079,KS,Harvey County,3,medium metro,rural
+20081,KS,Haskell County,6,noncore,rural
+20083,KS,Hodgeman County,6,noncore,rural
+20085,KS,Jackson County,4,small metro,rural
+20087,KS,Jefferson County,4,small metro,rural
+20089,KS,Jewell County,6,noncore,rural
+20091,KS,Johnson County,2,large fringe metro,suburban
+20093,KS,Kearny County,5,micropolitan,rural
+20095,KS,Kingman County,3,medium metro,rural
+20097,KS,Kiowa County,6,noncore,rural
+20099,KS,Labette County,5,micropolitan,rural
+20101,KS,Lane County,6,noncore,rural
+20103,KS,Leavenworth County,2,large fringe metro,suburban
+20105,KS,Lincoln County,6,noncore,rural
+20107,KS,Linn County,2,large fringe metro,suburban
+20109,KS,Logan County,6,noncore,rural
+20111,KS,Lyon County,5,micropolitan,rural
+20113,KS,McPherson County,5,micropolitan,rural
+20115,KS,Marion County,6,noncore,rural
+20117,KS,Marshall County,6,noncore,rural
+20119,KS,Meade County,6,noncore,rural
+20121,KS,Miami County,2,large fringe metro,suburban
+20123,KS,Mitchell County,6,noncore,rural
+20125,KS,Montgomery County,5,micropolitan,rural
+20127,KS,Morris County,6,noncore,rural
+20129,KS,Morton County,6,noncore,rural
+20131,KS,Nemaha County,6,noncore,rural
+20133,KS,Neosho County,6,noncore,rural
+20135,KS,Ness County,6,noncore,rural
+20137,KS,Norton County,6,noncore,rural
+20139,KS,Osage County,4,small metro,rural
+20141,KS,Osborne County,6,noncore,rural
+20143,KS,Ottawa County,5,micropolitan,rural
+20145,KS,Pawnee County,6,noncore,rural
+20147,KS,Phillips County,6,noncore,rural
+20149,KS,Pottawatomie County,4,small metro,rural
+20151,KS,Pratt County,6,noncore,rural
+20153,KS,Rawlins County,6,noncore,rural
+20155,KS,Reno County,5,micropolitan,rural
+20157,KS,Republic County,6,noncore,rural
+20159,KS,Rice County,6,noncore,rural
+20161,KS,Riley County,4,small metro,rural
+20163,KS,Rooks County,6,noncore,rural
+20165,KS,Rush County,6,noncore,rural
+20167,KS,Russell County,6,noncore,rural
+20169,KS,Saline County,5,micropolitan,rural
+20171,KS,Scott County,6,noncore,rural
+20173,KS,Sedgwick County,3,medium metro,rural
+20175,KS,Seward County,5,micropolitan,rural
+20177,KS,Shawnee County,4,small metro,rural
+20179,KS,Sheridan County,6,noncore,rural
+20181,KS,Sherman County,6,noncore,rural
+20183,KS,Smith County,6,noncore,rural
+20185,KS,Stafford County,6,noncore,rural
+20187,KS,Stanton County,6,noncore,rural
+20189,KS,Stevens County,6,noncore,rural
+20191,KS,Sumner County,3,medium metro,rural
+20193,KS,Thomas County,6,noncore,rural
+20195,KS,Trego County,6,noncore,rural
+20197,KS,Wabaunsee County,4,small metro,rural
+20199,KS,Wallace County,6,noncore,rural
+20201,KS,Washington County,6,noncore,rural
+20203,KS,Wichita County,6,noncore,rural
+20205,KS,Wilson County,6,noncore,rural
+20207,KS,Woodson County,6,noncore,rural
+20209,KS,Wyandotte County,2,large fringe metro,suburban
+21001,KY,Adair County,6,noncore,rural
+21003,KY,Allen County,4,small metro,rural
+21005,KY,Anderson County,5,micropolitan,rural
+21007,KY,Ballard County,5,micropolitan,rural
+21009,KY,Barren County,5,micropolitan,rural
+21011,KY,Bath County,5,micropolitan,rural
+21013,KY,Bell County,5,micropolitan,rural
+21015,KY,Boone County,2,large fringe metro,suburban
+21017,KY,Bourbon County,3,medium metro,rural
+21019,KY,Boyd County,3,medium metro,rural
+21021,KY,Boyle County,5,micropolitan,rural
+21023,KY,Bracken County,2,large fringe metro,suburban
+21025,KY,Breathitt County,6,noncore,rural
+21027,KY,Breckinridge County,6,noncore,rural
+21029,KY,Bullitt County,2,large fringe metro,suburban
+21031,KY,Butler County,4,small metro,rural
+21033,KY,Caldwell County,6,noncore,rural
+21035,KY,Calloway County,5,micropolitan,rural
+21037,KY,Campbell County,2,large fringe metro,suburban
+21039,KY,Carlisle County,6,noncore,rural
+21041,KY,Carroll County,6,noncore,rural
+21043,KY,Carter County,6,noncore,rural
+21045,KY,Casey County,6,noncore,rural
+21047,KY,Christian County,3,medium metro,rural
+21049,KY,Clark County,3,medium metro,rural
+21051,KY,Clay County,6,noncore,rural
+21053,KY,Clinton County,6,noncore,rural
+21055,KY,Crittenden County,6,noncore,rural
+21057,KY,Cumberland County,6,noncore,rural
+21059,KY,Daviess County,4,small metro,rural
+21061,KY,Edmonson County,4,small metro,rural
+21063,KY,Elliott County,6,noncore,rural
+21065,KY,Estill County,6,noncore,rural
+21067,KY,Fayette County,3,medium metro,rural
+21069,KY,Fleming County,6,noncore,rural
+21071,KY,Floyd County,6,noncore,rural
+21073,KY,Franklin County,5,micropolitan,rural
+21075,KY,Fulton County,5,micropolitan,rural
+21077,KY,Gallatin County,2,large fringe metro,suburban
+21079,KY,Garrard County,6,noncore,rural
+21081,KY,Grant County,2,large fringe metro,suburban
+21083,KY,Graves County,5,micropolitan,rural
+21085,KY,Grayson County,6,noncore,rural
+21087,KY,Green County,6,noncore,rural
+21089,KY,Greenup County,3,medium metro,rural
+21091,KY,Hancock County,4,small metro,rural
+21093,KY,Hardin County,4,small metro,rural
+21095,KY,Harlan County,6,noncore,rural
+21097,KY,Harrison County,6,noncore,rural
+21099,KY,Hart County,6,noncore,rural
+21101,KY,Henderson County,3,medium metro,rural
+21103,KY,Henry County,2,large fringe metro,suburban
+21105,KY,Hickman County,6,noncore,rural
+21107,KY,Hopkins County,5,micropolitan,rural
+21109,KY,Jackson County,6,noncore,rural
+21111,KY,Jefferson County,1,large central metro,urban
+21113,KY,Jessamine County,3,medium metro,rural
+21115,KY,Johnson County,6,noncore,rural
+21117,KY,Kenton County,2,large fringe metro,suburban
+21119,KY,Knott County,6,noncore,rural
+21121,KY,Knox County,5,micropolitan,rural
+21123,KY,Larue County,4,small metro,rural
+21125,KY,Laurel County,5,micropolitan,rural
+21127,KY,Lawrence County,6,noncore,rural
+21129,KY,Lee County,6,noncore,rural
+21131,KY,Leslie County,6,noncore,rural
+21133,KY,Letcher County,6,noncore,rural
+21135,KY,Lewis County,6,noncore,rural
+21137,KY,Lincoln County,5,micropolitan,rural
+21139,KY,Livingston County,5,micropolitan,rural
+21141,KY,Logan County,6,noncore,rural
+21143,KY,Lyon County,6,noncore,rural
+21145,KY,McCracken County,5,micropolitan,rural
+21147,KY,McCreary County,6,noncore,rural
+21149,KY,McLean County,4,small metro,rural
+21151,KY,Madison County,5,micropolitan,rural
+21153,KY,Magoffin County,6,noncore,rural
+21155,KY,Marion County,6,noncore,rural
+21157,KY,Marshall County,6,noncore,rural
+21159,KY,Martin County,6,noncore,rural
+21161,KY,Mason County,5,micropolitan,rural
+21163,KY,Meade County,4,small metro,rural
+21165,KY,Menifee County,5,micropolitan,rural
+21167,KY,Mercer County,6,noncore,rural
+21169,KY,Metcalfe County,5,micropolitan,rural
+21171,KY,Monroe County,6,noncore,rural
+21173,KY,Montgomery County,5,micropolitan,rural
+21175,KY,Morgan County,6,noncore,rural
+21177,KY,Muhlenberg County,6,noncore,rural
+21179,KY,Nelson County,5,micropolitan,rural
+21181,KY,Nicholas County,6,noncore,rural
+21183,KY,Ohio County,6,noncore,rural
+21185,KY,Oldham County,2,large fringe metro,suburban
+21187,KY,Owen County,6,noncore,rural
+21189,KY,Owsley County,6,noncore,rural
+21191,KY,Pendleton County,2,large fringe metro,suburban
+21193,KY,Perry County,6,noncore,rural
+21195,KY,Pike County,6,noncore,rural
+21197,KY,Powell County,6,noncore,rural
+21199,KY,Pulaski County,5,micropolitan,rural
+21201,KY,Robertson County,6,noncore,rural
+21203,KY,Rockcastle County,5,micropolitan,rural
+21205,KY,Rowan County,6,noncore,rural
+21207,KY,Russell County,6,noncore,rural
+21209,KY,Scott County,3,medium metro,rural
+21211,KY,Shelby County,2,large fringe metro,suburban
+21213,KY,Simpson County,6,noncore,rural
+21215,KY,Spencer County,2,large fringe metro,suburban
+21217,KY,Taylor County,5,micropolitan,rural
+21219,KY,Todd County,6,noncore,rural
+21221,KY,Trigg County,3,medium metro,rural
+21223,KY,Trimble County,2,large fringe metro,suburban
+21225,KY,Union County,6,noncore,rural
+21227,KY,Warren County,4,small metro,rural
+21229,KY,Washington County,6,noncore,rural
+21231,KY,Wayne County,6,noncore,rural
+21233,KY,Webster County,6,noncore,rural
+21235,KY,Whitley County,5,micropolitan,rural
+21237,KY,Wolfe County,6,noncore,rural
+21239,KY,Woodford County,3,medium metro,rural
+22001,LA,Acadia Parish,3,medium metro,rural
+22003,LA,Allen Parish,6,noncore,rural
+22005,LA,Ascension Parish,3,medium metro,rural
+22007,LA,Assumption Parish,6,noncore,rural
+22009,LA,Avoyelles Parish,6,noncore,rural
+22011,LA,Beauregard Parish,5,micropolitan,rural
+22013,LA,Bienville Parish,6,noncore,rural
+22015,LA,Bossier Parish,3,medium metro,rural
+22017,LA,Caddo Parish,3,medium metro,rural
+22019,LA,Calcasieu Parish,4,small metro,rural
+22021,LA,Caldwell Parish,6,noncore,rural
+22023,LA,Cameron Parish,4,small metro,rural
+22025,LA,Catahoula Parish,6,noncore,rural
+22027,LA,Claiborne Parish,6,noncore,rural
+22029,LA,Concordia Parish,5,micropolitan,rural
+22031,LA,De Soto Parish,3,medium metro,rural
+22033,LA,East Baton Rouge Parish,3,medium metro,rural
+22035,LA,East Carroll Parish,6,noncore,rural
+22037,LA,East Feliciana Parish,3,medium metro,rural
+22039,LA,Evangeline Parish,6,noncore,rural
+22041,LA,Franklin Parish,6,noncore,rural
+22043,LA,Grant Parish,4,small metro,rural
+22045,LA,Iberia Parish,3,medium metro,rural
+22047,LA,Iberville Parish,3,medium metro,rural
+22049,LA,Jackson Parish,6,noncore,rural
+22051,LA,Jefferson Parish,2,large fringe metro,suburban
+22053,LA,Jefferson Davis Parish,6,noncore,rural
+22055,LA,Lafayette Parish,3,medium metro,rural
+22057,LA,Lafourche Parish,4,small metro,rural
+22059,LA,LaSalle Parish,6,noncore,rural
+22061,LA,Lincoln Parish,5,micropolitan,rural
+22063,LA,Livingston Parish,3,medium metro,rural
+22065,LA,Madison Parish,6,noncore,rural
+22067,LA,Morehouse Parish,5,micropolitan,rural
+22069,LA,Natchitoches Parish,5,micropolitan,rural
+22071,LA,Orleans Parish,1,large central metro,urban
+22073,LA,Ouachita Parish,4,small metro,rural
+22075,LA,Plaquemines Parish,2,large fringe metro,suburban
+22077,LA,Pointe Coupee Parish,3,medium metro,rural
+22079,LA,Rapides Parish,4,small metro,rural
+22081,LA,Red River Parish,6,noncore,rural
+22083,LA,Richland Parish,6,noncore,rural
+22085,LA,Sabine Parish,6,noncore,rural
+22087,LA,St. Bernard Parish,2,large fringe metro,suburban
+22089,LA,St. Charles Parish,2,large fringe metro,suburban
+22091,LA,St. Helena Parish,3,medium metro,rural
+22093,LA,St. James Parish,2,large fringe metro,suburban
+22095,LA,St. John the Baptist Parish,2,large fringe metro,suburban
+22097,LA,St. Landry Parish,5,micropolitan,rural
+22099,LA,St. Martin Parish,3,medium metro,rural
+22101,LA,St. Mary Parish,5,micropolitan,rural
+22103,LA,St. Tammany Parish,2,large fringe metro,suburban
+22105,LA,Tangipahoa Parish,4,small metro,rural
+22107,LA,Tensas Parish,6,noncore,rural
+22109,LA,Terrebonne Parish,4,small metro,rural
+22111,LA,Union Parish,4,small metro,rural
+22113,LA,Vermilion Parish,3,medium metro,rural
+22115,LA,Vernon Parish,5,micropolitan,rural
+22117,LA,Washington Parish,5,micropolitan,rural
+22119,LA,Webster Parish,3,medium metro,rural
+22121,LA,West Baton Rouge Parish,3,medium metro,rural
+22123,LA,West Carroll Parish,6,noncore,rural
+22125,LA,West Feliciana Parish,3,medium metro,rural
+22127,LA,Winn Parish,6,noncore,rural
+23001,ME,Androscoggin County,4,small metro,rural
+23003,ME,Aroostook County,6,noncore,rural
+23005,ME,Cumberland County,3,medium metro,rural
+23007,ME,Franklin County,6,noncore,rural
+23009,ME,Hancock County,6,noncore,rural
+23011,ME,Kennebec County,5,micropolitan,rural
+23013,ME,Knox County,6,noncore,rural
+23015,ME,Lincoln County,6,noncore,rural
+23017,ME,Oxford County,6,noncore,rural
+23019,ME,Penobscot County,4,small metro,rural
+23021,ME,Piscataquis County,6,noncore,rural
+23023,ME,Sagadahoc County,3,medium metro,rural
+23025,ME,Somerset County,6,noncore,rural
+23027,ME,Waldo County,6,noncore,rural
+23029,ME,Washington County,6,noncore,rural
+23031,ME,York County,3,medium metro,rural
+24001,MD,Allegany County,4,small metro,rural
+24003,MD,Anne Arundel County,2,large fringe metro,suburban
+24005,MD,Baltimore County,2,large fringe metro,suburban
+24009,MD,Calvert County,2,large fringe metro,suburban
+24011,MD,Caroline County,6,noncore,rural
+24013,MD,Carroll County,2,large fringe metro,suburban
+24015,MD,Cecil County,2,large fringe metro,suburban
+24017,MD,Charles County,2,large fringe metro,suburban
+24019,MD,Dorchester County,5,micropolitan,rural
+24021,MD,Frederick County,2,large fringe metro,suburban
+24023,MD,Garrett County,6,noncore,rural
+24025,MD,Harford County,2,large fringe metro,suburban
+24027,MD,Howard County,2,large fringe metro,suburban
+24029,MD,Kent County,6,noncore,rural
+24031,MD,Montgomery County,2,large fringe metro,suburban
+24033,MD,Prince George's County,2,large fringe metro,suburban
+24035,MD,Queen Anne's County,2,large fringe metro,suburban
+24037,MD,St. Mary's County,4,small metro,rural
+24039,MD,Somerset County,3,medium metro,rural
+24041,MD,Talbot County,5,micropolitan,rural
+24043,MD,Washington County,3,medium metro,rural
+24045,MD,Wicomico County,3,medium metro,rural
+24047,MD,Worcester County,3,medium metro,rural
+24510,MD,Baltimore city,1,large central metro,urban
+25001,MA,Barnstable County,4,small metro,rural
+25003,MA,Berkshire County,4,small metro,rural
+25005,MA,Bristol County,2,large fringe metro,suburban
+25007,MA,Dukes County,5,micropolitan,rural
+25009,MA,Essex County,2,large fringe metro,suburban
+25011,MA,Franklin County,5,micropolitan,rural
+25013,MA,Hampden County,3,medium metro,rural
+25015,MA,Hampshire County,3,medium metro,rural
+25017,MA,Middlesex County,2,large fringe metro,suburban
+25019,MA,Nantucket County,6,noncore,rural
+25021,MA,Norfolk County,2,large fringe metro,suburban
+25023,MA,Plymouth County,2,large fringe metro,suburban
+25025,MA,Suffolk County,1,large central metro,urban
+25027,MA,Worcester County,3,medium metro,rural
+26001,MI,Alcona County,6,noncore,rural
+26003,MI,Alger County,6,noncore,rural
+26005,MI,Allegan County,5,micropolitan,rural
+26007,MI,Alpena County,5,micropolitan,rural
+26009,MI,Antrim County,6,noncore,rural
+26011,MI,Arenac County,6,noncore,rural
+26013,MI,Baraga County,6,noncore,rural
+26015,MI,Barry County,2,large fringe metro,suburban
+26017,MI,Bay County,4,small metro,rural
+26019,MI,Benzie County,5,micropolitan,rural
+26021,MI,Berrien County,4,small metro,rural
+26023,MI,Branch County,5,micropolitan,rural
+26025,MI,Calhoun County,4,small metro,rural
+26027,MI,Cass County,3,medium metro,rural
+26029,MI,Charlevoix County,6,noncore,rural
+26031,MI,Cheboygan County,6,noncore,rural
+26033,MI,Chippewa County,5,micropolitan,rural
+26035,MI,Clare County,6,noncore,rural
+26037,MI,Clinton County,3,medium metro,rural
+26039,MI,Crawford County,6,noncore,rural
+26041,MI,Delta County,5,micropolitan,rural
+26043,MI,Dickinson County,5,micropolitan,rural
+26045,MI,Eaton County,3,medium metro,rural
+26047,MI,Emmet County,6,noncore,rural
+26049,MI,Genesee County,3,medium metro,rural
+26051,MI,Gladwin County,6,noncore,rural
+26053,MI,Gogebic County,6,noncore,rural
+26055,MI,Grand Traverse County,5,micropolitan,rural
+26057,MI,Gratiot County,5,micropolitan,rural
+26059,MI,Hillsdale County,5,micropolitan,rural
+26061,MI,Houghton County,5,micropolitan,rural
+26063,MI,Huron County,6,noncore,rural
+26065,MI,Ingham County,3,medium metro,rural
+26067,MI,Ionia County,5,micropolitan,rural
+26069,MI,Iosco County,6,noncore,rural
+26071,MI,Iron County,6,noncore,rural
+26073,MI,Isabella County,5,micropolitan,rural
+26075,MI,Jackson County,4,small metro,rural
+26077,MI,Kalamazoo County,3,medium metro,rural
+26079,MI,Kalkaska County,5,micropolitan,rural
+26081,MI,Kent County,1,large central metro,urban
+26083,MI,Keweenaw County,5,micropolitan,rural
+26085,MI,Lake County,6,noncore,rural
+26087,MI,Lapeer County,2,large fringe metro,suburban
+26089,MI,Leelanau County,5,micropolitan,rural
+26091,MI,Lenawee County,5,micropolitan,rural
+26093,MI,Livingston County,2,large fringe metro,suburban
+26095,MI,Luce County,6,noncore,rural
+26097,MI,Mackinac County,6,noncore,rural
+26099,MI,Macomb County,2,large fringe metro,suburban
+26101,MI,Manistee County,6,noncore,rural
+26103,MI,Marquette County,5,micropolitan,rural
+26105,MI,Mason County,5,micropolitan,rural
+26107,MI,Mecosta County,5,micropolitan,rural
+26109,MI,Menominee County,5,micropolitan,rural
+26111,MI,Midland County,4,small metro,rural
+26113,MI,Missaukee County,5,micropolitan,rural
+26115,MI,Monroe County,4,small metro,rural
+26117,MI,Montcalm County,2,large fringe metro,suburban
+26119,MI,Montmorency County,6,noncore,rural
+26121,MI,Muskegon County,4,small metro,rural
+26123,MI,Newaygo County,6,noncore,rural
+26125,MI,Oakland County,2,large fringe metro,suburban
+26127,MI,Oceana County,6,noncore,rural
+26129,MI,Ogemaw County,6,noncore,rural
+26131,MI,Ontonagon County,6,noncore,rural
+26133,MI,Osceola County,6,noncore,rural
+26135,MI,Oscoda County,6,noncore,rural
+26137,MI,Otsego County,6,noncore,rural
+26139,MI,Ottawa County,2,large fringe metro,suburban
+26141,MI,Presque Isle County,6,noncore,rural
+26143,MI,Roscommon County,6,noncore,rural
+26145,MI,Saginaw County,4,small metro,rural
+26147,MI,St. Clair County,2,large fringe metro,suburban
+26149,MI,St. Joseph County,5,micropolitan,rural
+26151,MI,Sanilac County,6,noncore,rural
+26153,MI,Schoolcraft County,6,noncore,rural
+26155,MI,Shiawassee County,5,micropolitan,rural
+26157,MI,Tuscola County,6,noncore,rural
+26159,MI,Van Buren County,3,medium metro,rural
+26161,MI,Washtenaw County,3,medium metro,rural
+26163,MI,Wayne County,1,large central metro,urban
+26165,MI,Wexford County,5,micropolitan,rural
+27001,MN,Aitkin County,6,noncore,rural
+27003,MN,Anoka County,2,large fringe metro,suburban
+27005,MN,Becker County,6,noncore,rural
+27007,MN,Beltrami County,5,micropolitan,rural
+27009,MN,Benton County,4,small metro,rural
+27011,MN,Big Stone County,6,noncore,rural
+27013,MN,Blue Earth County,4,small metro,rural
+27015,MN,Brown County,5,micropolitan,rural
+27017,MN,Carlton County,3,medium metro,rural
+27019,MN,Carver County,2,large fringe metro,suburban
+27021,MN,Cass County,5,micropolitan,rural
+27023,MN,Chippewa County,6,noncore,rural
+27025,MN,Chisago County,2,large fringe metro,suburban
+27027,MN,Clay County,4,small metro,rural
+27029,MN,Clearwater County,6,noncore,rural
+27031,MN,Cook County,6,noncore,rural
+27033,MN,Cottonwood County,6,noncore,rural
+27035,MN,Crow Wing County,5,micropolitan,rural
+27037,MN,Dakota County,2,large fringe metro,suburban
+27039,MN,Dodge County,4,small metro,rural
+27041,MN,Douglas County,5,micropolitan,rural
+27043,MN,Faribault County,6,noncore,rural
+27045,MN,Fillmore County,4,small metro,rural
+27047,MN,Freeborn County,5,micropolitan,rural
+27049,MN,Goodhue County,5,micropolitan,rural
+27051,MN,Grant County,6,noncore,rural
+27053,MN,Hennepin County,1,large central metro,urban
+27055,MN,Houston County,4,small metro,rural
+27057,MN,Hubbard County,6,noncore,rural
+27059,MN,Isanti County,2,large fringe metro,suburban
+27061,MN,Itasca County,6,noncore,rural
+27063,MN,Jackson County,6,noncore,rural
+27065,MN,Kanabec County,6,noncore,rural
+27067,MN,Kandiyohi County,5,micropolitan,rural
+27069,MN,Kittson County,6,noncore,rural
+27071,MN,Koochiching County,6,noncore,rural
+27073,MN,Lac qui Parle County,6,noncore,rural
+27075,MN,Lake County,6,noncore,rural
+27077,MN,Lake of the Woods County,6,noncore,rural
+27079,MN,Le Sueur County,2,large fringe metro,suburban
+27081,MN,Lincoln County,6,noncore,rural
+27083,MN,Lyon County,5,micropolitan,rural
+27085,MN,McLeod County,5,micropolitan,rural
+27087,MN,Mahnomen County,6,noncore,rural
+27089,MN,Marshall County,6,noncore,rural
+27091,MN,Martin County,6,noncore,rural
+27093,MN,Meeker County,6,noncore,rural
+27095,MN,Mille Lacs County,2,large fringe metro,suburban
+27097,MN,Morrison County,6,noncore,rural
+27099,MN,Mower County,5,micropolitan,rural
+27101,MN,Murray County,6,noncore,rural
+27103,MN,Nicollet County,4,small metro,rural
+27105,MN,Nobles County,5,micropolitan,rural
+27107,MN,Norman County,6,noncore,rural
+27109,MN,Olmsted County,4,small metro,rural
+27111,MN,Otter Tail County,5,micropolitan,rural
+27113,MN,Pennington County,6,noncore,rural
+27115,MN,Pine County,6,noncore,rural
+27117,MN,Pipestone County,6,noncore,rural
+27119,MN,Polk County,4,small metro,rural
+27121,MN,Pope County,6,noncore,rural
+27123,MN,Ramsey County,1,large central metro,urban
+27125,MN,Red Lake County,6,noncore,rural
+27127,MN,Redwood County,6,noncore,rural
+27129,MN,Renville County,6,noncore,rural
+27131,MN,Rice County,5,micropolitan,rural
+27133,MN,Rock County,6,noncore,rural
+27135,MN,Roseau County,6,noncore,rural
+27137,MN,St. Louis County,3,medium metro,rural
+27139,MN,Scott County,2,large fringe metro,suburban
+27141,MN,Sherburne County,2,large fringe metro,suburban
+27143,MN,Sibley County,2,large fringe metro,suburban
+27145,MN,Stearns County,4,small metro,rural
+27147,MN,Steele County,5,micropolitan,rural
+27149,MN,Stevens County,6,noncore,rural
+27151,MN,Swift County,6,noncore,rural
+27153,MN,Todd County,6,noncore,rural
+27155,MN,Traverse County,6,noncore,rural
+27157,MN,Wabasha County,4,small metro,rural
+27159,MN,Wadena County,6,noncore,rural
+27161,MN,Waseca County,6,noncore,rural
+27163,MN,Washington County,2,large fringe metro,suburban
+27165,MN,Watonwan County,6,noncore,rural
+27167,MN,Wilkin County,5,micropolitan,rural
+27169,MN,Winona County,5,micropolitan,rural
+27171,MN,Wright County,2,large fringe metro,suburban
+27173,MN,Yellow Medicine County,6,noncore,rural
+28001,MS,Adams County,5,micropolitan,rural
+28003,MS,Alcorn County,5,micropolitan,rural
+28005,MS,Amite County,5,micropolitan,rural
+28007,MS,Attala County,6,noncore,rural
+28009,MS,Benton County,2,large fringe metro,suburban
+28011,MS,Bolivar County,5,micropolitan,rural
+28013,MS,Calhoun County,6,noncore,rural
+28015,MS,Carroll County,5,micropolitan,rural
+28017,MS,Chickasaw County,6,noncore,rural
+28019,MS,Choctaw County,6,noncore,rural
+28021,MS,Claiborne County,5,micropolitan,rural
+28023,MS,Clarke County,5,micropolitan,rural
+28025,MS,Clay County,6,noncore,rural
+28027,MS,Coahoma County,5,micropolitan,rural
+28029,MS,Copiah County,3,medium metro,rural
+28031,MS,Covington County,6,noncore,rural
+28033,MS,DeSoto County,2,large fringe metro,suburban
+28035,MS,Forrest County,4,small metro,rural
+28037,MS,Franklin County,6,noncore,rural
+28039,MS,George County,6,noncore,rural
+28041,MS,Greene County,6,noncore,rural
+28043,MS,Grenada County,5,micropolitan,rural
+28045,MS,Hancock County,3,medium metro,rural
+28047,MS,Harrison County,3,medium metro,rural
+28049,MS,Hinds County,3,medium metro,rural
+28051,MS,Holmes County,6,noncore,rural
+28053,MS,Humphreys County,6,noncore,rural
+28055,MS,Issaquena County,6,noncore,rural
+28057,MS,Itawamba County,5,micropolitan,rural
+28059,MS,Jackson County,3,medium metro,rural
+28061,MS,Jasper County,5,micropolitan,rural
+28063,MS,Jefferson County,6,noncore,rural
+28065,MS,Jefferson Davis County,6,noncore,rural
+28067,MS,Jones County,5,micropolitan,rural
+28069,MS,Kemper County,5,micropolitan,rural
+28071,MS,Lafayette County,5,micropolitan,rural
+28073,MS,Lamar County,4,small metro,rural
+28075,MS,Lauderdale County,5,micropolitan,rural
+28077,MS,Lawrence County,6,noncore,rural
+28079,MS,Leake County,6,noncore,rural
+28081,MS,Lee County,5,micropolitan,rural
+28083,MS,Leflore County,5,micropolitan,rural
+28085,MS,Lincoln County,5,micropolitan,rural
+28087,MS,Lowndes County,5,micropolitan,rural
+28089,MS,Madison County,3,medium metro,rural
+28091,MS,Marion County,6,noncore,rural
+28093,MS,Marshall County,2,large fringe metro,suburban
+28095,MS,Monroe County,6,noncore,rural
+28097,MS,Montgomery County,6,noncore,rural
+28099,MS,Neshoba County,6,noncore,rural
+28101,MS,Newton County,6,noncore,rural
+28103,MS,Noxubee County,6,noncore,rural
+28105,MS,Oktibbeha County,5,micropolitan,rural
+28107,MS,Panola County,6,noncore,rural
+28109,MS,Pearl River County,5,micropolitan,rural
+28111,MS,Perry County,4,small metro,rural
+28113,MS,Pike County,5,micropolitan,rural
+28115,MS,Pontotoc County,5,micropolitan,rural
+28117,MS,Prentiss County,6,noncore,rural
+28119,MS,Quitman County,6,noncore,rural
+28121,MS,Rankin County,3,medium metro,rural
+28123,MS,Scott County,6,noncore,rural
+28125,MS,Sharkey County,6,noncore,rural
+28127,MS,Simpson County,3,medium metro,rural
+28129,MS,Smith County,6,noncore,rural
+28131,MS,Stone County,6,noncore,rural
+28133,MS,Sunflower County,5,micropolitan,rural
+28135,MS,Tallahatchie County,6,noncore,rural
+28137,MS,Tate County,2,large fringe metro,suburban
+28139,MS,Tippah County,6,noncore,rural
+28141,MS,Tishomingo County,6,noncore,rural
+28143,MS,Tunica County,2,large fringe metro,suburban
+28145,MS,Union County,6,noncore,rural
+28147,MS,Walthall County,6,noncore,rural
+28149,MS,Warren County,5,micropolitan,rural
+28151,MS,Washington County,5,micropolitan,rural
+28153,MS,Wayne County,6,noncore,rural
+28155,MS,Webster County,6,noncore,rural
+28157,MS,Wilkinson County,6,noncore,rural
+28159,MS,Winston County,6,noncore,rural
+28161,MS,Yalobusha County,6,noncore,rural
+28163,MS,Yazoo County,3,medium metro,rural
+29001,MO,Adair County,5,micropolitan,rural
+29003,MO,Andrew County,4,small metro,rural
+29005,MO,Atchison County,6,noncore,rural
+29007,MO,Audrain County,5,micropolitan,rural
+29009,MO,Barry County,6,noncore,rural
+29011,MO,Barton County,6,noncore,rural
+29013,MO,Bates County,2,large fringe metro,suburban
+29015,MO,Benton County,6,noncore,rural
+29017,MO,Bollinger County,4,small metro,rural
+29019,MO,Boone County,4,small metro,rural
+29021,MO,Buchanan County,4,small metro,rural
+29023,MO,Butler County,5,micropolitan,rural
+29025,MO,Caldwell County,2,large fringe metro,suburban
+29027,MO,Callaway County,4,small metro,rural
+29029,MO,Camden County,6,noncore,rural
+29031,MO,Cape Girardeau County,4,small metro,rural
+29033,MO,Carroll County,6,noncore,rural
+29035,MO,Carter County,6,noncore,rural
+29037,MO,Cass County,2,large fringe metro,suburban
+29039,MO,Cedar County,6,noncore,rural
+29041,MO,Chariton County,6,noncore,rural
+29043,MO,Christian County,3,medium metro,rural
+29045,MO,Clark County,5,micropolitan,rural
+29047,MO,Clay County,2,large fringe metro,suburban
+29049,MO,Clinton County,2,large fringe metro,suburban
+29051,MO,Cole County,4,small metro,rural
+29053,MO,Cooper County,6,noncore,rural
+29055,MO,Crawford County,6,noncore,rural
+29057,MO,Dade County,6,noncore,rural
+29059,MO,Dallas County,3,medium metro,rural
+29061,MO,Daviess County,6,noncore,rural
+29063,MO,DeKalb County,4,small metro,rural
+29065,MO,Dent County,6,noncore,rural
+29067,MO,Douglas County,6,noncore,rural
+29069,MO,Dunklin County,5,micropolitan,rural
+29071,MO,Franklin County,2,large fringe metro,suburban
+29073,MO,Gasconade County,6,noncore,rural
+29075,MO,Gentry County,6,noncore,rural
+29077,MO,Greene County,3,medium metro,rural
+29079,MO,Grundy County,6,noncore,rural
+29081,MO,Harrison County,6,noncore,rural
+29083,MO,Henry County,6,noncore,rural
+29085,MO,Hickory County,6,noncore,rural
+29087,MO,Holt County,6,noncore,rural
+29089,MO,Howard County,6,noncore,rural
+29091,MO,Howell County,5,micropolitan,rural
+29093,MO,Iron County,6,noncore,rural
+29095,MO,Jackson County,1,large central metro,urban
+29097,MO,Jasper County,4,small metro,rural
+29099,MO,Jefferson County,2,large fringe metro,suburban
+29101,MO,Johnson County,5,micropolitan,rural
+29103,MO,Knox County,6,noncore,rural
+29105,MO,Laclede County,5,micropolitan,rural
+29107,MO,Lafayette County,2,large fringe metro,suburban
+29109,MO,Lawrence County,6,noncore,rural
+29111,MO,Lewis County,5,micropolitan,rural
+29113,MO,Lincoln County,2,large fringe metro,suburban
+29115,MO,Linn County,6,noncore,rural
+29117,MO,Livingston County,6,noncore,rural
+29119,MO,McDonald County,3,medium metro,rural
+29121,MO,Macon County,6,noncore,rural
+29123,MO,Madison County,6,noncore,rural
+29125,MO,Maries County,6,noncore,rural
+29127,MO,Marion County,5,micropolitan,rural
+29129,MO,Mercer County,6,noncore,rural
+29131,MO,Miller County,6,noncore,rural
+29133,MO,Mississippi County,6,noncore,rural
+29135,MO,Moniteau County,4,small metro,rural
+29137,MO,Monroe County,6,noncore,rural
+29139,MO,Montgomery County,6,noncore,rural
+29141,MO,Morgan County,6,noncore,rural
+29143,MO,New Madrid County,6,noncore,rural
+29145,MO,Newton County,4,small metro,rural
+29147,MO,Nodaway County,5,micropolitan,rural
+29149,MO,Oregon County,6,noncore,rural
+29151,MO,Osage County,4,small metro,rural
+29153,MO,Ozark County,6,noncore,rural
+29155,MO,Pemiscot County,6,noncore,rural
+29157,MO,Perry County,6,noncore,rural
+29159,MO,Pettis County,5,micropolitan,rural
+29161,MO,Phelps County,5,micropolitan,rural
+29163,MO,Pike County,6,noncore,rural
+29165,MO,Platte County,2,large fringe metro,suburban
+29167,MO,Polk County,3,medium metro,rural
+29169,MO,Pulaski County,5,micropolitan,rural
+29171,MO,Putnam County,6,noncore,rural
+29173,MO,Ralls County,5,micropolitan,rural
+29175,MO,Randolph County,5,micropolitan,rural
+29177,MO,Ray County,2,large fringe metro,suburban
+29179,MO,Reynolds County,6,noncore,rural
+29181,MO,Ripley County,6,noncore,rural
+29183,MO,St. Charles County,2,large fringe metro,suburban
+29185,MO,St. Clair County,6,noncore,rural
+29186,MO,Ste. Genevieve County,6,noncore,rural
+29187,MO,St. Francois County,5,micropolitan,rural
+29189,MO,St. Louis County,2,large fringe metro,suburban
+29195,MO,Saline County,5,micropolitan,rural
+29197,MO,Schuyler County,5,micropolitan,rural
+29199,MO,Scotland County,6,noncore,rural
+29201,MO,Scott County,5,micropolitan,rural
+29203,MO,Shannon County,6,noncore,rural
+29205,MO,Shelby County,6,noncore,rural
+29207,MO,Stoddard County,6,noncore,rural
+29209,MO,Stone County,5,micropolitan,rural
+29211,MO,Sullivan County,6,noncore,rural
+29213,MO,Taney County,5,micropolitan,rural
+29215,MO,Texas County,6,noncore,rural
+29217,MO,Vernon County,6,noncore,rural
+29219,MO,Warren County,2,large fringe metro,suburban
+29221,MO,Washington County,6,noncore,rural
+29223,MO,Wayne County,6,noncore,rural
+29225,MO,Webster County,3,medium metro,rural
+29227,MO,Worth County,6,noncore,rural
+29229,MO,Wright County,6,noncore,rural
+29510,MO,St. Louis city,1,large central metro,urban
+30001,MT,Beaverhead County,6,noncore,rural
+30003,MT,Big Horn County,6,noncore,rural
+30005,MT,Blaine County,6,noncore,rural
+30007,MT,Broadwater County,6,noncore,rural
+30009,MT,Carbon County,4,small metro,rural
+30011,MT,Carter County,6,noncore,rural
+30013,MT,Cascade County,4,small metro,rural
+30015,MT,Chouteau County,6,noncore,rural
+30017,MT,Custer County,6,noncore,rural
+30019,MT,Daniels County,6,noncore,rural
+30021,MT,Dawson County,6,noncore,rural
+30023,MT,Deer Lodge County,6,noncore,rural
+30025,MT,Fallon County,6,noncore,rural
+30027,MT,Fergus County,6,noncore,rural
+30029,MT,Flathead County,5,micropolitan,rural
+30031,MT,Gallatin County,5,micropolitan,rural
+30033,MT,Garfield County,6,noncore,rural
+30035,MT,Glacier County,6,noncore,rural
+30037,MT,Golden Valley County,4,small metro,rural
+30039,MT,Granite County,6,noncore,rural
+30041,MT,Hill County,6,noncore,rural
+30043,MT,Jefferson County,5,micropolitan,rural
+30045,MT,Judith Basin County,6,noncore,rural
+30047,MT,Lake County,6,noncore,rural
+30049,MT,Lewis and Clark County,5,micropolitan,rural
+30051,MT,Liberty County,6,noncore,rural
+30053,MT,Lincoln County,6,noncore,rural
+30055,MT,McCone County,6,noncore,rural
+30057,MT,Madison County,6,noncore,rural
+30059,MT,Meagher County,6,noncore,rural
+30061,MT,Mineral County,6,noncore,rural
+30063,MT,Missoula County,4,small metro,rural
+30065,MT,Musselshell County,6,noncore,rural
+30067,MT,Park County,6,noncore,rural
+30069,MT,Petroleum County,6,noncore,rural
+30071,MT,Phillips County,6,noncore,rural
+30073,MT,Pondera County,6,noncore,rural
+30075,MT,Powder River County,6,noncore,rural
+30077,MT,Powell County,6,noncore,rural
+30079,MT,Prairie County,6,noncore,rural
+30081,MT,Ravalli County,6,noncore,rural
+30083,MT,Richland County,6,noncore,rural
+30085,MT,Roosevelt County,6,noncore,rural
+30087,MT,Rosebud County,6,noncore,rural
+30089,MT,Sanders County,6,noncore,rural
+30091,MT,Sheridan County,6,noncore,rural
+30093,MT,Silver Bow County,5,micropolitan,rural
+30095,MT,Stillwater County,6,noncore,rural
+30097,MT,Sweet Grass County,6,noncore,rural
+30099,MT,Teton County,6,noncore,rural
+30101,MT,Toole County,6,noncore,rural
+30103,MT,Treasure County,6,noncore,rural
+30105,MT,Valley County,6,noncore,rural
+30107,MT,Wheatland County,6,noncore,rural
+30109,MT,Wibaux County,6,noncore,rural
+30111,MT,Yellowstone County,4,small metro,rural
+31001,NE,Adams County,5,micropolitan,rural
+31003,NE,Antelope County,6,noncore,rural
+31005,NE,Arthur County,6,noncore,rural
+31007,NE,Banner County,5,micropolitan,rural
+31009,NE,Blaine County,6,noncore,rural
+31011,NE,Boone County,6,noncore,rural
+31013,NE,Box Butte County,6,noncore,rural
+31015,NE,Boyd County,6,noncore,rural
+31017,NE,Brown County,6,noncore,rural
+31019,NE,Buffalo County,5,micropolitan,rural
+31021,NE,Burt County,6,noncore,rural
+31023,NE,Butler County,6,noncore,rural
+31025,NE,Cass County,3,medium metro,rural
+31027,NE,Cedar County,6,noncore,rural
+31029,NE,Chase County,6,noncore,rural
+31031,NE,Cherry County,6,noncore,rural
+31033,NE,Cheyenne County,6,noncore,rural
+31035,NE,Clay County,6,noncore,rural
+31037,NE,Colfax County,6,noncore,rural
+31039,NE,Cuming County,6,noncore,rural
+31041,NE,Custer County,6,noncore,rural
+31043,NE,Dakota County,4,small metro,rural
+31045,NE,Dawes County,6,noncore,rural
+31047,NE,Dawson County,5,micropolitan,rural
+31049,NE,Deuel County,6,noncore,rural
+31051,NE,Dixon County,4,small metro,rural
+31053,NE,Dodge County,5,micropolitan,rural
+31055,NE,Douglas County,3,medium metro,rural
+31057,NE,Dundy County,6,noncore,rural
+31059,NE,Fillmore County,6,noncore,rural
+31061,NE,Franklin County,6,noncore,rural
+31063,NE,Frontier County,6,noncore,rural
+31065,NE,Furnas County,6,noncore,rural
+31067,NE,Gage County,5,micropolitan,rural
+31069,NE,Garden County,6,noncore,rural
+31071,NE,Garfield County,6,noncore,rural
+31073,NE,Gosper County,5,micropolitan,rural
+31075,NE,Grant County,6,noncore,rural
+31077,NE,Greeley County,6,noncore,rural
+31079,NE,Hall County,4,small metro,rural
+31081,NE,Hamilton County,4,small metro,rural
+31083,NE,Harlan County,6,noncore,rural
+31085,NE,Hayes County,6,noncore,rural
+31087,NE,Hitchcock County,6,noncore,rural
+31089,NE,Holt County,6,noncore,rural
+31091,NE,Hooker County,6,noncore,rural
+31093,NE,Howard County,4,small metro,rural
+31095,NE,Jefferson County,6,noncore,rural
+31097,NE,Johnson County,6,noncore,rural
+31099,NE,Kearney County,5,micropolitan,rural
+31101,NE,Keith County,6,noncore,rural
+31103,NE,Keya Paha County,6,noncore,rural
+31105,NE,Kimball County,6,noncore,rural
+31107,NE,Knox County,6,noncore,rural
+31109,NE,Lancaster County,3,medium metro,rural
+31111,NE,Lincoln County,5,micropolitan,rural
+31113,NE,Logan County,5,micropolitan,rural
+31115,NE,Loup County,6,noncore,rural
+31117,NE,McPherson County,5,micropolitan,rural
+31119,NE,Madison County,5,micropolitan,rural
+31121,NE,Merrick County,4,small metro,rural
+31123,NE,Morrill County,6,noncore,rural
+31125,NE,Nance County,6,noncore,rural
+31127,NE,Nemaha County,6,noncore,rural
+31129,NE,Nuckolls County,6,noncore,rural
+31131,NE,Otoe County,6,noncore,rural
+31133,NE,Pawnee County,6,noncore,rural
+31135,NE,Perkins County,6,noncore,rural
+31137,NE,Phelps County,6,noncore,rural
+31139,NE,Pierce County,5,micropolitan,rural
+31141,NE,Platte County,5,micropolitan,rural
+31143,NE,Polk County,6,noncore,rural
+31145,NE,Red Willow County,6,noncore,rural
+31147,NE,Richardson County,6,noncore,rural
+31149,NE,Rock County,6,noncore,rural
+31151,NE,Saline County,6,noncore,rural
+31153,NE,Sarpy County,3,medium metro,rural
+31155,NE,Saunders County,3,medium metro,rural
+31157,NE,Scotts Bluff County,5,micropolitan,rural
+31159,NE,Seward County,3,medium metro,rural
+31161,NE,Sheridan County,6,noncore,rural
+31163,NE,Sherman County,6,noncore,rural
+31165,NE,Sioux County,5,micropolitan,rural
+31167,NE,Stanton County,5,micropolitan,rural
+31169,NE,Thayer County,6,noncore,rural
+31171,NE,Thomas County,6,noncore,rural
+31173,NE,Thurston County,6,noncore,rural
+31175,NE,Valley County,6,noncore,rural
+31177,NE,Washington County,3,medium metro,rural
+31179,NE,Wayne County,6,noncore,rural
+31181,NE,Webster County,6,noncore,rural
+31183,NE,Wheeler County,6,noncore,rural
+31185,NE,York County,6,noncore,rural
+32001,NV,Churchill County,5,micropolitan,rural
+32003,NV,Clark County,1,large central metro,urban
+32005,NV,Douglas County,5,micropolitan,rural
+32007,NV,Elko County,5,micropolitan,rural
+32009,NV,Esmeralda County,6,noncore,rural
+32011,NV,Eureka County,5,micropolitan,rural
+32013,NV,Humboldt County,5,micropolitan,rural
+32015,NV,Lander County,6,noncore,rural
+32017,NV,Lincoln County,6,noncore,rural
+32019,NV,Lyon County,5,micropolitan,rural
+32021,NV,Mineral County,6,noncore,rural
+32023,NV,Nye County,5,micropolitan,rural
+32027,NV,Pershing County,6,noncore,rural
+32029,NV,Storey County,3,medium metro,rural
+32031,NV,Washoe County,3,medium metro,rural
+32033,NV,White Pine County,6,noncore,rural
+32510,NV,Carson City,4,small metro,rural
+33001,NH,Belknap County,5,micropolitan,rural
+33003,NH,Carroll County,6,noncore,rural
+33005,NH,Cheshire County,5,micropolitan,rural
+33007,NH,Coos County,5,micropolitan,rural
+33009,NH,Grafton County,5,micropolitan,rural
+33011,NH,Hillsborough County,3,medium metro,rural
+33013,NH,Merrimack County,5,micropolitan,rural
+33015,NH,Rockingham County,2,large fringe metro,suburban
+33017,NH,Strafford County,2,large fringe metro,suburban
+33019,NH,Sullivan County,5,micropolitan,rural
+34001,NJ,Atlantic County,3,medium metro,rural
+34003,NJ,Bergen County,2,large fringe metro,suburban
+34005,NJ,Burlington County,2,large fringe metro,suburban
+34007,NJ,Camden County,2,large fringe metro,suburban
+34009,NJ,Cape May County,4,small metro,rural
+34011,NJ,Cumberland County,4,small metro,rural
+34013,NJ,Essex County,1,large central metro,urban
+34015,NJ,Gloucester County,2,large fringe metro,suburban
+34017,NJ,Hudson County,1,large central metro,urban
+34019,NJ,Hunterdon County,2,large fringe metro,suburban
+34021,NJ,Mercer County,3,medium metro,rural
+34023,NJ,Middlesex County,2,large fringe metro,suburban
+34025,NJ,Monmouth County,2,large fringe metro,suburban
+34027,NJ,Morris County,2,large fringe metro,suburban
+34029,NJ,Ocean County,2,large fringe metro,suburban
+34031,NJ,Passaic County,2,large fringe metro,suburban
+34033,NJ,Salem County,2,large fringe metro,suburban
+34035,NJ,Somerset County,2,large fringe metro,suburban
+34037,NJ,Sussex County,2,large fringe metro,suburban
+34039,NJ,Union County,1,large central metro,urban
+34041,NJ,Warren County,3,medium metro,rural
+35001,NM,Bernalillo County,3,medium metro,rural
+35003,NM,Catron County,6,noncore,rural
+35005,NM,Chaves County,5,micropolitan,rural
+35006,NM,Cibola County,5,micropolitan,rural
+35007,NM,Colfax County,6,noncore,rural
+35009,NM,Curry County,5,micropolitan,rural
+35011,NM,De Baca County,6,noncore,rural
+35013,NM,Dona Ana County,4,small metro,rural
+35015,NM,Eddy County,5,micropolitan,rural
+35017,NM,Grant County,5,micropolitan,rural
+35019,NM,Guadalupe County,6,noncore,rural
+35021,NM,Harding County,6,noncore,rural
+35023,NM,Hidalgo County,6,noncore,rural
+35025,NM,Lea County,5,micropolitan,rural
+35027,NM,Lincoln County,6,noncore,rural
+35028,NM,Los Alamos County,5,micropolitan,rural
+35029,NM,Luna County,5,micropolitan,rural
+35031,NM,McKinley County,5,micropolitan,rural
+35033,NM,Mora County,6,noncore,rural
+35035,NM,Otero County,5,micropolitan,rural
+35037,NM,Quay County,6,noncore,rural
+35039,NM,Rio Arriba County,5,micropolitan,rural
+35041,NM,Roosevelt County,5,micropolitan,rural
+35043,NM,Sandoval County,3,medium metro,rural
+35045,NM,San Juan County,4,small metro,rural
+35047,NM,San Miguel County,5,micropolitan,rural
+35049,NM,Santa Fe County,4,small metro,rural
+35051,NM,Sierra County,6,noncore,rural
+35053,NM,Socorro County,6,noncore,rural
+35055,NM,Taos County,5,micropolitan,rural
+35057,NM,Torrance County,3,medium metro,rural
+35059,NM,Union County,6,noncore,rural
+35061,NM,Valencia County,3,medium metro,rural
+36001,NY,Albany County,3,medium metro,rural
+36003,NY,Allegany County,6,noncore,rural
+36005,NY,Bronx County,1,large central metro,urban
+36007,NY,Broome County,4,small metro,rural
+36009,NY,Cattaraugus County,5,micropolitan,rural
+36011,NY,Cayuga County,5,micropolitan,rural
+36013,NY,Chautauqua County,5,micropolitan,rural
+36015,NY,Chemung County,4,small metro,rural
+36017,NY,Chenango County,6,noncore,rural
+36019,NY,Clinton County,5,micropolitan,rural
+36021,NY,Columbia County,5,micropolitan,rural
+36023,NY,Cortland County,5,micropolitan,rural
+36025,NY,Delaware County,6,noncore,rural
+36027,NY,Dutchess County,2,large fringe metro,suburban
+36029,NY,Erie County,1,large central metro,urban
+36031,NY,Essex County,6,noncore,rural
+36033,NY,Franklin County,5,micropolitan,rural
+36035,NY,Fulton County,5,micropolitan,rural
+36037,NY,Genesee County,5,micropolitan,rural
+36039,NY,Greene County,6,noncore,rural
+36041,NY,Hamilton County,6,noncore,rural
+36043,NY,Herkimer County,3,medium metro,rural
+36045,NY,Jefferson County,4,small metro,rural
+36047,NY,Kings County,1,large central metro,urban
+36049,NY,Lewis County,6,noncore,rural
+36051,NY,Livingston County,2,large fringe metro,suburban
+36053,NY,Madison County,3,medium metro,rural
+36055,NY,Monroe County,1,large central metro,urban
+36057,NY,Montgomery County,5,micropolitan,rural
+36059,NY,Nassau County,2,large fringe metro,suburban
+36061,NY,New York County,1,large central metro,urban
+36063,NY,Niagara County,2,large fringe metro,suburban
+36065,NY,Oneida County,3,medium metro,rural
+36067,NY,Onondaga County,3,medium metro,rural
+36069,NY,Ontario County,2,large fringe metro,suburban
+36071,NY,Orange County,2,large fringe metro,suburban
+36073,NY,Orleans County,2,large fringe metro,suburban
+36075,NY,Oswego County,3,medium metro,rural
+36077,NY,Otsego County,5,micropolitan,rural
+36079,NY,Putnam County,2,large fringe metro,suburban
+36081,NY,Queens County,1,large central metro,urban
+36083,NY,Rensselaer County,3,medium metro,rural
+36085,NY,Richmond County,1,large central metro,urban
+36087,NY,Rockland County,2,large fringe metro,suburban
+36089,NY,St. Lawrence County,5,micropolitan,rural
+36091,NY,Saratoga County,3,medium metro,rural
+36093,NY,Schenectady County,3,medium metro,rural
+36095,NY,Schoharie County,3,medium metro,rural
+36097,NY,Schuyler County,6,noncore,rural
+36099,NY,Seneca County,5,micropolitan,rural
+36101,NY,Steuben County,5,micropolitan,rural
+36103,NY,Suffolk County,2,large fringe metro,suburban
+36105,NY,Sullivan County,6,noncore,rural
+36107,NY,Tioga County,4,small metro,rural
+36109,NY,Tompkins County,4,small metro,rural
+36111,NY,Ulster County,4,small metro,rural
+36113,NY,Warren County,4,small metro,rural
+36115,NY,Washington County,4,small metro,rural
+36117,NY,Wayne County,2,large fringe metro,suburban
+36119,NY,Westchester County,2,large fringe metro,suburban
+36121,NY,Wyoming County,6,noncore,rural
+36123,NY,Yates County,2,large fringe metro,suburban
+37001,NC,Alamance County,4,small metro,rural
+37003,NC,Alexander County,3,medium metro,rural
+37005,NC,Alleghany County,6,noncore,rural
+37007,NC,Anson County,6,noncore,rural
+37009,NC,Ashe County,6,noncore,rural
+37011,NC,Avery County,6,noncore,rural
+37013,NC,Beaufort County,5,micropolitan,rural
+37015,NC,Bertie County,6,noncore,rural
+37017,NC,Bladen County,6,noncore,rural
+37019,NC,Brunswick County,3,medium metro,rural
+37021,NC,Buncombe County,3,medium metro,rural
+37023,NC,Burke County,3,medium metro,rural
+37025,NC,Cabarrus County,2,large fringe metro,suburban
+37027,NC,Caldwell County,3,medium metro,rural
+37029,NC,Camden County,5,micropolitan,rural
+37031,NC,Carteret County,5,micropolitan,rural
+37033,NC,Caswell County,6,noncore,rural
+37035,NC,Catawba County,3,medium metro,rural
+37037,NC,Chatham County,3,medium metro,rural
+37039,NC,Cherokee County,6,noncore,rural
+37041,NC,Chowan County,6,noncore,rural
+37043,NC,Clay County,6,noncore,rural
+37045,NC,Cleveland County,5,micropolitan,rural
+37047,NC,Columbus County,6,noncore,rural
+37049,NC,Craven County,4,small metro,rural
+37051,NC,Cumberland County,3,medium metro,rural
+37053,NC,Currituck County,2,large fringe metro,suburban
+37055,NC,Dare County,5,micropolitan,rural
+37057,NC,Davidson County,3,medium metro,rural
+37059,NC,Davie County,3,medium metro,rural
+37061,NC,Duplin County,6,noncore,rural
+37063,NC,Durham County,3,medium metro,rural
+37065,NC,Edgecombe County,4,small metro,rural
+37067,NC,Forsyth County,3,medium metro,rural
+37069,NC,Franklin County,2,large fringe metro,suburban
+37071,NC,Gaston County,2,large fringe metro,suburban
+37073,NC,Gates County,2,large fringe metro,suburban
+37075,NC,Graham County,6,noncore,rural
+37077,NC,Granville County,5,micropolitan,rural
+37079,NC,Greene County,6,noncore,rural
+37081,NC,Guilford County,3,medium metro,rural
+37083,NC,Halifax County,5,micropolitan,rural
+37085,NC,Harnett County,5,micropolitan,rural
+37087,NC,Haywood County,3,medium metro,rural
+37089,NC,Henderson County,3,medium metro,rural
+37091,NC,Hertford County,6,noncore,rural
+37093,NC,Hoke County,3,medium metro,rural
+37095,NC,Hyde County,6,noncore,rural
+37097,NC,Iredell County,2,large fringe metro,suburban
+37099,NC,Jackson County,5,micropolitan,rural
+37101,NC,Johnston County,2,large fringe metro,suburban
+37103,NC,Jones County,4,small metro,rural
+37105,NC,Lee County,5,micropolitan,rural
+37107,NC,Lenoir County,5,micropolitan,rural
+37109,NC,Lincoln County,2,large fringe metro,suburban
+37111,NC,McDowell County,5,micropolitan,rural
+37113,NC,Macon County,6,noncore,rural
+37115,NC,Madison County,3,medium metro,rural
+37117,NC,Martin County,6,noncore,rural
+37119,NC,Mecklenburg County,1,large central metro,urban
+37121,NC,Mitchell County,6,noncore,rural
+37123,NC,Montgomery County,6,noncore,rural
+37125,NC,Moore County,5,micropolitan,rural
+37127,NC,Nash County,4,small metro,rural
+37129,NC,New Hanover County,3,medium metro,rural
+37131,NC,Northampton County,5,micropolitan,rural
+37133,NC,Onslow County,4,small metro,rural
+37135,NC,Orange County,3,medium metro,rural
+37137,NC,Pamlico County,4,small metro,rural
+37139,NC,Pasquotank County,5,micropolitan,rural
+37141,NC,Pender County,3,medium metro,rural
+37143,NC,Perquimans County,5,micropolitan,rural
+37145,NC,Person County,3,medium metro,rural
+37147,NC,Pitt County,4,small metro,rural
+37149,NC,Polk County,6,noncore,rural
+37151,NC,Randolph County,3,medium metro,rural
+37153,NC,Richmond County,5,micropolitan,rural
+37155,NC,Robeson County,5,micropolitan,rural
+37157,NC,Rockingham County,3,medium metro,rural
+37159,NC,Rowan County,2,large fringe metro,suburban
+37161,NC,Rutherford County,5,micropolitan,rural
+37163,NC,Sampson County,6,noncore,rural
+37165,NC,Scotland County,5,micropolitan,rural
+37167,NC,Stanly County,5,micropolitan,rural
+37169,NC,Stokes County,3,medium metro,rural
+37171,NC,Surry County,5,micropolitan,rural
+37173,NC,Swain County,6,noncore,rural
+37175,NC,Transylvania County,5,micropolitan,rural
+37177,NC,Tyrrell County,5,micropolitan,rural
+37179,NC,Union County,2,large fringe metro,suburban
+37181,NC,Vance County,5,micropolitan,rural
+37183,NC,Wake County,1,large central metro,urban
+37185,NC,Warren County,6,noncore,rural
+37187,NC,Washington County,6,noncore,rural
+37189,NC,Watauga County,5,micropolitan,rural
+37191,NC,Wayne County,4,small metro,rural
+37193,NC,Wilkes County,5,micropolitan,rural
+37195,NC,Wilson County,5,micropolitan,rural
+37197,NC,Yadkin County,3,medium metro,rural
+37199,NC,Yancey County,6,noncore,rural
+38001,ND,Adams County,6,noncore,rural
+38003,ND,Barnes County,6,noncore,rural
+38005,ND,Benson County,6,noncore,rural
+38007,ND,Billings County,6,noncore,rural
+38009,ND,Bottineau County,6,noncore,rural
+38011,ND,Bowman County,6,noncore,rural
+38013,ND,Burke County,6,noncore,rural
+38015,ND,Burleigh County,4,small metro,rural
+38017,ND,Cass County,4,small metro,rural
+38019,ND,Cavalier County,6,noncore,rural
+38021,ND,Dickey County,6,noncore,rural
+38023,ND,Divide County,6,noncore,rural
+38025,ND,Dunn County,6,noncore,rural
+38027,ND,Eddy County,6,noncore,rural
+38029,ND,Emmons County,6,noncore,rural
+38031,ND,Foster County,6,noncore,rural
+38033,ND,Golden Valley County,6,noncore,rural
+38035,ND,Grand Forks County,4,small metro,rural
+38037,ND,Grant County,6,noncore,rural
+38039,ND,Griggs County,6,noncore,rural
+38041,ND,Hettinger County,6,noncore,rural
+38043,ND,Kidder County,6,noncore,rural
+38045,ND,LaMoure County,6,noncore,rural
+38047,ND,Logan County,6,noncore,rural
+38049,ND,McHenry County,5,micropolitan,rural
+38051,ND,McIntosh County,6,noncore,rural
+38053,ND,McKenzie County,6,noncore,rural
+38055,ND,McLean County,6,noncore,rural
+38057,ND,Mercer County,6,noncore,rural
+38059,ND,Morton County,4,small metro,rural
+38061,ND,Mountrail County,6,noncore,rural
+38063,ND,Nelson County,6,noncore,rural
+38065,ND,Oliver County,4,small metro,rural
+38067,ND,Pembina County,6,noncore,rural
+38069,ND,Pierce County,6,noncore,rural
+38071,ND,Ramsey County,6,noncore,rural
+38073,ND,Ransom County,6,noncore,rural
+38075,ND,Renville County,5,micropolitan,rural
+38077,ND,Richland County,5,micropolitan,rural
+38079,ND,Rolette County,6,noncore,rural
+38081,ND,Sargent County,6,noncore,rural
+38083,ND,Sheridan County,6,noncore,rural
+38085,ND,Sioux County,4,small metro,rural
+38087,ND,Slope County,6,noncore,rural
+38089,ND,Stark County,5,micropolitan,rural
+38091,ND,Steele County,6,noncore,rural
+38093,ND,Stutsman County,5,micropolitan,rural
+38095,ND,Towner County,6,noncore,rural
+38097,ND,Traill County,6,noncore,rural
+38099,ND,Walsh County,6,noncore,rural
+38101,ND,Ward County,5,micropolitan,rural
+38103,ND,Wells County,6,noncore,rural
+38105,ND,Williams County,5,micropolitan,rural
+39001,OH,Adams County,6,noncore,rural
+39003,OH,Allen County,4,small metro,rural
+39005,OH,Ashland County,5,micropolitan,rural
+39007,OH,Ashtabula County,5,micropolitan,rural
+39009,OH,Athens County,5,micropolitan,rural
+39011,OH,Auglaize County,5,micropolitan,rural
+39013,OH,Belmont County,4,small metro,rural
+39015,OH,Brown County,2,large fringe metro,suburban
+39017,OH,Butler County,2,large fringe metro,suburban
+39019,OH,Carroll County,3,medium metro,rural
+39021,OH,Champaign County,5,micropolitan,rural
+39023,OH,Clark County,4,small metro,rural
+39025,OH,Clermont County,2,large fringe metro,suburban
+39027,OH,Clinton County,5,micropolitan,rural
+39029,OH,Columbiana County,5,micropolitan,rural
+39031,OH,Coshocton County,5,micropolitan,rural
+39033,OH,Crawford County,5,micropolitan,rural
+39035,OH,Cuyahoga County,1,large central metro,urban
+39037,OH,Darke County,5,micropolitan,rural
+39039,OH,Defiance County,5,micropolitan,rural
+39041,OH,Delaware County,2,large fringe metro,suburban
+39043,OH,Erie County,5,micropolitan,rural
+39045,OH,Fairfield County,2,large fringe metro,suburban
+39047,OH,Fayette County,5,micropolitan,rural
+39049,OH,Franklin County,1,large central metro,urban
+39051,OH,Fulton County,3,medium metro,rural
+39053,OH,Gallia County,5,micropolitan,rural
+39055,OH,Geauga County,2,large fringe metro,suburban
+39057,OH,Greene County,3,medium metro,rural
+39059,OH,Guernsey County,5,micropolitan,rural
+39061,OH,Hamilton County,1,large central metro,urban
+39063,OH,Hancock County,5,micropolitan,rural
+39065,OH,Hardin County,6,noncore,rural
+39067,OH,Harrison County,6,noncore,rural
+39069,OH,Henry County,6,noncore,rural
+39071,OH,Highland County,6,noncore,rural
+39073,OH,Hocking County,2,large fringe metro,suburban
+39075,OH,Holmes County,6,noncore,rural
+39077,OH,Huron County,5,micropolitan,rural
+39079,OH,Jackson County,5,micropolitan,rural
+39081,OH,Jefferson County,4,small metro,rural
+39083,OH,Knox County,5,micropolitan,rural
+39085,OH,Lake County,2,large fringe metro,suburban
+39087,OH,Lawrence County,3,medium metro,rural
+39089,OH,Licking County,2,large fringe metro,suburban
+39091,OH,Logan County,5,micropolitan,rural
+39093,OH,Lorain County,2,large fringe metro,suburban
+39095,OH,Lucas County,3,medium metro,rural
+39097,OH,Madison County,2,large fringe metro,suburban
+39099,OH,Mahoning County,3,medium metro,rural
+39101,OH,Marion County,5,micropolitan,rural
+39103,OH,Medina County,2,large fringe metro,suburban
+39105,OH,Meigs County,6,noncore,rural
+39107,OH,Mercer County,5,micropolitan,rural
+39109,OH,Miami County,3,medium metro,rural
+39111,OH,Monroe County,6,noncore,rural
+39113,OH,Montgomery County,3,medium metro,rural
+39115,OH,Morgan County,6,noncore,rural
+39117,OH,Morrow County,2,large fringe metro,suburban
+39119,OH,Muskingum County,5,micropolitan,rural
+39121,OH,Noble County,6,noncore,rural
+39123,OH,Ottawa County,5,micropolitan,rural
+39125,OH,Paulding County,6,noncore,rural
+39127,OH,Perry County,2,large fringe metro,suburban
+39129,OH,Pickaway County,2,large fringe metro,suburban
+39131,OH,Pike County,6,noncore,rural
+39133,OH,Portage County,3,medium metro,rural
+39135,OH,Preble County,6,noncore,rural
+39137,OH,Putnam County,6,noncore,rural
+39139,OH,Richland County,4,small metro,rural
+39141,OH,Ross County,5,micropolitan,rural
+39143,OH,Sandusky County,5,micropolitan,rural
+39145,OH,Scioto County,5,micropolitan,rural
+39147,OH,Seneca County,5,micropolitan,rural
+39149,OH,Shelby County,5,micropolitan,rural
+39151,OH,Stark County,3,medium metro,rural
+39153,OH,Summit County,3,medium metro,rural
+39155,OH,Trumbull County,3,medium metro,rural
+39157,OH,Tuscarawas County,5,micropolitan,rural
+39159,OH,Union County,2,large fringe metro,suburban
+39161,OH,Van Wert County,5,micropolitan,rural
+39163,OH,Vinton County,6,noncore,rural
+39165,OH,Warren County,2,large fringe metro,suburban
+39167,OH,Washington County,5,micropolitan,rural
+39169,OH,Wayne County,5,micropolitan,rural
+39171,OH,Williams County,6,noncore,rural
+39173,OH,Wood County,3,medium metro,rural
+39175,OH,Wyandot County,6,noncore,rural
+40001,OK,Adair County,6,noncore,rural
+40003,OK,Alfalfa County,6,noncore,rural
+40005,OK,Atoka County,6,noncore,rural
+40007,OK,Beaver County,6,noncore,rural
+40009,OK,Beckham County,5,micropolitan,rural
+40011,OK,Blaine County,6,noncore,rural
+40013,OK,Bryan County,5,micropolitan,rural
+40015,OK,Caddo County,6,noncore,rural
+40017,OK,Canadian County,2,large fringe metro,suburban
+40019,OK,Carter County,5,micropolitan,rural
+40021,OK,Cherokee County,5,micropolitan,rural
+40023,OK,Choctaw County,6,noncore,rural
+40025,OK,Cimarron County,6,noncore,rural
+40027,OK,Cleveland County,2,large fringe metro,suburban
+40029,OK,Coal County,6,noncore,rural
+40031,OK,Comanche County,4,small metro,rural
+40033,OK,Cotton County,4,small metro,rural
+40035,OK,Craig County,6,noncore,rural
+40037,OK,Creek County,3,medium metro,rural
+40039,OK,Custer County,5,micropolitan,rural
+40041,OK,Delaware County,6,noncore,rural
+40043,OK,Dewey County,6,noncore,rural
+40045,OK,Ellis County,6,noncore,rural
+40047,OK,Garfield County,5,micropolitan,rural
+40049,OK,Garvin County,6,noncore,rural
+40051,OK,Grady County,2,large fringe metro,suburban
+40053,OK,Grant County,6,noncore,rural
+40055,OK,Greer County,6,noncore,rural
+40057,OK,Harmon County,6,noncore,rural
+40059,OK,Harper County,6,noncore,rural
+40061,OK,Haskell County,6,noncore,rural
+40063,OK,Hughes County,6,noncore,rural
+40065,OK,Jackson County,5,micropolitan,rural
+40067,OK,Jefferson County,6,noncore,rural
+40069,OK,Johnston County,6,noncore,rural
+40071,OK,Kay County,5,micropolitan,rural
+40073,OK,Kingfisher County,6,noncore,rural
+40075,OK,Kiowa County,6,noncore,rural
+40077,OK,Latimer County,6,noncore,rural
+40079,OK,Le Flore County,3,medium metro,rural
+40081,OK,Lincoln County,2,large fringe metro,suburban
+40083,OK,Logan County,2,large fringe metro,suburban
+40085,OK,Love County,6,noncore,rural
+40087,OK,McClain County,2,large fringe metro,suburban
+40089,OK,McCurtain County,6,noncore,rural
+40091,OK,McIntosh County,6,noncore,rural
+40093,OK,Major County,6,noncore,rural
+40095,OK,Marshall County,6,noncore,rural
+40097,OK,Mayes County,6,noncore,rural
+40099,OK,Murray County,6,noncore,rural
+40101,OK,Muskogee County,5,micropolitan,rural
+40103,OK,Noble County,6,noncore,rural
+40105,OK,Nowata County,6,noncore,rural
+40107,OK,Okfuskee County,6,noncore,rural
+40109,OK,Oklahoma County,1,large central metro,urban
+40111,OK,Okmulgee County,3,medium metro,rural
+40113,OK,Osage County,3,medium metro,rural
+40115,OK,Ottawa County,5,micropolitan,rural
+40117,OK,Pawnee County,3,medium metro,rural
+40119,OK,Payne County,5,micropolitan,rural
+40121,OK,Pittsburg County,5,micropolitan,rural
+40123,OK,Pontotoc County,5,micropolitan,rural
+40125,OK,Pottawatomie County,5,micropolitan,rural
+40127,OK,Pushmataha County,6,noncore,rural
+40129,OK,Roger Mills County,6,noncore,rural
+40131,OK,Rogers County,3,medium metro,rural
+40133,OK,Seminole County,6,noncore,rural
+40135,OK,Sequoyah County,3,medium metro,rural
+40137,OK,Stephens County,5,micropolitan,rural
+40139,OK,Texas County,5,micropolitan,rural
+40141,OK,Tillman County,6,noncore,rural
+40143,OK,Tulsa County,3,medium metro,rural
+40145,OK,Wagoner County,3,medium metro,rural
+40147,OK,Washington County,5,micropolitan,rural
+40149,OK,Washita County,6,noncore,rural
+40151,OK,Woods County,6,noncore,rural
+40153,OK,Woodward County,5,micropolitan,rural
+41001,OR,Baker County,6,noncore,rural
+41003,OR,Benton County,4,small metro,rural
+41005,OR,Clackamas County,2,large fringe metro,suburban
+41007,OR,Clatsop County,5,micropolitan,rural
+41009,OR,Columbia County,2,large fringe metro,suburban
+41011,OR,Coos County,5,micropolitan,rural
+41013,OR,Crook County,5,micropolitan,rural
+41015,OR,Curry County,5,micropolitan,rural
+41017,OR,Deschutes County,4,small metro,rural
+41019,OR,Douglas County,5,micropolitan,rural
+41021,OR,Gilliam County,6,noncore,rural
+41023,OR,Grant County,6,noncore,rural
+41025,OR,Harney County,6,noncore,rural
+41027,OR,Hood River County,5,micropolitan,rural
+41029,OR,Jackson County,4,small metro,rural
+41031,OR,Jefferson County,6,noncore,rural
+41033,OR,Josephine County,4,small metro,rural
+41035,OR,Klamath County,5,micropolitan,rural
+41037,OR,Lake County,6,noncore,rural
+41039,OR,Lane County,3,medium metro,rural
+41041,OR,Lincoln County,5,micropolitan,rural
+41043,OR,Linn County,4,small metro,rural
+41045,OR,Malheur County,5,micropolitan,rural
+41047,OR,Marion County,3,medium metro,rural
+41049,OR,Morrow County,5,micropolitan,rural
+41051,OR,Multnomah County,1,large central metro,urban
+41053,OR,Polk County,3,medium metro,rural
+41055,OR,Sherman County,6,noncore,rural
+41057,OR,Tillamook County,6,noncore,rural
+41059,OR,Umatilla County,5,micropolitan,rural
+41061,OR,Union County,5,micropolitan,rural
+41063,OR,Wallowa County,6,noncore,rural
+41065,OR,Wasco County,5,micropolitan,rural
+41067,OR,Washington County,2,large fringe metro,suburban
+41069,OR,Wheeler County,6,noncore,rural
+41071,OR,Yamhill County,2,large fringe metro,suburban
+42001,PA,Adams County,4,small metro,rural
+42003,PA,Allegheny County,1,large central metro,urban
+42005,PA,Armstrong County,2,large fringe metro,suburban
+42007,PA,Beaver County,2,large fringe metro,suburban
+42009,PA,Bedford County,6,noncore,rural
+42011,PA,Berks County,3,medium metro,rural
+42013,PA,Blair County,4,small metro,rural
+42015,PA,Bradford County,5,micropolitan,rural
+42017,PA,Bucks County,2,large fringe metro,suburban
+42019,PA,Butler County,2,large fringe metro,suburban
+42021,PA,Cambria County,4,small metro,rural
+42023,PA,Cameron County,6,noncore,rural
+42025,PA,Carbon County,3,medium metro,rural
+42027,PA,Centre County,4,small metro,rural
+42029,PA,Chester County,2,large fringe metro,suburban
+42031,PA,Clarion County,6,noncore,rural
+42033,PA,Clearfield County,5,micropolitan,rural
+42035,PA,Clinton County,5,micropolitan,rural
+42037,PA,Columbia County,4,small metro,rural
+42039,PA,Crawford County,5,micropolitan,rural
+42041,PA,Cumberland County,3,medium metro,rural
+42043,PA,Dauphin County,3,medium metro,rural
+42045,PA,Delaware County,2,large fringe metro,suburban
+42047,PA,Elk County,6,noncore,rural
+42049,PA,Erie County,3,medium metro,rural
+42051,PA,Fayette County,2,large fringe metro,suburban
+42053,PA,Forest County,6,noncore,rural
+42055,PA,Franklin County,4,small metro,rural
+42057,PA,Fulton County,6,noncore,rural
+42059,PA,Greene County,6,noncore,rural
+42061,PA,Huntingdon County,5,micropolitan,rural
+42063,PA,Indiana County,5,micropolitan,rural
+42065,PA,Jefferson County,6,noncore,rural
+42067,PA,Juniata County,6,noncore,rural
+42069,PA,Lackawanna County,3,medium metro,rural
+42071,PA,Lancaster County,3,medium metro,rural
+42073,PA,Lawrence County,5,micropolitan,rural
+42075,PA,Lebanon County,4,small metro,rural
+42077,PA,Lehigh County,3,medium metro,rural
+42079,PA,Luzerne County,3,medium metro,rural
+42081,PA,Lycoming County,4,small metro,rural
+42083,PA,McKean County,5,micropolitan,rural
+42085,PA,Mercer County,3,medium metro,rural
+42087,PA,Mifflin County,5,micropolitan,rural
+42089,PA,Monroe County,4,small metro,rural
+42091,PA,Montgomery County,2,large fringe metro,suburban
+42093,PA,Montour County,4,small metro,rural
+42095,PA,Northampton County,3,medium metro,rural
+42097,PA,Northumberland County,5,micropolitan,rural
+42099,PA,Perry County,3,medium metro,rural
+42101,PA,Philadelphia County,1,large central metro,urban
+42103,PA,Pike County,2,large fringe metro,suburban
+42105,PA,Potter County,6,noncore,rural
+42107,PA,Schuylkill County,5,micropolitan,rural
+42109,PA,Snyder County,5,micropolitan,rural
+42111,PA,Somerset County,5,micropolitan,rural
+42113,PA,Sullivan County,6,noncore,rural
+42115,PA,Susquehanna County,6,noncore,rural
+42117,PA,Tioga County,6,noncore,rural
+42119,PA,Union County,5,micropolitan,rural
+42121,PA,Venango County,5,micropolitan,rural
+42123,PA,Warren County,5,micropolitan,rural
+42125,PA,Washington County,2,large fringe metro,suburban
+42127,PA,Wayne County,6,noncore,rural
+42129,PA,Westmoreland County,2,large fringe metro,suburban
+42131,PA,Wyoming County,3,medium metro,rural
+42133,PA,York County,3,medium metro,rural
+44001,RI,Bristol County,2,large fringe metro,suburban
+44003,RI,Kent County,2,large fringe metro,suburban
+44005,RI,Newport County,2,large fringe metro,suburban
+44007,RI,Providence County,1,large central metro,urban
+44009,RI,Washington County,2,large fringe metro,suburban
+45001,SC,Abbeville County,5,micropolitan,rural
+45003,SC,Aiken County,3,medium metro,rural
+45005,SC,Allendale County,6,noncore,rural
+45007,SC,Anderson County,3,medium metro,rural
+45009,SC,Bamberg County,6,noncore,rural
+45011,SC,Barnwell County,6,noncore,rural
+45013,SC,Beaufort County,4,small metro,rural
+45015,SC,Berkeley County,3,medium metro,rural
+45017,SC,Calhoun County,3,medium metro,rural
+45019,SC,Charleston County,3,medium metro,rural
+45021,SC,Cherokee County,5,micropolitan,rural
+45023,SC,Chester County,2,large fringe metro,suburban
+45025,SC,Chesterfield County,6,noncore,rural
+45027,SC,Clarendon County,6,noncore,rural
+45029,SC,Colleton County,6,noncore,rural
+45031,SC,Darlington County,4,small metro,rural
+45033,SC,Dillon County,6,noncore,rural
+45035,SC,Dorchester County,3,medium metro,rural
+45037,SC,Edgefield County,3,medium metro,rural
+45039,SC,Fairfield County,3,medium metro,rural
+45041,SC,Florence County,4,small metro,rural
+45043,SC,Georgetown County,5,micropolitan,rural
+45045,SC,Greenville County,3,medium metro,rural
+45047,SC,Greenwood County,5,micropolitan,rural
+45049,SC,Hampton County,6,noncore,rural
+45051,SC,Horry County,3,medium metro,rural
+45053,SC,Jasper County,4,small metro,rural
+45055,SC,Kershaw County,3,medium metro,rural
+45057,SC,Lancaster County,2,large fringe metro,suburban
+45059,SC,Laurens County,3,medium metro,rural
+45061,SC,Lee County,6,noncore,rural
+45063,SC,Lexington County,3,medium metro,rural
+45065,SC,McCormick County,6,noncore,rural
+45067,SC,Marion County,6,noncore,rural
+45069,SC,Marlboro County,5,micropolitan,rural
+45071,SC,Newberry County,5,micropolitan,rural
+45073,SC,Oconee County,5,micropolitan,rural
+45075,SC,Orangeburg County,5,micropolitan,rural
+45077,SC,Pickens County,3,medium metro,rural
+45079,SC,Richland County,3,medium metro,rural
+45081,SC,Saluda County,3,medium metro,rural
+45083,SC,Spartanburg County,3,medium metro,rural
+45085,SC,Sumter County,4,small metro,rural
+45087,SC,Union County,3,medium metro,rural
+45089,SC,Williamsburg County,6,noncore,rural
+45091,SC,York County,2,large fringe metro,suburban
+46003,SD,Aurora County,6,noncore,rural
+46005,SD,Beadle County,5,micropolitan,rural
+46007,SD,Bennett County,6,noncore,rural
+46009,SD,Bon Homme County,6,noncore,rural
+46011,SD,Brookings County,5,micropolitan,rural
+46013,SD,Brown County,5,micropolitan,rural
+46015,SD,Brule County,6,noncore,rural
+46017,SD,Buffalo County,6,noncore,rural
+46019,SD,Butte County,6,noncore,rural
+46021,SD,Campbell County,6,noncore,rural
+46023,SD,Charles Mix County,6,noncore,rural
+46025,SD,Clark County,6,noncore,rural
+46027,SD,Clay County,5,micropolitan,rural
+46029,SD,Codington County,5,micropolitan,rural
+46031,SD,Corson County,6,noncore,rural
+46033,SD,Custer County,4,small metro,rural
+46035,SD,Davison County,5,micropolitan,rural
+46037,SD,Day County,6,noncore,rural
+46039,SD,Deuel County,6,noncore,rural
+46041,SD,Dewey County,6,noncore,rural
+46043,SD,Douglas County,6,noncore,rural
+46045,SD,Edmunds County,5,micropolitan,rural
+46047,SD,Fall River County,6,noncore,rural
+46049,SD,Faulk County,6,noncore,rural
+46051,SD,Grant County,6,noncore,rural
+46053,SD,Gregory County,6,noncore,rural
+46055,SD,Haakon County,6,noncore,rural
+46057,SD,Hamlin County,6,noncore,rural
+46059,SD,Hand County,6,noncore,rural
+46061,SD,Hanson County,5,micropolitan,rural
+46063,SD,Harding County,6,noncore,rural
+46065,SD,Hughes County,5,micropolitan,rural
+46067,SD,Hutchinson County,6,noncore,rural
+46069,SD,Hyde County,6,noncore,rural
+46071,SD,Jackson County,6,noncore,rural
+46073,SD,Jerauld County,6,noncore,rural
+46075,SD,Jones County,6,noncore,rural
+46077,SD,Kingsbury County,6,noncore,rural
+46079,SD,Lake County,6,noncore,rural
+46081,SD,Lawrence County,5,micropolitan,rural
+46083,SD,Lincoln County,4,small metro,rural
+46085,SD,Lyman County,6,noncore,rural
+46087,SD,McCook County,4,small metro,rural
+46089,SD,McPherson County,6,noncore,rural
+46091,SD,Marshall County,6,noncore,rural
+46093,SD,Meade County,4,small metro,rural
+46095,SD,Mellette County,6,noncore,rural
+46097,SD,Miner County,6,noncore,rural
+46099,SD,Minnehaha County,4,small metro,rural
+46101,SD,Moody County,6,noncore,rural
+46102,SD,Oglala Lakota County,6,noncore,rural
+46103,SD,Pennington County,4,small metro,rural
+46105,SD,Perkins County,6,noncore,rural
+46107,SD,Potter County,6,noncore,rural
+46109,SD,Roberts County,6,noncore,rural
+46111,SD,Sanborn County,6,noncore,rural
+46113,SD,Shannon County,6,noncore,rural
+46115,SD,Spink County,6,noncore,rural
+46117,SD,Stanley County,5,micropolitan,rural
+46119,SD,Sully County,5,micropolitan,rural
+46121,SD,Todd County,6,noncore,rural
+46123,SD,Tripp County,6,noncore,rural
+46125,SD,Turner County,4,small metro,rural
+46127,SD,Union County,4,small metro,rural
+46129,SD,Walworth County,6,noncore,rural
+46135,SD,Yankton County,5,micropolitan,rural
+46137,SD,Ziebach County,6,noncore,rural
+47001,TN,Anderson County,3,medium metro,rural
+47003,TN,Bedford County,5,micropolitan,rural
+47005,TN,Benton County,6,noncore,rural
+47007,TN,Bledsoe County,6,noncore,rural
+47009,TN,Blount County,3,medium metro,rural
+47011,TN,Bradley County,4,small metro,rural
+47013,TN,Campbell County,3,medium metro,rural
+47015,TN,Cannon County,2,large fringe metro,suburban
+47017,TN,Carroll County,6,noncore,rural
+47019,TN,Carter County,4,small metro,rural
+47021,TN,Cheatham County,2,large fringe metro,suburban
+47023,TN,Chester County,4,small metro,rural
+47025,TN,Claiborne County,6,noncore,rural
+47027,TN,Clay County,6,noncore,rural
+47029,TN,Cocke County,5,micropolitan,rural
+47031,TN,Coffee County,5,micropolitan,rural
+47033,TN,Crockett County,4,small metro,rural
+47035,TN,Cumberland County,5,micropolitan,rural
+47037,TN,Davidson County,1,large central metro,urban
+47039,TN,Decatur County,6,noncore,rural
+47041,TN,DeKalb County,6,noncore,rural
+47043,TN,Dickson County,2,large fringe metro,suburban
+47045,TN,Dyer County,5,micropolitan,rural
+47047,TN,Fayette County,2,large fringe metro,suburban
+47049,TN,Fentress County,6,noncore,rural
+47051,TN,Franklin County,5,micropolitan,rural
+47053,TN,Gibson County,6,noncore,rural
+47055,TN,Giles County,6,noncore,rural
+47057,TN,Grainger County,3,medium metro,rural
+47059,TN,Greene County,5,micropolitan,rural
+47061,TN,Grundy County,6,noncore,rural
+47063,TN,Hamblen County,4,small metro,rural
+47065,TN,Hamilton County,3,medium metro,rural
+47067,TN,Hancock County,6,noncore,rural
+47069,TN,Hardeman County,6,noncore,rural
+47071,TN,Hardin County,6,noncore,rural
+47073,TN,Hawkins County,3,medium metro,rural
+47075,TN,Haywood County,6,noncore,rural
+47077,TN,Henderson County,6,noncore,rural
+47079,TN,Henry County,5,micropolitan,rural
+47081,TN,Hickman County,2,large fringe metro,suburban
+47083,TN,Houston County,6,noncore,rural
+47085,TN,Humphreys County,6,noncore,rural
+47087,TN,Jackson County,5,micropolitan,rural
+47089,TN,Jefferson County,4,small metro,rural
+47091,TN,Johnson County,6,noncore,rural
+47093,TN,Knox County,3,medium metro,rural
+47095,TN,Lake County,6,noncore,rural
+47097,TN,Lauderdale County,6,noncore,rural
+47099,TN,Lawrence County,5,micropolitan,rural
+47101,TN,Lewis County,6,noncore,rural
+47103,TN,Lincoln County,6,noncore,rural
+47105,TN,Loudon County,3,medium metro,rural
+47107,TN,McMinn County,5,micropolitan,rural
+47109,TN,McNairy County,6,noncore,rural
+47111,TN,Macon County,2,large fringe metro,suburban
+47113,TN,Madison County,4,small metro,rural
+47115,TN,Marion County,3,medium metro,rural
+47117,TN,Marshall County,5,micropolitan,rural
+47119,TN,Maury County,2,large fringe metro,suburban
+47121,TN,Meigs County,6,noncore,rural
+47123,TN,Monroe County,6,noncore,rural
+47125,TN,Montgomery County,3,medium metro,rural
+47127,TN,Moore County,5,micropolitan,rural
+47129,TN,Morgan County,3,medium metro,rural
+47131,TN,Obion County,5,micropolitan,rural
+47133,TN,Overton County,5,micropolitan,rural
+47135,TN,Perry County,6,noncore,rural
+47137,TN,Pickett County,6,noncore,rural
+47139,TN,Polk County,4,small metro,rural
+47141,TN,Putnam County,5,micropolitan,rural
+47143,TN,Rhea County,5,micropolitan,rural
+47145,TN,Roane County,3,medium metro,rural
+47147,TN,Robertson County,2,large fringe metro,suburban
+47149,TN,Rutherford County,2,large fringe metro,suburban
+47151,TN,Scott County,6,noncore,rural
+47153,TN,Sequatchie County,3,medium metro,rural
+47155,TN,Sevier County,5,micropolitan,rural
+47157,TN,Shelby County,1,large central metro,urban
+47159,TN,Smith County,2,large fringe metro,suburban
+47161,TN,Stewart County,6,noncore,rural
+47163,TN,Sullivan County,3,medium metro,rural
+47165,TN,Sumner County,2,large fringe metro,suburban
+47167,TN,Tipton County,2,large fringe metro,suburban
+47169,TN,Trousdale County,2,large fringe metro,suburban
+47171,TN,Unicoi County,4,small metro,rural
+47173,TN,Union County,3,medium metro,rural
+47175,TN,Van Buren County,6,noncore,rural
+47177,TN,Warren County,5,micropolitan,rural
+47179,TN,Washington County,4,small metro,rural
+47181,TN,Wayne County,6,noncore,rural
+47183,TN,Weakley County,5,micropolitan,rural
+47185,TN,White County,6,noncore,rural
+47187,TN,Williamson County,2,large fringe metro,suburban
+47189,TN,Wilson County,2,large fringe metro,suburban
+48001,TX,Anderson County,5,micropolitan,rural
+48003,TX,Andrews County,5,micropolitan,rural
+48005,TX,Angelina County,5,micropolitan,rural
+48007,TX,Aransas County,3,medium metro,rural
+48009,TX,Archer County,4,small metro,rural
+48011,TX,Armstrong County,3,medium metro,rural
+48013,TX,Atascosa County,2,large fringe metro,suburban
+48015,TX,Austin County,2,large fringe metro,suburban
+48017,TX,Bailey County,6,noncore,rural
+48019,TX,Bandera County,2,large fringe metro,suburban
+48021,TX,Bastrop County,2,large fringe metro,suburban
+48023,TX,Baylor County,6,noncore,rural
+48025,TX,Bee County,5,micropolitan,rural
+48027,TX,Bell County,3,medium metro,rural
+48029,TX,Bexar County,1,large central metro,urban
+48031,TX,Blanco County,6,noncore,rural
+48033,TX,Borden County,6,noncore,rural
+48035,TX,Bosque County,6,noncore,rural
+48037,TX,Bowie County,4,small metro,rural
+48039,TX,Brazoria County,2,large fringe metro,suburban
+48041,TX,Brazos County,4,small metro,rural
+48043,TX,Brewster County,6,noncore,rural
+48045,TX,Briscoe County,6,noncore,rural
+48047,TX,Brooks County,6,noncore,rural
+48049,TX,Brown County,5,micropolitan,rural
+48051,TX,Burleson County,4,small metro,rural
+48053,TX,Burnet County,6,noncore,rural
+48055,TX,Caldwell County,2,large fringe metro,suburban
+48057,TX,Calhoun County,5,micropolitan,rural
+48059,TX,Callahan County,4,small metro,rural
+48061,TX,Cameron County,3,medium metro,rural
+48063,TX,Camp County,6,noncore,rural
+48065,TX,Carson County,3,medium metro,rural
+48067,TX,Cass County,6,noncore,rural
+48069,TX,Castro County,6,noncore,rural
+48071,TX,Chambers County,2,large fringe metro,suburban
+48073,TX,Cherokee County,5,micropolitan,rural
+48075,TX,Childress County,6,noncore,rural
+48077,TX,Clay County,4,small metro,rural
+48079,TX,Cochran County,6,noncore,rural
+48081,TX,Coke County,6,noncore,rural
+48083,TX,Coleman County,6,noncore,rural
+48085,TX,Collin County,1,large central metro,urban
+48087,TX,Collingsworth County,6,noncore,rural
+48089,TX,Colorado County,6,noncore,rural
+48091,TX,Comal County,2,large fringe metro,suburban
+48093,TX,Comanche County,6,noncore,rural
+48095,TX,Concho County,6,noncore,rural
+48097,TX,Cooke County,5,micropolitan,rural
+48099,TX,Coryell County,3,medium metro,rural
+48101,TX,Cottle County,6,noncore,rural
+48103,TX,Crane County,6,noncore,rural
+48105,TX,Crockett County,6,noncore,rural
+48107,TX,Crosby County,3,medium metro,rural
+48109,TX,Culberson County,6,noncore,rural
+48111,TX,Dallam County,6,noncore,rural
+48113,TX,Dallas County,1,large central metro,urban
+48115,TX,Dawson County,5,micropolitan,rural
+48117,TX,Deaf Smith County,5,micropolitan,rural
+48119,TX,Delta County,6,noncore,rural
+48121,TX,Denton County,2,large fringe metro,suburban
+48123,TX,DeWitt County,6,noncore,rural
+48125,TX,Dickens County,6,noncore,rural
+48127,TX,Dimmit County,6,noncore,rural
+48129,TX,Donley County,6,noncore,rural
+48131,TX,Duval County,6,noncore,rural
+48133,TX,Eastland County,6,noncore,rural
+48135,TX,Ector County,4,small metro,rural
+48137,TX,Edwards County,6,noncore,rural
+48139,TX,Ellis County,2,large fringe metro,suburban
+48141,TX,El Paso County,3,medium metro,rural
+48143,TX,Erath County,5,micropolitan,rural
+48145,TX,Falls County,3,medium metro,rural
+48147,TX,Fannin County,6,noncore,rural
+48149,TX,Fayette County,6,noncore,rural
+48151,TX,Fisher County,6,noncore,rural
+48153,TX,Floyd County,6,noncore,rural
+48155,TX,Foard County,6,noncore,rural
+48157,TX,Fort Bend County,2,large fringe metro,suburban
+48159,TX,Franklin County,6,noncore,rural
+48161,TX,Freestone County,6,noncore,rural
+48163,TX,Frio County,6,noncore,rural
+48165,TX,Gaines County,6,noncore,rural
+48167,TX,Galveston County,2,large fringe metro,suburban
+48169,TX,Garza County,6,noncore,rural
+48171,TX,Gillespie County,5,micropolitan,rural
+48173,TX,Glasscock County,5,micropolitan,rural
+48175,TX,Goliad County,4,small metro,rural
+48177,TX,Gonzales County,6,noncore,rural
+48179,TX,Gray County,5,micropolitan,rural
+48181,TX,Grayson County,4,small metro,rural
+48183,TX,Gregg County,4,small metro,rural
+48185,TX,Grimes County,6,noncore,rural
+48187,TX,Guadalupe County,2,large fringe metro,suburban
+48189,TX,Hale County,5,micropolitan,rural
+48191,TX,Hall County,6,noncore,rural
+48193,TX,Hamilton County,6,noncore,rural
+48195,TX,Hansford County,6,noncore,rural
+48197,TX,Hardeman County,6,noncore,rural
+48199,TX,Hardin County,3,medium metro,rural
+48201,TX,Harris County,1,large central metro,urban
+48203,TX,Harrison County,5,micropolitan,rural
+48205,TX,Hartley County,6,noncore,rural
+48207,TX,Haskell County,6,noncore,rural
+48209,TX,Hays County,2,large fringe metro,suburban
+48211,TX,Hemphill County,6,noncore,rural
+48213,TX,Henderson County,5,micropolitan,rural
+48215,TX,Hidalgo County,3,medium metro,rural
+48217,TX,Hill County,6,noncore,rural
+48219,TX,Hockley County,5,micropolitan,rural
+48221,TX,Hood County,2,large fringe metro,suburban
+48223,TX,Hopkins County,5,micropolitan,rural
+48225,TX,Houston County,6,noncore,rural
+48227,TX,Howard County,5,micropolitan,rural
+48229,TX,Hudspeth County,3,medium metro,rural
+48231,TX,Hunt County,2,large fringe metro,suburban
+48233,TX,Hutchinson County,5,micropolitan,rural
+48235,TX,Irion County,4,small metro,rural
+48237,TX,Jack County,6,noncore,rural
+48239,TX,Jackson County,6,noncore,rural
+48241,TX,Jasper County,6,noncore,rural
+48243,TX,Jeff Davis County,6,noncore,rural
+48245,TX,Jefferson County,3,medium metro,rural
+48247,TX,Jim Hogg County,6,noncore,rural
+48249,TX,Jim Wells County,5,micropolitan,rural
+48251,TX,Johnson County,2,large fringe metro,suburban
+48253,TX,Jones County,4,small metro,rural
+48255,TX,Karnes County,6,noncore,rural
+48257,TX,Kaufman County,2,large fringe metro,suburban
+48259,TX,Kendall County,2,large fringe metro,suburban
+48261,TX,Kenedy County,5,micropolitan,rural
+48263,TX,Kent County,6,noncore,rural
+48265,TX,Kerr County,5,micropolitan,rural
+48267,TX,Kimble County,6,noncore,rural
+48269,TX,King County,6,noncore,rural
+48271,TX,Kinney County,6,noncore,rural
+48273,TX,Kleberg County,5,micropolitan,rural
+48275,TX,Knox County,6,noncore,rural
+48277,TX,Lamar County,5,micropolitan,rural
+48279,TX,Lamb County,6,noncore,rural
+48281,TX,Lampasas County,3,medium metro,rural
+48283,TX,La Salle County,6,noncore,rural
+48285,TX,Lavaca County,6,noncore,rural
+48287,TX,Lee County,6,noncore,rural
+48289,TX,Leon County,6,noncore,rural
+48291,TX,Liberty County,2,large fringe metro,suburban
+48293,TX,Limestone County,6,noncore,rural
+48295,TX,Lipscomb County,6,noncore,rural
+48297,TX,Live Oak County,6,noncore,rural
+48299,TX,Llano County,6,noncore,rural
+48301,TX,Loving County,6,noncore,rural
+48303,TX,Lubbock County,3,medium metro,rural
+48305,TX,Lynn County,3,medium metro,rural
+48307,TX,McCulloch County,6,noncore,rural
+48309,TX,McLennan County,3,medium metro,rural
+48311,TX,McMullen County,6,noncore,rural
+48313,TX,Madison County,6,noncore,rural
+48315,TX,Marion County,6,noncore,rural
+48317,TX,Martin County,4,small metro,rural
+48319,TX,Mason County,6,noncore,rural
+48321,TX,Matagorda County,5,micropolitan,rural
+48323,TX,Maverick County,5,micropolitan,rural
+48325,TX,Medina County,2,large fringe metro,suburban
+48327,TX,Menard County,6,noncore,rural
+48329,TX,Midland County,4,small metro,rural
+48331,TX,Milam County,6,noncore,rural
+48333,TX,Mills County,6,noncore,rural
+48335,TX,Mitchell County,6,noncore,rural
+48337,TX,Montague County,6,noncore,rural
+48339,TX,Montgomery County,2,large fringe metro,suburban
+48341,TX,Moore County,5,micropolitan,rural
+48343,TX,Morris County,6,noncore,rural
+48345,TX,Motley County,6,noncore,rural
+48347,TX,Nacogdoches County,5,micropolitan,rural
+48349,TX,Navarro County,5,micropolitan,rural
+48351,TX,Newton County,3,medium metro,rural
+48353,TX,Nolan County,5,micropolitan,rural
+48355,TX,Nueces County,3,medium metro,rural
+48357,TX,Ochiltree County,6,noncore,rural
+48359,TX,Oldham County,3,medium metro,rural
+48361,TX,Orange County,3,medium metro,rural
+48363,TX,Palo Pinto County,5,micropolitan,rural
+48365,TX,Panola County,6,noncore,rural
+48367,TX,Parker County,2,large fringe metro,suburban
+48369,TX,Parmer County,6,noncore,rural
+48371,TX,Pecos County,6,noncore,rural
+48373,TX,Polk County,6,noncore,rural
+48375,TX,Potter County,3,medium metro,rural
+48377,TX,Presidio County,6,noncore,rural
+48379,TX,Rains County,6,noncore,rural
+48381,TX,Randall County,3,medium metro,rural
+48383,TX,Reagan County,6,noncore,rural
+48385,TX,Real County,6,noncore,rural
+48387,TX,Red River County,6,noncore,rural
+48389,TX,Reeves County,5,micropolitan,rural
+48391,TX,Refugio County,6,noncore,rural
+48393,TX,Roberts County,6,noncore,rural
+48395,TX,Robertson County,4,small metro,rural
+48397,TX,Rockwall County,2,large fringe metro,suburban
+48399,TX,Runnels County,6,noncore,rural
+48401,TX,Rusk County,4,small metro,rural
+48403,TX,Sabine County,6,noncore,rural
+48405,TX,San Augustine County,6,noncore,rural
+48407,TX,San Jacinto County,6,noncore,rural
+48409,TX,San Patricio County,3,medium metro,rural
+48411,TX,San Saba County,6,noncore,rural
+48413,TX,Schleicher County,6,noncore,rural
+48415,TX,Scurry County,5,micropolitan,rural
+48417,TX,Shackelford County,6,noncore,rural
+48419,TX,Shelby County,6,noncore,rural
+48421,TX,Sherman County,6,noncore,rural
+48423,TX,Smith County,4,small metro,rural
+48425,TX,Somervell County,2,large fringe metro,suburban
+48427,TX,Starr County,5,micropolitan,rural
+48429,TX,Stephens County,6,noncore,rural
+48431,TX,Sterling County,6,noncore,rural
+48433,TX,Stonewall County,6,noncore,rural
+48435,TX,Sutton County,6,noncore,rural
+48437,TX,Swisher County,6,noncore,rural
+48439,TX,Tarrant County,1,large central metro,urban
+48441,TX,Taylor County,4,small metro,rural
+48443,TX,Terrell County,6,noncore,rural
+48445,TX,Terry County,6,noncore,rural
+48447,TX,Throckmorton County,6,noncore,rural
+48449,TX,Titus County,5,micropolitan,rural
+48451,TX,Tom Green County,4,small metro,rural
+48453,TX,Travis County,1,large central metro,urban
+48455,TX,Trinity County,5,micropolitan,rural
+48457,TX,Tyler County,6,noncore,rural
+48459,TX,Upshur County,4,small metro,rural
+48461,TX,Upton County,6,noncore,rural
+48463,TX,Uvalde County,5,micropolitan,rural
+48465,TX,Val Verde County,5,micropolitan,rural
+48467,TX,Van Zandt County,6,noncore,rural
+48469,TX,Victoria County,4,small metro,rural
+48471,TX,Walker County,5,micropolitan,rural
+48473,TX,Waller County,2,large fringe metro,suburban
+48475,TX,Ward County,6,noncore,rural
+48477,TX,Washington County,5,micropolitan,rural
+48479,TX,Webb County,3,medium metro,rural
+48481,TX,Wharton County,5,micropolitan,rural
+48483,TX,Wheeler County,6,noncore,rural
+48485,TX,Wichita County,4,small metro,rural
+48487,TX,Wilbarger County,5,micropolitan,rural
+48489,TX,Willacy County,5,micropolitan,rural
+48491,TX,Williamson County,2,large fringe metro,suburban
+48493,TX,Wilson County,2,large fringe metro,suburban
+48495,TX,Winkler County,6,noncore,rural
+48497,TX,Wise County,2,large fringe metro,suburban
+48499,TX,Wood County,6,noncore,rural
+48501,TX,Yoakum County,6,noncore,rural
+48503,TX,Young County,6,noncore,rural
+48505,TX,Zapata County,5,micropolitan,rural
+48507,TX,Zavala County,6,noncore,rural
+49001,UT,Beaver County,6,noncore,rural
+49003,UT,Box Elder County,3,medium metro,rural
+49005,UT,Cache County,4,small metro,rural
+49007,UT,Carbon County,5,micropolitan,rural
+49009,UT,Daggett County,6,noncore,rural
+49011,UT,Davis County,3,medium metro,rural
+49013,UT,Duchesne County,6,noncore,rural
+49015,UT,Emery County,6,noncore,rural
+49017,UT,Garfield County,6,noncore,rural
+49019,UT,Grand County,6,noncore,rural
+49021,UT,Iron County,5,micropolitan,rural
+49023,UT,Juab County,3,medium metro,rural
+49025,UT,Kane County,6,noncore,rural
+49027,UT,Millard County,6,noncore,rural
+49029,UT,Morgan County,3,medium metro,rural
+49031,UT,Piute County,6,noncore,rural
+49033,UT,Rich County,6,noncore,rural
+49035,UT,Salt Lake County,1,large central metro,urban
+49037,UT,San Juan County,6,noncore,rural
+49039,UT,Sanpete County,6,noncore,rural
+49041,UT,Sevier County,6,noncore,rural
+49043,UT,Summit County,5,micropolitan,rural
+49045,UT,Tooele County,2,large fringe metro,suburban
+49047,UT,Uintah County,5,micropolitan,rural
+49049,UT,Utah County,3,medium metro,rural
+49051,UT,Wasatch County,5,micropolitan,rural
+49053,UT,Washington County,4,small metro,rural
+49055,UT,Wayne County,6,noncore,rural
+49057,UT,Weber County,3,medium metro,rural
+50001,VT,Addison County,6,noncore,rural
+50003,VT,Bennington County,5,micropolitan,rural
+50005,VT,Caledonia County,6,noncore,rural
+50007,VT,Chittenden County,4,small metro,rural
+50009,VT,Essex County,5,micropolitan,rural
+50011,VT,Franklin County,4,small metro,rural
+50013,VT,Grand Isle County,4,small metro,rural
+50015,VT,Lamoille County,6,noncore,rural
+50017,VT,Orange County,5,micropolitan,rural
+50019,VT,Orleans County,6,noncore,rural
+50021,VT,Rutland County,5,micropolitan,rural
+50023,VT,Washington County,5,micropolitan,rural
+50025,VT,Windham County,6,noncore,rural
+50027,VT,Windsor County,5,micropolitan,rural
+51001,VA,Accomack County,6,noncore,rural
+51003,VA,Albemarle County,4,small metro,rural
+51005,VA,Alleghany County,6,noncore,rural
+51007,VA,Amelia County,2,large fringe metro,suburban
+51009,VA,Amherst County,3,medium metro,rural
+51011,VA,Appomattox County,3,medium metro,rural
+51013,VA,Arlington County,1,large central metro,urban
+51015,VA,Augusta County,4,small metro,rural
+51017,VA,Bath County,6,noncore,rural
+51019,VA,Bedford County,3,medium metro,rural
+51021,VA,Bland County,6,noncore,rural
+51023,VA,Botetourt County,3,medium metro,rural
+51025,VA,Brunswick County,6,noncore,rural
+51027,VA,Buchanan County,6,noncore,rural
+51029,VA,Buckingham County,4,small metro,rural
+51031,VA,Campbell County,3,medium metro,rural
+51033,VA,Caroline County,2,large fringe metro,suburban
+51035,VA,Carroll County,6,noncore,rural
+51036,VA,Charles City County,2,large fringe metro,suburban
+51037,VA,Charlotte County,6,noncore,rural
+51041,VA,Chesterfield County,2,large fringe metro,suburban
+51043,VA,Clarke County,2,large fringe metro,suburban
+51045,VA,Craig County,3,medium metro,rural
+51047,VA,Culpeper County,2,large fringe metro,suburban
+51049,VA,Cumberland County,6,noncore,rural
+51051,VA,Dickenson County,5,micropolitan,rural
+51053,VA,Dinwiddie County,2,large fringe metro,suburban
+51057,VA,Essex County,6,noncore,rural
+51059,VA,Fairfax County,2,large fringe metro,suburban
+51061,VA,Fauquier County,2,large fringe metro,suburban
+51063,VA,Floyd County,4,small metro,rural
+51065,VA,Fluvanna County,4,small metro,rural
+51067,VA,Franklin County,3,medium metro,rural
+51069,VA,Frederick County,4,small metro,rural
+51071,VA,Giles County,4,small metro,rural
+51073,VA,Gloucester County,2,large fringe metro,suburban
+51075,VA,Goochland County,2,large fringe metro,suburban
+51077,VA,Grayson County,6,noncore,rural
+51079,VA,Greene County,4,small metro,rural
+51081,VA,Greensville County,6,noncore,rural
+51083,VA,Halifax County,6,noncore,rural
+51085,VA,Hanover County,2,large fringe metro,suburban
+51087,VA,Henrico County,2,large fringe metro,suburban
+51089,VA,Henry County,5,micropolitan,rural
+51091,VA,Highland County,6,noncore,rural
+51093,VA,Isle of Wight County,2,large fringe metro,suburban
+51095,VA,James City County,2,large fringe metro,suburban
+51097,VA,King and Queen County,6,noncore,rural
+51099,VA,King George County,6,noncore,rural
+51101,VA,King William County,2,large fringe metro,suburban
+51103,VA,Lancaster County,6,noncore,rural
+51105,VA,Lee County,6,noncore,rural
+51107,VA,Loudoun County,2,large fringe metro,suburban
+51109,VA,Louisa County,6,noncore,rural
+51111,VA,Lunenburg County,6,noncore,rural
+51113,VA,Madison County,6,noncore,rural
+51115,VA,Mathews County,2,large fringe metro,suburban
+51117,VA,Mecklenburg County,6,noncore,rural
+51119,VA,Middlesex County,6,noncore,rural
+51121,VA,Montgomery County,4,small metro,rural
+51125,VA,Nelson County,4,small metro,rural
+51127,VA,New Kent County,2,large fringe metro,suburban
+51131,VA,Northampton County,6,noncore,rural
+51133,VA,Northumberland County,6,noncore,rural
+51135,VA,Nottoway County,6,noncore,rural
+51137,VA,Orange County,6,noncore,rural
+51139,VA,Page County,6,noncore,rural
+51141,VA,Patrick County,6,noncore,rural
+51143,VA,Pittsylvania County,5,micropolitan,rural
+51145,VA,Powhatan County,2,large fringe metro,suburban
+51147,VA,Prince Edward County,6,noncore,rural
+51149,VA,Prince George County,2,large fringe metro,suburban
+51153,VA,Prince William County,2,large fringe metro,suburban
+51155,VA,Pulaski County,4,small metro,rural
+51157,VA,Rappahannock County,2,large fringe metro,suburban
+51159,VA,Richmond County,6,noncore,rural
+51161,VA,Roanoke County,3,medium metro,rural
+51163,VA,Rockbridge County,6,noncore,rural
+51165,VA,Rockingham County,4,small metro,rural
+51167,VA,Russell County,6,noncore,rural
+51169,VA,Scott County,3,medium metro,rural
+51171,VA,Shenandoah County,6,noncore,rural
+51173,VA,Smyth County,6,noncore,rural
+51175,VA,Southampton County,6,noncore,rural
+51177,VA,Spotsylvania County,2,large fringe metro,suburban
+51179,VA,Stafford County,2,large fringe metro,suburban
+51181,VA,Surry County,6,noncore,rural
+51183,VA,Sussex County,2,large fringe metro,suburban
+51185,VA,Tazewell County,5,micropolitan,rural
+51187,VA,Warren County,2,large fringe metro,suburban
+51191,VA,Washington County,3,medium metro,rural
+51193,VA,Westmoreland County,6,noncore,rural
+51195,VA,Wise County,5,micropolitan,rural
+51197,VA,Wythe County,6,noncore,rural
+51199,VA,York County,2,large fringe metro,suburban
+51510,VA,Alexandria city,1,large central metro,urban
+51515,VA,Bedford city,3,medium metro,rural
+51520,VA,Bristol city,3,medium metro,rural
+51530,VA,Buena Vista city,6,noncore,rural
+51540,VA,Charlottesville city,4,small metro,rural
+51550,VA,Chesapeake city,2,large fringe metro,suburban
+51560,VA,Clifton Forge city,6,noncore,rural
+51570,VA,Colonial Heights city,2,large fringe metro,suburban
+51580,VA,Covington city,6,noncore,rural
+51590,VA,Danville city,5,micropolitan,rural
+51595,VA,Emporia city,6,noncore,rural
+51600,VA,Fairfax city,2,large fringe metro,suburban
+51610,VA,Falls Church city,2,large fringe metro,suburban
+51620,VA,Franklin city,6,noncore,rural
+51630,VA,Fredericksburg city,2,large fringe metro,suburban
+51640,VA,Galax city,6,noncore,rural
+51650,VA,Hampton city,2,large fringe metro,suburban
+51660,VA,Harrisonburg city,4,small metro,rural
+51670,VA,Hopewell city,2,large fringe metro,suburban
+51678,VA,Lexington city,6,noncore,rural
+51680,VA,Lynchburg city,3,medium metro,rural
+51683,VA,Manassas city,2,large fringe metro,suburban
+51685,VA,Manassas Park city,2,large fringe metro,suburban
+51690,VA,Martinsville city,5,micropolitan,rural
+51700,VA,Newport News city,2,large fringe metro,suburban
+51710,VA,Norfolk city,1,large central metro,urban
+51720,VA,Norton city,5,micropolitan,rural
+51730,VA,Petersburg city,2,large fringe metro,suburban
+51735,VA,Poquoson city,2,large fringe metro,suburban
+51740,VA,Portsmouth city,2,large fringe metro,suburban
+51750,VA,Radford city,4,small metro,rural
+51760,VA,Richmond city,1,large central metro,urban
+51770,VA,Roanoke city,3,medium metro,rural
+51775,VA,Salem city,3,medium metro,rural
+51790,VA,Staunton city,4,small metro,rural
+51800,VA,Suffolk city,2,large fringe metro,suburban
+51810,VA,Virginia Beach city,1,large central metro,urban
+51820,VA,Waynesboro city,4,small metro,rural
+51830,VA,Williamsburg city,2,large fringe metro,suburban
+51840,VA,Winchester city,4,small metro,rural
+53001,WA,Adams County,5,micropolitan,rural
+53003,WA,Asotin County,4,small metro,rural
+53005,WA,Benton County,3,medium metro,rural
+53007,WA,Chelan County,4,small metro,rural
+53009,WA,Clallam County,5,micropolitan,rural
+53011,WA,Clark County,2,large fringe metro,suburban
+53013,WA,Columbia County,4,small metro,rural
+53015,WA,Cowlitz County,4,small metro,rural
+53017,WA,Douglas County,4,small metro,rural
+53019,WA,Ferry County,6,noncore,rural
+53021,WA,Franklin County,3,medium metro,rural
+53023,WA,Garfield County,6,noncore,rural
+53025,WA,Grant County,5,micropolitan,rural
+53027,WA,Grays Harbor County,5,micropolitan,rural
+53029,WA,Island County,5,micropolitan,rural
+53031,WA,Jefferson County,6,noncore,rural
+53033,WA,King County,1,large central metro,urban
+53035,WA,Kitsap County,3,medium metro,rural
+53037,WA,Kittitas County,5,micropolitan,rural
+53039,WA,Klickitat County,6,noncore,rural
+53041,WA,Lewis County,5,micropolitan,rural
+53043,WA,Lincoln County,6,noncore,rural
+53045,WA,Mason County,5,micropolitan,rural
+53047,WA,Okanogan County,6,noncore,rural
+53049,WA,Pacific County,6,noncore,rural
+53051,WA,Pend Oreille County,3,medium metro,rural
+53053,WA,Pierce County,2,large fringe metro,suburban
+53055,WA,San Juan County,6,noncore,rural
+53057,WA,Skagit County,4,small metro,rural
+53059,WA,Skamania County,2,large fringe metro,suburban
+53061,WA,Snohomish County,2,large fringe metro,suburban
+53063,WA,Spokane County,3,medium metro,rural
+53065,WA,Stevens County,3,medium metro,rural
+53067,WA,Thurston County,3,medium metro,rural
+53069,WA,Wahkiakum County,6,noncore,rural
+53071,WA,Walla Walla County,4,small metro,rural
+53073,WA,Whatcom County,4,small metro,rural
+53075,WA,Whitman County,5,micropolitan,rural
+53077,WA,Yakima County,4,small metro,rural
+54001,WV,Barbour County,6,noncore,rural
+54003,WV,Berkeley County,3,medium metro,rural
+54005,WV,Boone County,4,small metro,rural
+54007,WV,Braxton County,6,noncore,rural
+54009,WV,Brooke County,4,small metro,rural
+54011,WV,Cabell County,3,medium metro,rural
+54013,WV,Calhoun County,6,noncore,rural
+54015,WV,Clay County,4,small metro,rural
+54017,WV,Doddridge County,5,micropolitan,rural
+54019,WV,Fayette County,4,small metro,rural
+54021,WV,Gilmer County,6,noncore,rural
+54023,WV,Grant County,6,noncore,rural
+54025,WV,Greenbrier County,6,noncore,rural
+54027,WV,Hampshire County,4,small metro,rural
+54029,WV,Hancock County,4,small metro,rural
+54031,WV,Hardy County,6,noncore,rural
+54033,WV,Harrison County,5,micropolitan,rural
+54035,WV,Jackson County,6,noncore,rural
+54037,WV,Jefferson County,2,large fringe metro,suburban
+54039,WV,Kanawha County,4,small metro,rural
+54041,WV,Lewis County,6,noncore,rural
+54043,WV,Lincoln County,3,medium metro,rural
+54045,WV,Logan County,5,micropolitan,rural
+54047,WV,McDowell County,6,noncore,rural
+54049,WV,Marion County,5,micropolitan,rural
+54051,WV,Marshall County,4,small metro,rural
+54053,WV,Mason County,5,micropolitan,rural
+54055,WV,Mercer County,5,micropolitan,rural
+54057,WV,Mineral County,4,small metro,rural
+54059,WV,Mingo County,6,noncore,rural
+54061,WV,Monongalia County,4,small metro,rural
+54063,WV,Monroe County,6,noncore,rural
+54065,WV,Morgan County,6,noncore,rural
+54067,WV,Nicholas County,6,noncore,rural
+54069,WV,Ohio County,4,small metro,rural
+54071,WV,Pendleton County,6,noncore,rural
+54073,WV,Pleasants County,6,noncore,rural
+54075,WV,Pocahontas County,6,noncore,rural
+54077,WV,Preston County,4,small metro,rural
+54079,WV,Putnam County,3,medium metro,rural
+54081,WV,Raleigh County,4,small metro,rural
+54083,WV,Randolph County,5,micropolitan,rural
+54085,WV,Ritchie County,6,noncore,rural
+54087,WV,Roane County,6,noncore,rural
+54089,WV,Summers County,6,noncore,rural
+54091,WV,Taylor County,5,micropolitan,rural
+54093,WV,Tucker County,6,noncore,rural
+54095,WV,Tyler County,6,noncore,rural
+54097,WV,Upshur County,6,noncore,rural
+54099,WV,Wayne County,3,medium metro,rural
+54101,WV,Webster County,6,noncore,rural
+54103,WV,Wetzel County,6,noncore,rural
+54105,WV,Wirt County,4,small metro,rural
+54107,WV,Wood County,4,small metro,rural
+54109,WV,Wyoming County,6,noncore,rural
+55001,WI,Adams County,6,noncore,rural
+55003,WI,Ashland County,6,noncore,rural
+55005,WI,Barron County,6,noncore,rural
+55007,WI,Bayfield County,6,noncore,rural
+55009,WI,Brown County,3,medium metro,rural
+55011,WI,Buffalo County,6,noncore,rural
+55013,WI,Burnett County,6,noncore,rural
+55015,WI,Calumet County,4,small metro,rural
+55017,WI,Chippewa County,4,small metro,rural
+55019,WI,Clark County,6,noncore,rural
+55021,WI,Columbia County,3,medium metro,rural
+55023,WI,Crawford County,6,noncore,rural
+55025,WI,Dane County,3,medium metro,rural
+55027,WI,Dodge County,5,micropolitan,rural
+55029,WI,Door County,6,noncore,rural
+55031,WI,Douglas County,3,medium metro,rural
+55033,WI,Dunn County,5,micropolitan,rural
+55035,WI,Eau Claire County,4,small metro,rural
+55037,WI,Florence County,5,micropolitan,rural
+55039,WI,Fond du Lac County,4,small metro,rural
+55041,WI,Forest County,6,noncore,rural
+55043,WI,Grant County,5,micropolitan,rural
+55045,WI,Green County,3,medium metro,rural
+55047,WI,Green Lake County,6,noncore,rural
+55049,WI,Iowa County,3,medium metro,rural
+55051,WI,Iron County,6,noncore,rural
+55053,WI,Jackson County,6,noncore,rural
+55055,WI,Jefferson County,5,micropolitan,rural
+55057,WI,Juneau County,6,noncore,rural
+55059,WI,Kenosha County,2,large fringe metro,suburban
+55061,WI,Kewaunee County,3,medium metro,rural
+55063,WI,La Crosse County,4,small metro,rural
+55065,WI,Lafayette County,6,noncore,rural
+55067,WI,Langlade County,6,noncore,rural
+55069,WI,Lincoln County,5,micropolitan,rural
+55071,WI,Manitowoc County,5,micropolitan,rural
+55073,WI,Marathon County,4,small metro,rural
+55075,WI,Marinette County,5,micropolitan,rural
+55077,WI,Marquette County,6,noncore,rural
+55078,WI,Menominee County,5,micropolitan,rural
+55079,WI,Milwaukee County,1,large central metro,urban
+55081,WI,Monroe County,6,noncore,rural
+55083,WI,Oconto County,3,medium metro,rural
+55085,WI,Oneida County,6,noncore,rural
+55087,WI,Outagamie County,4,small metro,rural
+55089,WI,Ozaukee County,2,large fringe metro,suburban
+55091,WI,Pepin County,6,noncore,rural
+55093,WI,Pierce County,2,large fringe metro,suburban
+55095,WI,Polk County,6,noncore,rural
+55097,WI,Portage County,5,micropolitan,rural
+55099,WI,Price County,6,noncore,rural
+55101,WI,Racine County,4,small metro,rural
+55103,WI,Richland County,6,noncore,rural
+55105,WI,Rock County,4,small metro,rural
+55107,WI,Rusk County,6,noncore,rural
+55109,WI,St. Croix County,2,large fringe metro,suburban
+55111,WI,Sauk County,5,micropolitan,rural
+55113,WI,Sawyer County,6,noncore,rural
+55115,WI,Shawano County,5,micropolitan,rural
+55117,WI,Sheboygan County,4,small metro,rural
+55119,WI,Taylor County,6,noncore,rural
+55121,WI,Trempealeau County,6,noncore,rural
+55123,WI,Vernon County,6,noncore,rural
+55125,WI,Vilas County,6,noncore,rural
+55127,WI,Walworth County,5,micropolitan,rural
+55129,WI,Washburn County,6,noncore,rural
+55131,WI,Washington County,2,large fringe metro,suburban
+55133,WI,Waukesha County,2,large fringe metro,suburban
+55135,WI,Waupaca County,6,noncore,rural
+55137,WI,Waushara County,6,noncore,rural
+55139,WI,Winnebago County,4,small metro,rural
+55141,WI,Wood County,5,micropolitan,rural
+56001,WY,Albany County,5,micropolitan,rural
+56003,WY,Big Horn County,6,noncore,rural
+56005,WY,Campbell County,5,micropolitan,rural
+56007,WY,Carbon County,6,noncore,rural
+56009,WY,Converse County,6,noncore,rural
+56011,WY,Crook County,6,noncore,rural
+56013,WY,Fremont County,5,micropolitan,rural
+56015,WY,Goshen County,6,noncore,rural
+56017,WY,Hot Springs County,6,noncore,rural
+56019,WY,Johnson County,6,noncore,rural
+56021,WY,Laramie County,4,small metro,rural
+56023,WY,Lincoln County,6,noncore,rural
+56025,WY,Natrona County,4,small metro,rural
+56027,WY,Niobrara County,6,noncore,rural
+56029,WY,Park County,6,noncore,rural
+56031,WY,Platte County,6,noncore,rural
+56033,WY,Sheridan County,5,micropolitan,rural
+56035,WY,Sublette County,6,noncore,rural
+56037,WY,Sweetwater County,5,micropolitan,rural
+56039,WY,Teton County,5,micropolitan,rural
+56041,WY,Uinta County,5,micropolitan,rural
+56043,WY,Washakie County,6,noncore,rural
+56045,WY,Weston County,6,noncore,rural

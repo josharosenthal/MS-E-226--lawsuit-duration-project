@@ -1,0 +1,31 @@
+code_type,code,label
+# ------------------------------------------------------------------------------
+# Codes that define the "fee_shifting" population (see 00_sample.R).
+# A case is included if it matches ANY row. Lines starting with # are ignored,
+# so to use an example below, delete the # at the start of its line.
+#
+#   code_type = cause : code is "title:section" from the cause of action.
+#                       Leading zeros don't matter (05:552 = 5:552).
+#                       42:1983   only that exact section
+#                       42:1983+  that section followed only by letters, the
+#                                 PACER tags: 1983, 1983cv, 1983bv, ...
+#                       42:121*   anything starting with 121: 12101, 12112, 12182 ...
+#                       (* also catches typos like 42:19830 under 42:1983*, so
+#                       use + when you only want the tagged versions)
+#   code_type = nos   : code is the 3-digit nature-of-suit code, e.g. 440.
+#   label             : your own description (don't use the # character in it).
+#
+# The examples are common fee-shifting statutes, listed for convenience only.
+# Check each against the statute before relying on it.
+# ------------------------------------------------------------------------------
+# cause,42:1983+,Civil rights - 42 USC 1983 (fees: 42 USC 1988(b))
+# cause,42:2000e*,Title VII employment discrimination (fees: 42 USC 2000e-5(k))
+# cause,42:121*,Americans with Disabilities Act (fees: 42 USC 12205)
+# cause,29:201+,Fair Labor Standards Act (fees: 29 USC 216(b))
+# cause,29:216+,Fair Labor Standards Act - cited by the fee section itself
+# cause,15:1692+,Fair Debt Collection Practices Act (fees: 15 USC 1692k(a)(3))
+# cause,15:1681+,Fair Credit Reporting Act (fees: 15 USC 1681n and 1681o)
+# cause,5:552,Freedom of Information Act (fees: 5 USC 552(a)(4)(E))
+# cause,42:36*,Fair Housing Act is 3601-3631 but this catches every 36xx section (fees: 42 USC 3613(c)(2))
+# nos,895,Freedom of Information Act
+# nos,710,Fair Labor Standards Act

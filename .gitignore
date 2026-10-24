@@ -1,0 +1,14 @@
+# Data outputs downloaded from FarmShare (holdout split, match reports, docket snippets) - keep off GitHub
+misc/
+*.parquet
+closed_civil_by_cause_titlesection_usc.csv
+# Rendered copies of the markdown docs (regenerate from the .md files)
+EXPLAINER.html
+reference/README.html
+# Clutter
+unzip
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+~$*
