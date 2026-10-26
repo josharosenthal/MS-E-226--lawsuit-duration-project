@@ -5,6 +5,7 @@ closed_civil_by_cause_titlesection_usc.csv
 # Rendered copies of the markdown docs (regenerate from the .md files)
 EXPLAINER.html
 reference/README.html
+DATA_DICTIONARY.html
 # Clutter
 unzip
 .DS_Store
@@ -12,3 +13,6 @@ unzip
 .RData
 .Rproj.user/
 ~$*
+
+# Private notes (not project documentation)
+NOTES_TO_SELF.md

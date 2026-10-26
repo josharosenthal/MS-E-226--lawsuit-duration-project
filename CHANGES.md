@@ -653,6 +653,202 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
 - The staged files were scanned for passwords and keys before the push; none were found.
 - **Note:** the git repository lives inside the Dropbox folder. Avoid editing the same files on two machines at once.
 
+### 47. New `DATA_DICTIONARY.md`
+- **Josh's request:** a data dictionary of the feature candidates, including a sense of the values of the covariates with few categories.
+- **Contents:**
+  - **All 35 covariates in `05_feature_selection.R`:** meaning, source (SCALES / FJC / derived), type, levels, smallest level and % missing, leakage tier, and main or sensitivity model (change 45). Levels, smallest level and % missing come from the 25 Oct 2026 FarmShare run: 312,727 training cases, after the no-FJC exclusion.
+  - **The values** of every covariate with 15 or fewer categories (plus `diversity_residence`). The code meanings come from the R code. The rough mix of values comes from the best counts on the Mac: `features_report_coverage.csv` (all 549,960 civil cases, before exclusions) and the pre-split data-check tables. Each source is labelled.
+  - **Rare categories** (fewer than about 50 training cases) with possible merges. These are suggestions only, not decisions.
+- **Not yet available:** exact training counts per category, especially jurisdiction, jury demand and pro se. That needs a small addition to `05_feature_selection.R` and one FarmShare run.
+- **The FJC `RESIDENC` code meanings** are given from the FJC codebook, flagged to check before relying on them.
+- No code changed.
+
+### 48. `05_feature_selection.R` also writes `fs_levels.csv` (training counts per category)
+- **Why:** to put exact training counts in `DATA_DICTIONARY.md` (change 47), which had only rough shares from wider case sets, and none for jurisdiction, jury demand or pro se. Josh approved.
+- **What it writes:** one row per category: variable, value, training cases, % of training cases with a duration value. For covariates with up to 15 categories it lists every category; for larger ones, the 5 most common and the 10 rarest. Counts only.
+- **Tested** on fake data (every covariate has 15 or fewer categories there, so all were listed) and on simulated data with a 30-category variable (5 most common plus 10 rarest shown). Nothing else in the script changed.
+
+### 49. `DATA_DICTIONARY.md` filled in with exact training counts
+- **Source:** `fs_levels.csv` from the 25 Oct 2026 FarmShare run, 312,727 training cases. It replaces the rough shares from wider case sets used in change 47, and adds jurisdiction, jury demand and pro se.
+- **New section "Things the counts turned up":**
+  - weekend filings (1.6%)
+  - duplicate or odd city labels ("NMI" and "Northern Mariana Islands", "7 North Platte")
+  - 48 training cases with a habeas-type nature of suit (510, 535) but a non-habeas cause, which remain because the habeas exclusion works on the cause. This is flagged for Josh's decision; the sample is not changed.
+  - single-case categories
+  - "no counsel listed" at 30% for `defendant_firm_rank`
+- **The rare-categories table** now uses training counts; the merge options are still suggestions only.
+- No code changed.
+
+### 50. Residual habeas cases excluded by nature of suit (after the split; split not redrawn)
+- **Josh's request:** "take out the residual habeas cases for cleanliness". The data dictionary (change 49) found 36 training cases with nature of suit 510 (Motions to Vacate Sentence) and 12 with 535 (Death Penalty) still in the sample, because the habeas rule worked on the cause (28 U.S.C. 2241/2254/2255) only.
+- **Change in `r/00_sample.R`:** `non_habeas_cases` also drops any case whose nature-of-suit code is in `habeas_nos_codes`. That's `463` Habeas Corpus – Alien Detainee, `510` Motions to Vacate Sentence, `530` Habeas Corpus – General and `535` Death Penalty, whatever its cause.
+  - **Codes 463 and 530 were added by Claude** as the other habeas natures of suit. Their training counts aren't known yet: each has at least 38, since neither was among the 10 rarest. The list is one line, so Josh can trim it.
+  - Cases with no nature of suit are kept.
+- **The split is not redrawn,** as in change 42: the same rule applies to training and holdout.
+- **New PASS/FLAG line in `r/02_data_checks.R`:** cases dropped from each side and by code, saved as `checks/presplit_habeas_nos_split_balance.csv`. It FLAGs if the two sides' shares differ by 0.1 points or more.
+- **Fix to the no-FJC balance line (change 42):** it now counts only cases still in the de-duplicated sample. Otherwise cases removed by another rule, such as these habeas cases, would also count as "no FJC record", since excluded cases get no FJC link.
+- **Docs:** the EXPLAINER has a top note on the exclusion, and `DATA_DICTIONARY.md` section 3 is updated. The dictionary's counts are from before this exclusion.
+- **Tested** on fake data, with two training cases and one holdout case given habeas natures of suit (530, 510 with a leading space, 535) and one given a blank nature of suit:
+  - the population went from 61 to 58; the blank case was kept
+  - the balance line reported 2 training and 1 holdout, by code
+  - the no-FJC line stayed at 8
+  - with no habeas cases, the line is PASS with "none"
+  - `05` and `02-c` ran
+  - Not yet run on the real data.
+
+### 51. New script: `r/02-d_data_checks_prose.R` (SCALES vs FJC: who has no lawyer)
+- **Named 02-d** (first written as 02-c, then renamed before upload so Josh's oddities script could be 02-c).
+- **Josh's request:** confirm the cross-accuracy of a missing firm (plaintiff or defendant) and that party being marked pro se.
+- **What it does:** on training cases, it compares SCALES `plaintiff_firm_cases` = "pro se / no counsel" with FJC `PROSE` = plaintiff or both, and SCALES `defendant_firm_rank` = "no counsel listed" with FJC `PROSE` = defendant or both. For each side it reports:
+  - the cross-tab (plaintiffs with a lawyer split into "with firm" and "no firm listed")
+  - the share of SCALES "no lawyer" that the FJC calls pro se, and the reverse
+  - overall agreement and Cohen's kappa
+  - the 10 largest natures of suit and courts in each kind of disagreement
+
+  "No plaintiff/defendant listed" is left out as not comparable. Counts only.
+- **Expected result:** good agreement for plaintiffs. Weaker for defendants, because defendants who never appear have no counsel in SCALES but aren't recorded as pro se by the FJC; that's the leakage noted in EXPLAINER 7B.
+- **Tested** on fake data with planted values:
+  - plaintiffs: 10 flagged by both, 2 by SCALES only, 1 by the FJC only, giving 93.2% agreement and kappa 0.824
+  - defendants: 20 with no counsel, 3 of them pro se in the FJC, giving kappa 0.161
+  - one crash, when a disagreement group had a single value, was fixed
+  - Not yet run on the real data.
+
+### 52. New script: `r/02-c_data_checks_oddities.R` (case headers for odd values)
+- **Josh's request:** as 02-c, a script to pull up the header information for cases with:
+  - a blank nature of suit
+  - a blank jurisdiction, or "Local Question"
+  - a single-case cause title
+  - an unmatched county code
+  - a defendant whose name isn't recorded
+- **What it does:**
+  - Flags these cases among training cases; a case can have several flags.
+  - For each one, shows the SCALES header (court, case number, case name if present, office, filing date, status, judge, nature of suit, cause, jurisdiction, jury demand, party counts) next to the FJC record's NOS, JURIS, COUNTY, TITL/SECTION and ORIGIN, where the FJC file has them.
+  - For "name not recorded", also shows the first defendant's party row (name, role, party type).
+- **Privacy:** the console shows counts and a compact table without names. The full headers, with case names, are saved to `checks/oddities_cases.csv` only.
+- **Tested** on fake data with one planted case per flag: all six were found, plus one blank nature of suit already in the test data. Optional columns are skipped when missing. Not yet run on the real data.
+
+### 53. Decision: "large-firm list, headcount not given" left as is
+- **The question:** this `defendant_firm_rank` category (277 training cases) covers the 5 firms BCG lists without a headcount: Steptoe LLP, Kelley Drye & Warren, Porter Wright Morris & Arthur, Milberg Coleman Bryson Phillips Grossman, and GrayRobinson.
+- **Web search of their size** (25 Oct 2026):
+  - **Steptoe:** more than 500 lawyers and staff, and 300+ lawyers in D.C. (firm site), so about ranks 101–140.
+  - **Kelley Drye:** 248 attorneys (ILRG, undated) or about 350 (U.S. News), so ranks 121–160.
+  - **Porter Wright:** 177 attorneys (ILRG 2025), so ranks 161–180.
+  - **GrayRobinson:** 244 attorneys (ILRG), so ranks 141–160.
+  - **Milberg:** 60+ attorneys (firm site, Oct 2024), smaller than any ranked firm. It's also a plaintiffs' class-action firm, so its matches as a defendant's lead counsel are worth checking if this variable matters.
+- **Decision (Josh):** leave the category as is. The outside sources count differently from BCG/Am Law, and only 277 cases are affected, so it isn't worth editing the reference file and rebuilding the features.
+- **Recorded** in `DATA_DICTIONARY.md` section 3. No code or reference data changed.
+
+### 54. Nature of suit 550 (Prisoner: Civil Rights) excluded, for consistency with 1983pr (after the split; split not redrawn)
+- **Decision (Josh, 25 Oct 2026):** "let's drop 550 (prisoner civil rights) for consistency."
+- **Why:** prisoner civil-rights cases were meant to be excluded through the cause rule (42:1983pr). But nature of suit 550 was still the most common nature of suit in training: 27,727 cases, 8.9% (`fs_levels.csv`, change 49). These cases list other causes, such as plain 42:1983.
+- **Change in `r/00_sample.R`:** `550` is added to `habeas_nos_codes`, the nature-of-suit exclusion from change 50. 555 Prison Condition and 560 Civil Detainee are not excluded (not requested).
+- **The split is not redrawn,** as in changes 42 and 50.
+- **`r/02_data_checks.R`:** the balance line is relabelled "Habeas / prisoner nature-of-suit exclusion". It now uses a **two-proportion z-test** (FLAG if |z| > 3) instead of a fixed 0.1-point tolerance. At about 9% of cases, a fixed tolerance would FLAG on chance differences; on the real data a 0.2-point chance gap gives z ≈ 1.8.
+- **Expected effects:**
+  - About 27,700 fewer training cases, and about 6,900 fewer holdout cases
+  - The pro se plaintiff and in forma pauperis shares fall
+  - The `judge_group` and `cause_group` thresholds are recounted
+  - `05_feature_selection.R` results change
+  - `DATA_DICTIONARY.md` counts are from before this exclusion; they need a refresh after the next run
+- **Docs:** the EXPLAINER's data-set note and top exclusion note are updated, and the dictionary has a note.
+- **Tested** on fake data with one planted 550 case added to the change-50 test: the population fell from 58 to 57, the balance line lists "550 1" with z = −0.02 (PASS), and with no such cases it shows "none" and PASS. Not yet run on the real data.
+
+### 55. Nature-of-suit exclusions put ON HOLD; balance test first; 540, 555, 560 added as candidates
+- **Josh's request:** check the balance as a statistical test before deciding to exclude. If excluding, also take out 555, 560 and 540, so include all of those among the potential exclusions.
+- **This supersedes the exclusions in changes 50 (habeas natures of suit) and 54 (550).** Nothing is excluded by nature of suit for now. Claude treated the four habeas codes from change 50 as candidates too, so the whole set is decided together.
+- **Change in `r/00_sample.R`:**
+  - `candidate_nos_codes` = 463, 510, 530, 535 (habeas) and 540, 550, 555, 560 (prisoner).
+  - `exclude_nos_codes` = none. Putting codes there applies them, by the same both-sides rule as change 42; the split is not redrawn.
+  - The old `habeas_nos_codes` is gone.
+- **`r/02_data_checks.R`:**
+  - **(a) "APPLIED" line:** what `exclude_nos_codes` removed from each side, with a two-proportion z-test (PASS if |z| ≤ 3).
+  - **(b) New "CANDIDATE" check:** for each candidate code not yet applied, plus the habeas group, the prisoner group and all candidates together, the training and holdout cases that excluding it would remove from the current sample, the share of each side, the z-score and whether it's balanced. Printed and saved as `checks/presplit_nos_candidate_balance.csv`. Counts only.
+- **What the test can and can't say:** a balanced result means the holdout would stay representative after the exclusion. It doesn't say whether excluding is right; that's a decision about the population.
+- **Docs:** the EXPLAINER's data-set note is restored, its top note now describes the candidates as under consideration, and the dictionary note is updated.
+- **Tested** on fake data with planted 510, 530, 550 (training) and 535 (holdout):
+  - With nothing applied, the population stays at 61, and the candidate table counts each code by side (all codes together: 3 training, 1 holdout, z = 0.13).
+  - With 530 and 550 applied, the population is 59, the APPLIED line reports 2 training and 0 holdout, and the other six candidates are still tested.
+  - Not yet run on the real data.
+
+### 56. Oddity cells highlighted
+- **`misc/oddities_cases.xlsx`** (Josh's resave of `oddities_cases.csv`): for each flagged case, the cell(s) that made it odd are highlighted in yellow, with a comment naming the flag, and the flag column is shaded orange. The cells by flag:
+  - `nature_suit` for blank nature of suit
+  - `jurisdiction` for blank or "Local Question"
+  - `cause_title` for single-case titles
+  - `county_area_class` and `fjc_COUNTY` for unmatched county
+  - `first_defendant_type` and `first_defendant_name` for name not recorded
+
+  71 flags across 70 cases: 1 blank nature of suit, 1 blank jurisdiction, 12 Local Question, 6 single-case titles, 39 unmatched county, 12 name not recorded. A backup of the unhighlighted file was kept in the session scratchpad. `misc/` is not on GitHub.
+- **02-d result** (real data, training): plaintiffs 98.6% agreement, kappa 0.962; defendants 70.9% agreement, kappa 0.084. Only 7,279 of 94,701 SCALES "no counsel listed" defendants are FJC pro se.
+- No code changed.
+
+### 56. Recodes for odd values (rules in a new section 7a of `r/00_sample.R`)
+- **Decisions (Josh, 25 Oct 2026)** were made in a forked session reviewing `misc/oddities_cases.xlsx` (from `02-c_data_checks_oddities.R`, training cases). The fork relayed them here, since this session owns `CHANGES.md`.
+- **The rules:** every fix is a general rule, not a list of cases, so training and holdout are treated alike. They're applied in a new view `analysis_fjc_recoded`, which `analysis_fjc` now reads, so `case_features.parquet` is not rebuilt.
+  1. **Jurisdiction "Local Question":** left as is. All 12 are in Guam (7) and the Virgin Islands (5), and the FJC agrees (JURIS 5).
+  2. **`county_area_class`:** "unmatched county code" with FJC `COUNTY` 75010 (the FJC's code for the Northern Mariana Islands; 38 training cases, all nmid) becomes "US territory". South Boston (51780, W.D. Va., 1 case) stays "unmatched county code", per Josh.
+  3. **`first_defendant_type` = "name not recorded"** (12 training cases), by the first defendant's name in `parties.parquet`. The first defendant is defined as in `01_build_features.R`.
+     - starts with "$" becomes **"property (in rem)"**, a new category (forfeitures such as "United States v. $X in currency", and the txsd "v. $200,000,000.00")
+     - "7-11" / "7-Eleven" becomes "business"
+     - digits and hyphens only (e.g. "8877380", "6-27750") becomes **"individual"**. These are SCALES-anonymized people, including S.D. Fla. "Schedule A" trademark defendants (anonymous online sellers); Josh chose to treat them as individuals.
+  4. **Cause typos:** 3:4301 becomes 38:4301 (USERRA), and 1:102 becomes 42:12102 (ADA). Applied to `cause_title` and `cause_section` before `cause_group` is built.
+- **Not yet decided:**
+  - **(5)** the other single-case cause titles: 73:201 (Pennsylvania consumer statute) to 28:1332?; 99:9999 (placeholder) to "(no cause)"?; 44:2107 and 36:327 left, to be merged with rare titles
+  - **(6)** filling the D. Mass. case's blank nature of suit and jurisdiction from the FJC (NOS 890, JURIS 1)
+- **Tested** on fake data with planted cases and decoys:
+  - "$12,345.00 in U.S. Currency" became "property (in rem)"; "7-11" became "business"; "8877380" (training) and "6-27750" (holdout) became "individual"; "???" stayed "name not recorded"
+  - county 75010 became "US territory"; 51780 was unchanged
+  - 3:4301 became 38:4301 and 1:102 became 42:12102, with matching cause groups
+  - no rows were added (61 before and after)
+  - the oddities check then flagged only the decoys; `02`, `02-c` and `05` ran, and a project without the features file also ran
+  - Not yet run on the real data.
+- **Docs:** `DATA_DICTIONARY.md` has a "Recodes applied" note and updated rows in the rare-categories table.
+
+### 57. Nature-of-suit exclusion applied (all 8 codes); remaining cause fixes; blank NOS and jurisdiction filled from the FJC
+- **Decisions (Josh, 25 Oct 2026):** "1. fix the other odd cases; 2. copy from DMass; 3. move forward with the exclusions."
+- **(3) Exclusion, in `r/00_sample.R`:** `exclude_nos_codes <- candidate_nos_codes`, so all eight codes are dropped: 463, 510, 530, 535 (habeas) and 540, 550, 555, 560 (prisoner petitions).
+  - **Balance test first** (FarmShare run of 25 Oct, `presplit_nos_candidate_balance.csv`): all eight together remove 44,720 training (14.30%) and 11,259 holdout (14.39%) cases, z = −0.65. Every code and group was balanced (largest |z| = 2.38, for 560).
+  - The split is not redrawn. `02_data_checks.R` now reports the exclusion as APPLIED, with its z-test.
+- **(1) Cause fixes,** in the recodes section 7a (adding to change 56):
+  - 73:201 ("Pennsylvania Consumer Fraud Act", a state statute, 73 P.S. § 201-1) becomes 28:1332 (diversity)
+  - 99:9999 ("Report cause code (DO NOT DELETE)", a placeholder) becomes no cause, so `cause_group` "(no cause)"
+  - 44:2107 (Presidential Records) and 36:327 (36 C.F.R. Part 327, miscited) are left as they are; they're real but rare, and will go into the rare-title merge
+- **(2) FJC fill, as a general rule:** where SCALES `nature_suit` is blank and the FJC record has an NOS code, the code is used, written in SCALES's own wording (its most common label for that code). Where SCALES `jurisdiction` is blank, FJC JURIS is used: 1 = U.S. Government Plaintiff, 2 = U.S. Government Defendant, 3 = Federal Question, 4 = Diversity, 5 = Local Question. This covers the D. Mass. case (FJC NOS 890, JURIS 1).
+  - **Caveat:** the fill happens in the analysis view, *after* the nature-of-suit exclusion. So a case with a blank SCALES nature of suit and a prisoner FJC code would not be excluded. That's at most a handful of cases; the 02-c oddities check found only one blank nature of suit in training, and its FJC code is 890.
+- **Docs:** the EXPLAINER's top note now records the exclusion as applied, with its size and balance, and says results describe civil cases other than habeas and prisoner petitions. The `DATA_DICTIONARY.md` notes are updated; its counts are from before the exclusion.
+- **Tested** on fake data:
+  - 73:201 became 28:1332, and 99:9999 became "(no cause)"
+  - a case with blank nature of suit and jurisdiction, and FJC NOS 890 / JURIS 3, became "890 Other" / "Federal Question"
+  - a planted 555 case was excluded (61 to 60 cases); the APPLIED line reported 1 training and 0 holdout (PASS), and no pending candidates remain
+  - 02, 02-a, 02-b, 02-c, 02-d, 04 and 05 all ran
+  - Not yet run on the real data.
+
+### 58. Decision: plaintiff representation is one variable, `plaintiff_firm_cases`
+- **Evidence:** `02-d_data_checks_prose.R` on training cases after the prisoner exclusion (268,007 cases).
+  - **Plaintiffs:** SCALES "pro se / no counsel" (29,772) against FJC `PROSE` plaintiff or both (31,022) agree 98.7%, kappa 0.934. Before the exclusion the figures were 98.6% and 0.962.
+  - **Defendants:** SCALES "no counsel listed" (61,558) against FJC defendant pro se (9,342): only 11% of no-counsel defendants are pro se in the FJC, kappa 0.138 (before: 7.7%, 0.084). The remaining mismatches are default-prone case types: 440 civil rights, consumer credit, 446 ADA, copyright, trademark and patent, ERISA, foreclosure.
+- **Decision (Josh, 25 Oct 2026):** `plaintiff_firm_cases` is the single plaintiff representation variable in the main model. Its "pro se / no counsel" category is the plaintiff pro se measure, and no separate plaintiff pro se flag is added, to avoid duplicating it. Claude also set out two alternatives, which were not chosen:
+  - the same variable with pro se defined by the FJC
+  - two variables, a pro se flag plus firm experience among represented plaintiffs, which are collinear in regressions
+- **Defendant side:** still open. Josh asked for an explainer on sensitivity models before deciding whether `defendant_firm_rank`, and the defendant part of `pro_se`, move to the sensitivity model.
+- **Recorded in:** `EXPLAINER.md` section 7B (new subsection) and the `DATA_DICTIONARY.md` model column for `pro_se` and `plaintiff_firm_cases`. No code changed.
+
+### 59. `DATA_DICTIONARY.md` refreshed with post-exclusion counts
+- **Source:** the 25 Oct 2026 FarmShare run (`fs_covariates.csv`, `fs_levels.csv`, `fs_high_pairs.csv`), 268,007 training cases. That's after the no-FJC exclusion, the habeas and prisoner nature-of-suit exclusion, and the recodes (changes 42, 56, 57).
+- **Updated:**
+  - every level count, smallest level and % missing in section 1
+  - every category count in section 2
+  - the "pairs that say nearly the same thing", with values
+  - section 3: what the exclusion changed most (pro se plaintiffs 22.6% to 11.2%, fee waivers 18.8% to 13.1%, "no counsel listed" 30.3% to 23.0%)
+  - section 4: the rare categories, now that the recodes have removed the one-case jurisdiction, nature of suit and cause oddities
+  - `defendant_firm_rank`'s model column, now "undecided"
+- No code changed.
+
+### 60. Changes 47–59 pushed to GitHub
+- Josh asked to push the files to GitHub (25 Oct 2026). Committed and pushed to `josharosenthal/MS-E-226--lawsuit-duration-project`.
+- **New files:** `DATA_DICTIONARY.md`, `r/02-c_data_checks_oddities.R`, `r/02-d_data_checks_prose.R`.
+- **`.gitignore`:** also excludes the rendered `DATA_DICTIONARY.html` and the private `NOTES_TO_SELF.md`. `misc/` stays excluded.
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.

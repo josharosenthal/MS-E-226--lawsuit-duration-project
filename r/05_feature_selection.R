@@ -21,6 +21,8 @@
 # Output (~/scales_project/feature_selection/):
 #   fs_covariates.csv       each covariate: type, leakage tier, number of levels,
 #                           smallest level's count
+#   fs_levels.csv           training cases in each category: all categories of covariates
+#                           with up to 15, otherwise the 10 rarest and 5 most common
 #   fs_spearman_numeric.csv Spearman matrix for the numeric covariates
 #   fs_association_matrix.csv  every pair, with the measures above and the
 #                           number of cases with both recorded (n_both)
@@ -158,6 +160,17 @@ covariates$pct_missing_or_NA <- vapply(covariates$variable, function(v)
 covariates$note <- ifelse(vapply(covariates$variable, function(v) length(unique(d[[v]])) < 2, TRUE),
                           "CONSTANT in training data - carries no information", "")
 write.csv(covariates, file.path(out_dir, "fs_covariates.csv"), row.names = FALSE)
+
+# Count of training cases in each category (for DATA_DICTIONARY.md): every category of
+# covariates with up to 15 categories; for larger ones, the 10 rarest and 5 most common.
+levels_tab <- do.call(rbind, lapply(cat_vars, function(v) {
+  tab <- sort(table(d[[v]]), decreasing = TRUE)
+  x <- data.frame(variable = v, value = names(tab), n_training = as.integer(tab),
+                  pct = round(100 * as.integer(tab) / nrow(d), 2), stringsAsFactors = FALSE)
+  if (nrow(x) <= 15) return(cbind(x, shown = "all categories"))
+  rbind(cbind(head(x, 5), shown = "5 most common"), cbind(tail(x, 10), shown = "10 rarest"))
+}))
+write.csv(levels_tab, file.path(out_dir, "fs_levels.csv"), row.names = FALSE)
 
 # ---- 4. Spearman matrix for the numeric covariates --------------------------------
 if (length(num_vars) >= 2) {

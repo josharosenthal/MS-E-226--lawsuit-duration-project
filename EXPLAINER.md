@@ -21,6 +21,14 @@
 >
 > **The split was not redrawn.** The same rule removes these cases from training and holdout alike, and the split itself never depended on FJC status. `02_data_checks.R` reports how many each side lost and the holdout share afterwards.
 >
+> **Also excluded (Josh, 25 Oct 2026, after the split): habeas and prisoner-petition cases by nature of suit.** The cause-based rules (28 U.S.C. 2241/2254/2255 and 42:1983pr) missed cases whose **nature of suit** is a habeas or prisoner code but whose cause is something else. These are now excluded too:
+> - **Habeas:** 463 Alien Detainee, 510 Motions to Vacate Sentence, 530 General, 535 Death Penalty
+> - **Prisoner petitions:** 540 Mandamus & Other, 550 Prisoner: Civil Rights, 555 Prison Condition, 560 Civil Detainee
+>
+> **Size:** about **14.3%** of the sample: 44,720 training and 11,259 holdout cases. 550 (27,727 training) and 555 (14,510) are the bulk.
+>
+> **Balance was tested before deciding,** for each code, each group and all together, and every one passed: largest |z| = 2.38, all-codes z = −0.65 (`checks/presplit_nos_candidate_balance.csv`). The split isn't redrawn. **Results describe civil cases other than habeas and prisoner petitions.** Pro se plaintiffs and fee waivers are much rarer as a result. Some prisoner suits filed under other natures of suit, such as 440, remain.
+>
 > **Dependent variable: duration**, from filing to termination, **capped at 3,103 days**: the time from 31 Dec 2017 to 30 Jun 2026, the date the FJC data run to. Because overlong cases are excluded, no case in the sample reaches the cap. In `analysis_fjc` / `train_fjc`:
 > - `duration_capped_days` is the variable itself.
 > - `is_overlong` is always FALSE in the sample, since overlong cases are excluded. It's kept so the variable works if that decision is reversed.
@@ -118,9 +126,12 @@ You also get shape reports and 10,000-row samples in `~/scales_project/profiles/
 | `r/02_data_checks.R` | **Run before making the split**, and again whenever the data or covariates change. **Part 1**, a PASS / FLAG / INFO / OPEN summary: sample size; duplicates; whether the covariates are built and current, and how well judges, counties and firms matched; duration coverage; related cases (MDL, consolidated); removed and transferred cases (FJC `ORIGIN`) compared with `is_multi` and `is_mdl`; cases that ended by transfer or remand (counts only); decisions still open; software versions. **Part 2**, detailed tables: duplicates, missing values, SCALES-vs-FJC consistency, class-action codes, duration coverage. **Part 3**, open cases across all of `cases.parquet`, and what the FJC says happened to them later. Structure only: no outcome comparisons. Merged from the former `01_data_checks.R`, `02_data_checks.R` and `07_presplit_checks.R`. | No |
 | `r/02-a_data_checks_fjc.R` | **Training cases only.** The cases with no FJC record (no match, or an FJC record shared by two cases). For them it reports: how many; their durations against linked cases; SCALES status and docket size; how often their dockets mention "opened in error", duplicate or re-filed, transfer, remand, consolidation, voluntary dismissal or sealing (against a same-size random sample of linked cases); which years, courts and natures of suit they come from; and how closely SCALES and FJC end dates agree for linked cases. It checks whether a missing FJC record is a linking gap or reflects how the case ended (leakage). Counts only. Writes `checks/fjc_missing_*.csv`. | No |
 | `r/02-b_data_checks_judges.R` | **Training cases only.** How often the judge was **reassigned**, on a fixed random sample of 10,000 training cases (`n_sample`). (1) It finds the first "assigned to" entry on the docket, skipping magistrate referrals, and checks whether the SCALES judge, recorded at collection, is the same judge. (2) It searches the docket for "reassign", "no longer assigned", "recus" or "transferred to Judge". Tables: both measures, their cross-tab, by duration band and by court. Writes `checks/judges_reassign_*.csv`, including a 200-case spot-check file for checking the name matching by hand. | `n_sample` |
+| `r/02-c_data_checks_oddities.R` | **Training cases only.** The case header for every training case with an odd value: blank nature of suit, blank jurisdiction, "Local Question", a cause title cited by only one case, unmatched county code, or a defendant whose name isn't recorded. It shows the SCALES header next to what the FJC record says (NOS, JURIS, county, cause). The console shows counts and a table without names; the full headers, with case names, go to `checks/oddities_cases.csv`. | No |
+| `r/02-d_data_checks_prose.R` | **Training cases only.** Do SCALES and the FJC agree on who has no lawyer? It cross-tabulates SCALES "pro se / no counsel" (first plaintiff) and "no counsel listed" (first defendant) against FJC `PROSE`, for each side. It reports the share of each source's "no lawyer" confirmed by the other, the agreement and Cohen's kappa, and the largest natures of suit and courts among disagreements. Counts only. Writes `checks/prose_*.csv`. | No |
 | `r/03_holdout.R` | Sets aside 20% of the chosen population's **consolidation groups** as its holdout (a lead case and its members stay together; other cases are their own group), **once**, and saves it to `~/scales_project/holdout_split_<population>.csv`, with a README and a fingerprint (`.md5`) | No |
 | `r/04_random_case.R` | One case, at random or one you name, as a readable markdown page in `~/scales_project/case_views/`, with the FJC codes translated into words and the docket listed. It draws from training cases only once the holdout exists. `case_pool <- "1983pr"`, `"habeas"` or `"mdl"` shows an excluded case instead. | No |
 | `r/05_feature_selection.R` | **Training cases only.** How the chosen covariates relate to each other and to duration, to help decide which to keep. It uses the measure that fits each pair, since `cor()` works only for numbers: Spearman for counts, Cramér's V (bias-corrected) for two categorical variables, and eta (correlation ratio) for a count with a categorical variable. All run from 0 to 1. Each pair uses only cases where both variables are recorded: missing-value labels are left out, since a shared "no FJC record" label would otherwise look like association. Lists pairs at or above 0.7 as possibly redundant, flags constant variables, and gives each covariate's association with duration for cases that ended in court: on the rank of duration and on log(1 + duration), each for all cases and for cases where the covariate is recorded. A big drop on recorded cases means the "missing" category is doing the work. Writes `feature_selection/fs_*.csv`. The covariate list and leakage tier are at the top of the file. **Annotated walk-through: `FEATURE_SELECTION_GUIDE.md`.** | Covariate list, `assoc_threshold` |
+| `DATA_DICTIONARY.md` | The 35 candidate covariates: meaning, source, type, number of levels, smallest level and % missing (training), leakage tier, and main or sensitivity model; the values of the covariates with few categories, with a rough mix; and the rare categories worth merging. | As decisions change |
 | `r/99_fee_search.R` | *(Parked: not used in the current project.)* Attorney's-fee docket entries, classified as requests, rulings, responses and so on. Writes the list of cases with a fee request (which defines the `"fee_requests"` population). Rulings are shown for training cases only once the holdout exists. | No |
 | `r/fee_shifting_codes.csv` | *(Parked.)* **Your list** of causes of action and nature-of-suit codes that define the `"fee_shifting"` population. Examples are included but switched off. | **Yes** |
 | `reference/` | Lookup tables from outside sources used by `01_build_features.R`: the FJC judge directory (senior status), the NCHS 2013 county urban–rural codes, and the BCG large-firm headcount ranking. Sources and caveats are in `reference/README.md`. | No |
@@ -168,6 +179,8 @@ You also get shape reports and 10,000-row samples in `~/scales_project/profiles/
 | `fee_request_cases.csv` | `99_fee_search.R` (parked) | Every base-sample case with at least one fee request: the `"fee_requests"` population |
 | `holdout_split_<population>.csv` + `_README.txt` + `.md5` | `03_holdout.R` | Which cases are in the holdout; how and when the split was made; and its fingerprint (checksum), which `00_sample.R` checks every session, stopping if the split file has changed |
 | `checks/fjc_missing_*.csv` | `02-a_data_checks_fjc.R` | Training cases with no FJC record: counts, durations, status, docket size and wording, where they come from, and SCALES-vs-FJC end-date agreement |
+| `checks/oddities_cases.csv` | `02-c_data_checks_oddities.R` | Case headers, SCALES next to FJC, for training cases with odd covariate values, with a flag column for each kind of oddity |
+| `checks/prose_*.csv` | `02-d_data_checks_prose.R` | SCALES-vs-FJC cross-tabs of "no lawyer" for each side, agreement and kappa, and the largest groups among disagreements |
 | `checks/judges_reassign_*.csv` | `02-b_data_checks_judges.R` | Judge reassignment in a 10,000-case training sample: first-assignment match, reassignment wording, cross-tab, by duration and court, and a spot-check file |
 | `case_views/<ucid>.md` | `04_random_case.R` | Readable one-case pages |
 | `feature_selection/fs_covariates.csv`, `fs_association_matrix.csv`, `fs_association_square.csv`, `fs_high_pairs.csv`, `fs_spearman_numeric.csv`, `fs_dv_association.csv` | `05_feature_selection.R` | Training cases only: each covariate's type, leakage tier, levels and missing share; every pair's association (long and square); the possibly redundant pairs; and each covariate's association with duration |
@@ -220,6 +233,8 @@ source("~/scales_setup/r/03_holdout.R")          # make its holdout ONCE, then: 
 source("~/scales_setup/r/04_random_case.R")      # look at one (training) case
 source("~/scales_setup/r/02-a_data_checks_fjc.R") # training cases with no FJC record: linking gap or leakage?
 source("~/scales_setup/r/02-b_data_checks_judges.R") # how often the judge was reassigned (judge leakage)
+source("~/scales_setup/r/02-c_data_checks_oddities.R") # case headers for odd values (blank NOS, Local Question, ...)
+source("~/scales_setup/r/02-d_data_checks_prose.R")  # do SCALES and FJC agree on who has no lawyer?
 source("~/scales_setup/r/05_feature_selection.R") # how covariates relate to each other and to duration (training only)
 ```
 
@@ -287,6 +302,20 @@ WHERE ucid = 'azd;;2:16-cv-00001' ORDER BY entry_index;
 | `is_consolidated`, `consolidation_role` | Consolidation happens after filing. These are built from SCALES `lead_case_id` only. **`is_multi` is not used**: it flags any docket that refers to another case number, including removal and transfer origins. |
 | `amicus` | Amicus filings come during the case, and longer cases have more time to attract them |
 | `defendant_firm_rank` = **"no counsel listed"** (about a third of cases) | A defendant with no lawyer at collection usually **never appeared**: it defaulted, or the case was dismissed or settled before an answer. So the category partly reflects how the case went. |
+
+#### Decision (Josh, 25 Oct 2026): one plaintiff representation variable
+
+**`plaintiff_firm_cases` is the single variable for plaintiff representation in the main model.** Its categories are:
+- pro se / no counsel
+- lawyer, no firm listed
+- firm in 1–10, 11–20, 21–50 or over 50 cases
+- no plaintiff listed
+
+**No separate plaintiff pro se flag is added.** `02-d_data_checks_prose.R` found that SCALES's "pro se / no counsel" (first plaintiff, at collection) and FJC `PROSE` (plaintiff or both) agree on 98.7% of training cases, with kappa 0.93, after the prisoner exclusion. So a second variable would measure the same thing twice and split its effect between two coefficients.
+
+**How to read it:** the pro se category is the plaintiff pro se effect. The firm categories compare represented plaintiffs by their firm's experience.
+
+**What happens to `pro_se` (FJC):** it no longer supplies the plaintiff pro se measure. Its defendant part ("defendant", "both") is undecided. The defendant side (`defendant_firm_rank`, and FJC defendant pro se) is still open: SCALES's "no counsel listed" mostly means the defendant never appeared, so 89% of those defendants aren't pro se in the FJC, and kappa is 0.14.
 
 #### Decision (Josh, 24 Oct 2026): court in the main model; judge variables only in a sensitivity model
 

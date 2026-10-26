@@ -155,9 +155,12 @@ say("INFO", sprintf("Cases with NO FJC record EXCLUDED from the sample: %s (most
 if (file.exists(split_file)) {
   # The split was made before this exclusion. Check the same rule removed cases from
   # both sides in proportion (counts only - no outcomes).
-  bal <- q("WITH s AS (SELECT h.ucid, h.is_holdout, h.ucid IN (SELECT ucid FROM best_link_unique) AS has_fjc
+  # (only cases still in the sample before this rule - cases removed by other rules,
+  # e.g. habeas nature of suit, have no FJC link either and must not be counted here)
+  bal <- q("WITH s AS (SELECT h.ucid, h.is_holdout, h.ucid IN (SELECT ucid FROM best_link_unique) AS has_fjc,
+                              h.ucid IN (SELECT ucid FROM all_cases_dedup) AS still_in
                        FROM holdout_split h)
-            SELECT is_holdout, count(*) AS in_split, count(*) FILTER (WHERE NOT has_fjc) AS dropped_no_fjc
+            SELECT is_holdout, count(*) AS in_split, count(*) FILTER (WHERE still_in AND NOT has_fjc) AS dropped_no_fjc
             FROM s GROUP BY 1 ORDER BY 1")
   bal$pct_dropped <- round(100 * bal$dropped_no_fjc / bal$in_split, 2)
   save_csv(bal, "no_fjc_split_balance")
@@ -170,6 +173,57 @@ if (file.exists(split_file)) {
       sprintf("No-FJC exclusion vs the split: dropped %s of %s training cases (%s%%) and %s of %s holdout cases (%s%%). Holdout share now %.2f%% (by year: %s).",
               fmt(tr$dropped_no_fjc), fmt(tr$in_split), tr$pct_dropped, fmt(ho$dropped_no_fjc), fmt(ho$in_split), ho$pct_dropped,
               100 * share_now, paste0("20", by_year$year_dir, " ", by_year$pct_holdout, "%", collapse = ", ")))
+  # Nature-of-suit exclusions (habeas / prisoner codes the cause rules miss), changes 50, 54, 55.
+  # Balance test: a two-proportion z-test of the share removed from training vs holdout.
+  # |z| > 3 is FLAGged - a random split rarely gives that by chance (the grouped split makes
+  # chance differences slightly larger than the test assumes). Counts only, no outcomes.
+  ztest <- function(k_tr, n_tr, k_ho, n_ho) {
+    p <- (k_tr + k_ho) / (n_tr + n_ho)
+    if (p == 0 || p == 1) return(0)
+    (k_tr / n_tr - k_ho / n_ho) / sqrt(p * (1 - p) * (1 / n_tr + 1 / n_ho))
+  }
+  # (a) codes already APPLIED (exclude_nos_codes): every split case passed the cause rules,
+  #     so a split case no longer in non_habeas_cases was removed by these codes
+  hab <- q("SELECT h.is_holdout, regexp_extract(c.nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code, count(*) AS n
+            FROM holdout_split h JOIN civil_cases c USING (ucid)
+            WHERE h.ucid NOT IN (SELECT ucid FROM non_habeas_cases)
+            GROUP BY ALL ORDER BY 2, 1")
+  save_csv(hab, "nos_applied_split_balance")
+  hab_tr <- sum(hab$n[!hab$is_holdout]); hab_ho <- sum(hab$n[hab$is_holdout])
+  z <- ztest(hab_tr, tr$in_split, hab_ho, ho$in_split)
+  say(if (abs(z) <= 3) "PASS" else "FLAG",
+      sprintf("Nature-of-suit exclusion APPLIED (%s): removed %s training (%.2f%%) and %s holdout cases (%.2f%%); z = %.2f.",
+              if (length(exclude_nos_codes)) paste(exclude_nos_codes, collapse = ", ") else "none",
+              fmt(hab_tr), 100 * hab_tr / tr$in_split, fmt(hab_ho), 100 * hab_ho / ho$in_split, z))
+  # (b) CANDIDATE codes not yet applied: what excluding each would remove from the current
+  #     sample, by side, before deciding. Also the habeas group, the prisoner group and all.
+  pending <- setdiff(candidate_nos_codes, exclude_nos_codes)
+  if (length(pending)) {
+    cnt <- q(sprintf("SELECT is_holdout, regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code, count(*) AS n
+                      FROM analysis_cases WHERE regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) IN (%s)
+                      GROUP BY ALL", paste0("'", pending, "'", collapse = ", ")))
+    tot <- q("SELECT is_holdout, count(*) AS n FROM analysis_cases GROUP BY 1")
+    n_tr <- tot$n[!tot$is_holdout]; n_ho <- tot$n[tot$is_holdout]
+    groups <- c(setNames(as.list(pending), pending),
+                list("habeas codes (463, 510, 530, 535)"         = intersect(pending, c("463", "510", "530", "535")),
+                     "prisoner codes (540, 550, 555, 560)"        = intersect(pending, c("540", "550", "555", "560")),
+                     "ALL candidates"                              = pending))
+    cand <- do.call(rbind, lapply(names(groups), function(g) {
+      k_tr <- sum(cnt$n[!cnt$is_holdout & cnt$nos_code %in% groups[[g]]])
+      k_ho <- sum(cnt$n[cnt$is_holdout & cnt$nos_code %in% groups[[g]]])
+      data.frame(codes = g, training_removed = k_tr, pct_training = round(100 * k_tr / n_tr, 3),
+                 holdout_removed = k_ho, pct_holdout = round(100 * k_ho / n_ho, 3),
+                 z = round(ztest(k_tr, n_tr, k_ho, n_ho), 2))
+    }))
+    cand$balanced <- ifelse(abs(cand$z) <= 3, "yes", "NO - check")
+    save_csv(cand, "nos_candidate_balance")
+    all_row <- cand[cand$codes == "ALL candidates", ]
+    say(if (all(abs(cand$z) <= 3)) "INFO" else "FLAG",
+        sprintf("Nature-of-suit CANDIDATE exclusions (not applied): all %s codes together would remove %s training (%.2f%%) and %s holdout cases (%.2f%%), z = %.2f; %s of %s code groups balanced (|z| <= 3). Table: presplit_nos_candidate_balance.csv.",
+                length(pending), fmt(all_row$training_removed), all_row$pct_training, fmt(all_row$holdout_removed),
+                all_row$pct_holdout, all_row$z, sum(abs(cand$z) <= 3), nrow(cand)))
+    print(cand, row.names = FALSE)
+  }
 }
 left_mdl <- q("SELECT count(*) AS n FROM analysis_cases WHERE coalesce(is_mdl, false)")$n
 say(if (left_mdl == 0) "PASS" else "FLAG", sprintf("MDL cases left in the sample: %s (should be 0).", fmt(left_mdl)))

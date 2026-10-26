@@ -7,7 +7,8 @@
 # BASE SAMPLE (always): civil cases filed in 2016 and 2017 (case number year
 #   16 or 17), OPEN OR CLOSED when SCALES collected them (case_closed says which),
 #   minus habeas (28 USC 2241, 2254, 2255, including suffixed codes like 2241fd)
-#   and prisoner civil rights (42 USC 1983pr; plain 42:1983 is kept),
+#   and prisoner civil rights (42 USC 1983pr; plain 42:1983 is kept), plus cases whose
+#   nature of suit is a habeas or prisoner-petition code (463, 510-560; section 2),
 #   minus MDL member cases (SCALES is_mdl OR FJC ORIGIN 6 / 13) and cases that
 #   ended by MDL transfer out (FJC DISP 10), with duplicate cases removed,
 #   minus OVERLONG cases (longer than the duration cap, or still pending at the
@@ -103,11 +104,25 @@ dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW civil_cases AS
 
 # ---- 2. Drop habeas and prisoner civil rights, then MDL members ----------------
 # coalesce(..., false) keeps cases with no cause listed instead of dropping them.
-dbExecute(con, "CREATE OR REPLACE TEMP VIEW non_habeas_cases AS
+# Nature-of-suit exclusion for habeas and prisoner cases the cause rules miss
+# (Josh, 25 Oct 2026, AFTER the split). 02_data_checks.R tested each CANDIDATE code first:
+# excluding them removes training and holdout cases in proportion (changes 55, 57).
+# The split is not redrawn - the same rule applies to both sides. Codes in
+# exclude_nos_codes are dropped; the check keeps reporting their balance.
+#   463 Habeas Corpus - Alien Detainee   510 Motions to Vacate Sentence
+#   530 Habeas Corpus - General          535 Habeas Corpus - Death Penalty
+#   540 Mandamus & Other (prisoner)      550 Prisoner: Civil Rights
+#   555 Prison Condition                 560 Civil Detainee - Conditions of Confinement
+candidate_nos_codes <- c("463", "510", "530", "535", "540", "550", "555", "560")
+exclude_nos_codes   <- candidate_nos_codes # all 8 applied (Josh, 25 Oct 2026, change 57: balanced, |z| <= 2.4)
+nos_rule <- if (length(exclude_nos_codes))
+  sprintf("\n     OR regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) IN (%s)",
+          paste0("'", exclude_nos_codes, "'", collapse = ", ")) else ""
+dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW non_habeas_cases AS
   SELECT * FROM civil_cases
   WHERE NOT coalesce(
         (cause_title = 28 AND regexp_matches(cause_section, '^(2241|2254|2255)([a-z]|$)'))
-     OR (cause_title = 42 AND cause_section = '1983pr'), false)")
+     OR (cause_title = 42 AND cause_section = '1983pr')%s, false)", nos_rule))
 # MDL member cases are excluded (Josh, 24 Oct 2026): their timing is driven by
 # the MDL, and members of one MDL often end together, which would put near-twins
 # on both sides of the holdout split. MDL = SCALES is_mdl OR FJC ORIGIN 6 (MDL
@@ -360,6 +375,75 @@ dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_fjc_base AS
   LEFT JOIN best_link_unique l USING (ucid)
   LEFT JOIN case_duration d USING (ucid)")
 
+# ---- 7a. RECODES: rule-based fixes for odd values (Josh, 25 Oct 2026; change 56) ----
+# Found by 02-c_data_checks_oddities.R on training cases, but written as general RULES
+# so every case - training and holdout - is treated the same. case_features.parquet is
+# not rebuilt; the fixes are applied here, in the analysis view.
+#   county_area_class     "unmatched county code" + FJC county 75010 (the FJC's code for
+#                         the Northern Mariana Islands) -> "US territory"
+#   first_defendant_type  "name not recorded" (the first defendant's name has no letters):
+#                         name starts with "$"            -> "property (in rem)" (forfeitures)
+#                         name is 7-11 / 7-Eleven         -> "business"
+#                         name is only digits and hyphens -> "individual" (SCALES-anonymized
+#                                                            people and anonymous online sellers)
+#   cause_title/section   3:4301 -> 38:4301 (USERRA)    1:102 -> 42:12102 (ADA) - typos in
+#                         SCALES's cause field; 73:201 (Pennsylvania's consumer-protection
+#                         statute, state law) -> 28:1332 (diversity); 99:9999 (a placeholder
+#                         "report cause code") -> no cause. cause_group uses the corrected values
+#   nature_suit,          blank in SCALES -> the FJC value (NOS code, labelled with SCALES's own
+#   jurisdiction          wording for that code; JURIS 1-5 in words) - change 57
+# "Local Question" jurisdiction is NOT recoded: it's real (Guam and Virgin Islands, FJC JURIS 5).
+features_cols <- dbListFields(con, "analysis_fjc_base")
+if (all(c("county_area_class", "first_defendant_type") %in% features_cols)) {
+  dbExecute(con, sprintf("CREATE OR REPLACE TEMP TABLE recode_fjc_nmi AS
+    SELECT fjc_row FROM '%s/fjc_idb_civil.parquet' WHERE trim(CAST(COUNTY AS VARCHAR)) = '75010'", pq))
+  # the first defendant (same definition as 01_build_features.R: role starts with
+  # defendant/respondent, else party_type; lowest party_index) of each "name not recorded" case
+  dbExecute(con, sprintf("CREATE OR REPLACE TEMP TABLE recode_def_names AS
+    SELECT DISTINCT ON (p.ucid) p.ucid, trim(coalesce(CAST(p.name AS VARCHAR), '')) AS def_name
+    FROM '%s/parties.parquet' p
+    WHERE p.ucid IN (SELECT ucid FROM analysis_fjc_base WHERE first_defendant_type = 'name not recorded')
+      AND (regexp_matches(lower(trim(coalesce(CAST(p.role AS VARCHAR), ''))), '^(defendant|respondent)')
+           OR (NOT regexp_matches(lower(trim(coalesce(CAST(p.role AS VARCHAR), ''))), '^(plaintiff|petitioner)')
+               AND lower(coalesce(CAST(p.party_type AS VARCHAR), '')) LIKE 'defendant%%'))
+    ORDER BY p.ucid, p.party_index", pq))
+  feature_recodes <- ",
+    CASE WHEN r.county_area_class = 'unmatched county code' AND r.fjc_row IN (SELECT fjc_row FROM recode_fjc_nmi)
+         THEN 'US territory' ELSE r.county_area_class END AS county_area_class,
+    CASE WHEN r.first_defendant_type <> 'name not recorded' OR dn.def_name IS NULL THEN r.first_defendant_type
+         WHEN regexp_matches(dn.def_name, '^\\$')                         THEN 'property (in rem)'
+         WHEN regexp_matches(lower(dn.def_name), '^7[- ]?(11|eleven)\\b')   THEN 'business'
+         WHEN regexp_matches(dn.def_name, '^[0-9][0-9 -]*$')               THEN 'individual'
+         ELSE r.first_defendant_type END AS first_defendant_type"
+  feature_join <- "LEFT JOIN recode_def_names dn ON dn.ucid = r.ucid"
+} else {
+  feature_recodes <- ""; feature_join <- ""
+}
+# SCALES's own label for each 3-digit nature-of-suit code (its most common wording)
+dbExecute(con, "CREATE OR REPLACE TEMP TABLE recode_nos_labels AS
+  SELECT regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code, mode(trim(nature_suit)) AS nos_label
+  FROM civil_cases WHERE regexp_matches(coalesce(nature_suit, ''), '^\\s*[0-9]{3}') GROUP BY 1")
+dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
+  SELECT r.* REPLACE (
+    CASE WHEN r.cause_title = 3  AND r.cause_section = '4301' THEN 38
+         WHEN r.cause_title = 1  AND r.cause_section = '102'  THEN 42
+         WHEN r.cause_title = 73 AND r.cause_section = '201'  THEN 28
+         WHEN r.cause_title = 99 AND r.cause_section = '9999' THEN NULL
+         ELSE r.cause_title END AS cause_title,
+    CASE WHEN r.cause_title = 1  AND r.cause_section = '102'  THEN '12102'
+         WHEN r.cause_title = 73 AND r.cause_section = '201'  THEN '1332'
+         WHEN r.cause_title = 99 AND r.cause_section = '9999' THEN NULL
+         ELSE r.cause_section END AS cause_section,
+    CASE WHEN nullif(trim(r.nature_suit), '') IS NULL AND nl.nos_label IS NOT NULL THEN nl.nos_label
+         ELSE r.nature_suit END AS nature_suit,
+    CASE WHEN nullif(trim(r.jurisdiction), '') IS NULL THEN
+           coalesce(CASE trim(CAST(r.JURIS AS VARCHAR)) WHEN '1' THEN 'U.S. Government Plaintiff'
+                      WHEN '2' THEN 'U.S. Government Defendant' WHEN '3' THEN 'Federal Question'
+                      WHEN '4' THEN 'Diversity' WHEN '5' THEN 'Local Question' END, r.jurisdiction)
+         ELSE r.jurisdiction END AS jurisdiction%s)
+  FROM analysis_fjc_base r
+  LEFT JOIN recode_nos_labels nl ON nl.nos_code = lpad(trim(CAST(r.NOS AS VARCHAR)), 3, '0') %s", feature_recodes, feature_join))
+
 # ---- 7b. Covariates that depend on the TRAINING data, plus filing month/weekday ----
 #   filing_month (1-12), filing_weekday (Monday ... Sunday)   from start_date
 #   judge_group   "unassigned" (judge field says Unassigned / Not Assigned ...) and
@@ -382,7 +466,7 @@ dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc AS
                CASE WHEN nullif(trim(judge), '') IS NULL THEN '(no judge listed)'
                     WHEN regexp_matches(lower(judge), '%s') THEN 'unassigned'
                     ELSE court || ' | ' || trim(judge) END AS judge_key
-             FROM analysis_fjc_base),
+             FROM analysis_fjc_recoded),
   basis AS (SELECT * FROM b WHERE %s),
   jc AS (SELECT judge_key, count(*) AS n FROM basis GROUP BY 1),
   cc AS (SELECT cause_title, cause_section, count(*) AS n FROM basis
