@@ -423,7 +423,7 @@ if (all(c("county_area_class", "first_defendant_type") %in% features_cols)) {
 dbExecute(con, "CREATE OR REPLACE TEMP TABLE recode_nos_labels AS
   SELECT regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code, mode(trim(nature_suit)) AS nos_label
   FROM civil_cases WHERE regexp_matches(coalesce(nature_suit, ''), '^\\s*[0-9]{3}') GROUP BY 1")
-dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
+dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded_1 AS
   SELECT r.* REPLACE (
     CASE WHEN r.cause_title = 3  AND r.cause_section = '4301' THEN 38
          WHEN r.cause_title = 1  AND r.cause_section = '102'  THEN 42
@@ -444,6 +444,51 @@ dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
   FROM analysis_fjc_base r
   LEFT JOIN recode_nos_labels nl ON nl.nos_code = lpad(trim(CAST(r.NOS AS VARCHAR)), 3, '0') %s", feature_recodes, feature_join))
 
+# ---- 7a (cont.). No cause in SCALES -> fill from the FJC SECTION (Josh, 28 Oct 2026; change 65) ----
+# 02-e_data_checks_nocause.R: for many no-cause cases the FJC record has a statute SECTION
+# even when its TITL is blank or 0 (e.g. 0227 = 47 U.S.C. 227, the TCPA). The FJC field
+# holds 4 characters, so long sections are cut off ("1210" = 12101).
+# Rule: a case with no SCALES cause whose FJC SECTION is a number (not -8, 0, 99, 999, 9999;
+# letter codes such as MI/SC "miscellaneous" don't count) gets the SCALES cause that is MOST
+# COMMON among TRAINING cases with the same nature-of-suit code whose section matches it:
+#   exactly, or with letters after it (227 -> 227, 1983 -> 1983pr), or - for a 4-digit FJC
+#   section, which may be cut off - starting with it (1210 -> 12101).
+# If the FJC TITL is a real title number, the cause's title must match it too. No match ->
+# the case stays "(no cause)". cause_from_fjc = TRUE marks the filled cases.
+threshold_basis <- if (file.exists(split_file)) "is_holdout = FALSE" else "TRUE"
+fjc_cols_all <- names(dbGetQuery(con, sprintf("SELECT * FROM '%s/fjc_idb_civil.parquet' LIMIT 0", pq)))
+if (all(c("TITL", "SECTION") %in% fjc_cols_all)) {
+  dbExecute(con, sprintf("CREATE OR REPLACE TEMP TABLE recode_fjc_cause AS
+    WITH need AS (
+      SELECT r.ucid, regexp_extract(r.nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code,
+             nullif(ltrim(trim(CAST(f.SECTION AS VARCHAR)), '0'), '') AS fsec,
+             length(trim(CAST(f.SECTION AS VARCHAR))) AS fsec_len,
+             CASE WHEN TRY_CAST(trim(CAST(f.TITL AS VARCHAR)) AS INTEGER) > 0
+                  THEN TRY_CAST(trim(CAST(f.TITL AS VARCHAR)) AS INTEGER) END AS ftitle
+      FROM analysis_fjc_recoded_1 r JOIN '%s/fjc_idb_civil.parquet' f ON f.fjc_row = r.fjc_row
+      WHERE r.cause_title IS NULL),
+    need_ok AS (SELECT * FROM need WHERE regexp_matches(coalesce(fsec, ''), '^[0-9]+$')
+                  AND fsec NOT IN ('99', '999', '9999') AND nos_code <> ''),
+    known AS (SELECT regexp_extract(nature_suit, '^\\s*([0-9]{3})', 1) AS nos_code,
+                     cause_title, cause_section, count(*) AS n
+              FROM analysis_fjc_recoded_1 WHERE cause_title IS NOT NULL AND %s GROUP BY 1, 2, 3)
+    SELECT DISTINCT ON (n.ucid) n.ucid, k.cause_title AS fill_title, k.cause_section AS fill_section
+    FROM need_ok n JOIN known k ON k.nos_code = n.nos_code
+     AND (n.ftitle IS NULL OR k.cause_title = n.ftitle)
+     AND (lower(k.cause_section) = n.fsec
+          OR regexp_matches(lower(k.cause_section), '^' || n.fsec || '[a-z]+$')
+          OR (n.fsec_len = 4 AND starts_with(lower(k.cause_section), n.fsec)))
+    ORDER BY n.ucid, k.n DESC, k.cause_title, k.cause_section", pq, threshold_basis))
+} else {
+  dbExecute(con, "CREATE OR REPLACE TEMP TABLE recode_fjc_cause AS
+    SELECT NULL::VARCHAR AS ucid, NULL::INTEGER AS fill_title, NULL::VARCHAR AS fill_section WHERE false")
+}
+dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
+  SELECT r.* REPLACE (coalesce(r.cause_title, fc.fill_title) AS cause_title,
+                      CASE WHEN r.cause_title IS NULL THEN fc.fill_section ELSE r.cause_section END AS cause_section),
+         r.cause_title IS NULL AND fc.ucid IS NOT NULL AS cause_from_fjc
+  FROM analysis_fjc_recoded_1 r LEFT JOIN recode_fjc_cause fc USING (ucid)")
+
 # ---- 7b. Covariates that depend on the TRAINING data, plus filing month/weekday ----
 #   filing_month (1-12), filing_weekday (Monday ... Sunday)   from start_date
 #   judge_group   "unassigned" (judge field says Unassigned / Not Assigned ...) and
@@ -453,10 +498,17 @@ dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
 #   arrival_route, class_action_alleged, in_forma_pauperis, pro_se
 #                 labelled versions of FJC ORIGIN, CLASSACT, IFP, PROSE (codes in
 #                 words; -8 recoded per the codebook; "no FJC record" when unmatched)
+#   defendant_pro_se          yes if FJC PROSE is defendant (2) or both (3) (Josh, 28 Oct 2026)
+#   defendant_firm_appeared   defendant_firm_rank, "no counsel listed" folded into "not in list",
+#                             and "rank 181-200" merged with "large-firm list, headcount not given".
+#                 It measures defense representation only where a lawyer appeared: a case with
+#                 no defense lawyer looks like "not in list", so "nobody appeared" (which partly
+#                 reflects how the case went) can't be picked out (change 70). Plaintiffs keep
+#                 plaintiff_firm_cases as it is: pro se is mostly known at filing.
 #   cause_group   "title:section" if that pair has at least 100 TRAINING cases,
 #                 otherwise "title:other"; "(no cause)" if there's no cause
-# Before this population's holdout exists, the thresholds use all of its cases.
-threshold_basis <- if (file.exists(split_file)) "is_holdout = FALSE" else "TRUE"
+# Before this population's holdout exists, the thresholds use all of its cases
+# (threshold_basis, set in 7a above).
 # Wording SCALES uses when no judge has been assigned (a case that ended before
 # assignment). NOTE: this partly reflects the outcome - see CHANGES.md, change 28.
 # "Executive Committee" (e.g. N.D. Ill.) is the court committee that holds unassigned cases.
@@ -484,6 +536,12 @@ dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_fjc AS
     CASE WHEN b.fjc_row IS NULL THEN 'no FJC record'
          ELSE CASE trim(b.PROSE) WHEN '0' THEN 'none' WHEN '1' THEN 'plaintiff' WHEN '2' THEN 'defendant'
                 WHEN '3' THEN 'both' ELSE 'not recorded' END END AS pro_se,
+    CASE WHEN b.fjc_row IS NULL THEN 'no FJC record' WHEN trim(b.PROSE) IN ('2', '3') THEN 'yes'
+         WHEN trim(b.PROSE) IN ('0', '1') THEN 'no' ELSE 'not recorded' END AS defendant_pro_se,
+    CASE WHEN b.defendant_firm_rank = 'no counsel listed' THEN 'not in list'
+         WHEN b.defendant_firm_rank IN ('rank 181-200', 'large-firm list, headcount not given')
+           THEN 'rank 181-200 or headcount not given'
+         ELSE b.defendant_firm_rank END AS defendant_firm_appeared,
     month(b.start_date)   AS filing_month,
     dayname(b.start_date) AS filing_weekday,
     CASE WHEN b.judge_key IN ('unassigned', '(no judge listed)') OR coalesce(jc.n, 0) >= 20 THEN b.judge_key

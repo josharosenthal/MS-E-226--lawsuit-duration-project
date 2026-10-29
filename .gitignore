@@ -6,11 +6,13 @@ closed_civil_by_cause_titlesection_usc.csv
 EXPLAINER.html
 reference/README.html
 DATA_DICTIONARY.html
+CHANGES.html
 # Clutter
 unzip
 .DS_Store
 .Rhistory
 .RData
+Rplots.pdf
 .Rproj.user/
 ~$*
 

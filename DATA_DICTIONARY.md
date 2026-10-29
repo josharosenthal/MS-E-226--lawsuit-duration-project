@@ -1,20 +1,20 @@
 # Data dictionary: candidate covariates
 
-These are the 35 covariates in `r/05_feature_selection.R`, all columns of `analysis_fjc` / `train_fjc`, built by `r/00_sample.R` and `r/01_build_features.R`.
+These are the 37 covariates in `r/05_feature_selection.R` (35, plus the two added in change 70), all columns of `analysis_fjc` / `train_fjc`, built by `r/00_sample.R` and `r/01_build_features.R`.
 
 **Where the numbers come from:**
 - **All counts:** the FarmShare run of 25 Oct 2026, on **268,007 training cases**. That's after every exclusion: no-FJC (change 42), habeas and prisoner natures of suit (change 57), and the recodes (changes 56–57).
   - Levels, smallest level and % missing: `misc/feature_selection/fs_covariates.csv`
   - Counts for each category (section 2): `misc/feature_selection/fs_levels.csv`
 - **Leakage tiers:** from EXPLAINER section 7. *filing* means known when the case is filed; *partly* means recorded later (7C); *leaky* means kept knowingly despite leakage (7B).
-- **Model:** **main**, or **sensitivity** only (changes 45 and 58).
+- **Model:** **main**, or **sensitivity** only (changes 45, 58 and 70). The sets used by 06 and the 07 scripts are defined in `r/covariate_sets.R`.
 
 ## 1. All covariates
 
 | Variable | What it is | Source | Type | Levels (training) | Smallest level (training cases) | % missing | Leakage | Model |
 |---|---|---|---|---|---|---|---|---|
 | `n_parties` | Number of parties listed | SCALES parties, at collection | count | — | — | 0 | partly | main |
-| `n_counsel` | Number of lawyer listings | SCALES counsel, at collection | count | — | — | 0 | **leaky** | main |
+| `n_counsel` | Number of lawyer listings | SCALES counsel, at collection | count | — | — | 0 | **leaky** | **sensitivity only** (out of main: too leaky, `02-g_data_checks_counsel.R`; change 70) |
 | `n_plaintiffs` | Number of plaintiffs | SCALES parties by role | count | — | — | 0 | partly | main |
 | `n_defendants` | Number of defendants | SCALES parties by role | count | — | — | 0 | partly | main |
 | `year_dir` | Year in the case number (16 or 17) | SCALES case number | category | 2 | 132,366 | 0 | filing | main |
@@ -34,14 +34,16 @@ These are the 35 covariates in `r/05_feature_selection.R`, all columns of `analy
 | `arrival_route` | How the case arrived (FJC `ORIGIN`) | FJC | category | 5 | **40** | 0 | filing | main |
 | `class_action_alleged` | Class action alleged (FJC `CLASSACT`) | FJC | category | 2 | 11,353 | 0 | filing | main |
 | `in_forma_pauperis` | Filing-fee waiver (FJC `IFP`) | FJC, recorded at termination | category | 2 | 35,153 | 0 | partly | main |
-| `pro_se` | Who is self-represented (FJC `PROSE`) | FJC, recorded at termination | category | 4 | 1,296 | 0 | partly | plaintiffs: **not used** (measured by `plaintiff_firm_cases`); defendant part ("defendant", "both"): undecided |
+| `pro_se` | Who is self-represented (FJC `PROSE`) | FJC, recorded at termination | category | 4 | 1,296 | 0 | partly | sensitivity (main uses `defendant_pro_se`; change 70) |
 | `diversity_residence` | Citizenship pair in diversity cases (FJC `RESIDENC`), or "not diversity" | FJC | category | 35 | **5** | 0 | filing | main |
 | `county_area_class` | First plaintiff's county, classified urban / suburban / rural (NCHS 2013) | FJC `COUNTY` plus NCHS | category | 7 | **1** | 0 | filing | main |
 | `first_plaintiff_type` | Kind of party, guessed from the first plaintiff's name | SCALES parties | category | 6 | 1,338 | 0.8 | partly | main |
 | `first_defendant_type` | The same, for the first defendant | SCALES parties | category | 7 | **8** | 0.9 | partly | main |
-| `plaintiff_firm_cases` | How many cases the first plaintiff's lead firm appears in, or pro se | SCALES counsel | category | 7 | 2,016 | 0.8 | partly | **main: the single plaintiff representation variable** (its "pro se / no counsel" category is the plaintiff pro se measure) |
-| `defendant_firm_rank` | First defendant's lead firm, by BCG headcount rank (groups of 20) | SCALES counsel plus the BCG list | category | 14 | 174 | 0.9 | **leaky** ("no counsel listed") | **undecided:** main or sensitivity (see `NOTES_TO_SELF.md`) |
+| `plaintiff_firm_cases` | How many cases the first plaintiff's lead firm appears in, or pro se | SCALES counsel | category | 7 | 2,016 | 0.8 | partly | **main: the single plaintiff representation variable** (its "pro se / no counsel" category is the plaintiff pro se measure; kept as is in change 70) |
+| `defendant_firm_rank` | First defendant's lead firm, by BCG headcount rank (groups of 20) | SCALES counsel plus the BCG list | category | 14 | 174 | 0.9 | **leaky** ("no counsel listed") | sensitivity (main uses `defendant_firm_appeared`; change 70) |
 | `plaintiff_org_attorney` | Any plaintiff-side attorney with a `.org` email | SCALES counsel | category | 2 | 4,690 | 0 | partly | main |
+| `defendant_firm_appeared` | `defendant_firm_rank` with "no counsel listed" folded into "not in list", and "rank 181–200" merged with "headcount not given" (change 70) | SCALES counsel plus the BCG list | category | 12 | 451 | 0.9 | partly (the ranked levels still need a lawyer to have appeared) | **main** |
+| `defendant_pro_se` | FJC `PROSE` says the defendant (or both sides) is pro se (change 70) | FJC, recorded at termination | category | 2 | 9,458 | 0 | partly | **main** |
 | `any_referral` | Referred to a magistrate judge | SCALES | category | 2 | 125,092 | 0 | **leaky** | **sensitivity** |
 | `has_related_case` | Related cases listed | SCALES | category | 2 | 11,279 | 0 | partly | main |
 | `is_consolidated` | Has a lead case (lead or member) | SCALES `lead_case_id` | category | 2 | 5,383 | 0 | **leaky** | main (or `consolidation_role`) |
@@ -85,6 +87,8 @@ All counts are **training cases with a duration value (268,007)**, from `misc/fe
 | `first_defendant_type` | business 140,206 (52.3) · individual 80,359 (30.0) · federal government 24,624 (9.2) · state or local government 15,143 (5.7) · other organization 5,290 (2.0) · no defendant listed 2,377 (0.9) · **property (in rem) 8** |
 | `plaintiff_firm_cases` | over 50 cases 93,606 (34.9) · 1–10 cases 63,073 (23.5) · 21–50 cases 35,040 (13.1) · pro se / no counsel 29,772 (11.1) · 11–20 cases 25,512 (9.5) · no firm listed 18,988 (7.1) · no plaintiff listed 2,016 (0.8) |
 | `defendant_firm_rank` | not in list 160,407 (59.9) · **no counsel listed 61,558 (23.0)** · rank 41–60: 9,701 (3.6) · 21–40: 7,966 (3.0) · 61–80: 6,577 (2.5) · 1–20: 4,826 (1.8) · 81–100: 4,188 (1.6) · 101–120: 3,813 (1.4) · 121–140: 2,523 (0.9) · no defendant listed 2,377 (0.9) · 161–180: 2,195 (0.8) · 141–160: 1,425 (0.5) · headcount not given 277 (0.1) · 181–200: 174 (0.1) |
+| `defendant_firm_appeared` | not in list 221,965 (82.8) · rank 41–60: 9,701 · 21–40: 7,966 · 61–80: 6,577 · 1–20: 4,826 · 81–100: 4,188 · 101–120: 3,813 · 121–140: 2,523 · no defendant listed 2,377 · 161–180: 2,195 · 141–160: 1,425 · 181–200 or headcount not given 451 (0.2) — *derived from the 25 Oct counts; the overnight run of 05 will confirm* |
+| `defendant_pro_se` | no 258,549 (96.5) · yes 9,458 (3.5) — *derived from `pro_se`, as above* |
 | `consolidation_role` | not consolidated 262,624 (98.0) · member 3,785 (1.4) · lead 1,598 (0.6) |
 | Yes/no flags (% TRUE) | `any_referral` 125,092 (46.7) · `has_related_case` 11,279 (4.2) · `tro_pi_motion_60d` 6,758 (2.5) · `is_consolidated` 5,383 (2.0) · `plaintiff_org_attorney` 4,690 (1.8) · `amicus` 822 (0.3) |
 
@@ -131,6 +135,7 @@ These are rules, applied to training and holdout alike. The counts above include
   - 44:2107 and 36:327 are left as they are.
 
   `cause_group` is built from the corrected values.
+- **No cause in SCALES, filled from the FJC section** (change 65): when the FJC record gives a numeric statute section, the case gets the most common matching SCALES cause for its nature of suit, from training cases (`cause_from_fjc` = TRUE). FJC letter codes such as MI/SC ("miscellaneous") and -8 stay "(no cause)". Counts above are from before this fill; rerun `05` to refresh them.
 - **Blank nature of suit or jurisdiction in SCALES** is filled from the FJC record: the NOS code, written in SCALES's own wording for that code, and JURIS 1–5 in words. This covers the D. Mass. case.
 - **"Local Question" jurisdiction** is kept: it's real, all in Guam and the Virgin Islands (FJC JURIS 5).
 
@@ -151,6 +156,6 @@ A category with only a handful of training cases can't be estimated reliably, an
 | `diversity_residence` | 10 pairs under 65 cases | keep pairs with at least about 100 cases; the rest become "diversity, other" |
 | `city` | 10 offices under 35 cases, plus duplicate labels | clean the labels, merge offices under about 100 cases into "[court], other", or use court instead |
 | `court` | nmid 36, gud 105, vid 204 | usually kept; the three territorial courts could be merged into "territorial" |
-| `defendant_firm_rank` | rank 181–200: 174 · headcount not given 277 | merge into "rank 161–200" or similar |
+| `defendant_firm_rank` | rank 181–200: 174 · headcount not given 277 | **done in `defendant_firm_appeared`** (change 70): merged into "rank 181–200 or headcount not given" (451) |
 
 These are suggestions only. If you choose merges, they'd be built in `00_sample.R` from **training** counts, like `judge_group` and `cause_group`.

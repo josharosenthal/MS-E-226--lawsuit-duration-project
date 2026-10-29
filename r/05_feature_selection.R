@@ -90,6 +90,8 @@ first_plaintiff_type,categorical,partly
 first_defendant_type,categorical,partly
 plaintiff_firm_cases,categorical,partly
 defendant_firm_rank,categorical,leaky
+defendant_firm_appeared,categorical,partly
+defendant_pro_se,categorical,partly
 plaintiff_org_attorney,categorical,partly
 any_referral,categorical,leaky
 has_related_case,categorical,partly

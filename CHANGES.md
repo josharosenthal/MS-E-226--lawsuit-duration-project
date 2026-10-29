@@ -849,6 +849,160 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
 - **New files:** `DATA_DICTIONARY.md`, `r/02-c_data_checks_oddities.R`, `r/02-d_data_checks_prose.R`.
 - **`.gitignore`:** also excludes the rendered `DATA_DICTIONARY.html` and the private `NOTES_TO_SELF.md`. `misc/` stays excluded.
 
+### 61. New script: `r/06_plots_and_correlations.R`
+- **Josh's request:** a new set of files, starting with plots and correlations.
+- **What it does:** on training cases, it writes PNGs to `~/scales_project/plots/`:
+  - **first, a general histogram of all case durations** (added at Josh's request; he wrote "n-gram", read as histogram): every training case with a duration, in 30-day bins to the cap, with ended and transferred-out (censored) cases stacked in two colours, yearly gridlines, and the quartiles and cap printed underneath (`00_duration_histogram_all.png`)
+  - duration histograms, in days and log(1 + days), for cases that ended in court
+  - Kaplan–Meier curves (survival package), overall and by jurisdiction, arrival route, `plaintiff_firm_cases` and class action, with transferred-out cases censored
+  - box plots of log duration for the 15 largest categories of each main-model categorical, and of the sensitivity categoricals, marked leaky
+  - median log duration by each count covariate (50 or more pooled)
+  - a heatmap of the covariate association matrix, with values of 0.7 or more labelled
+  - a bar chart of each covariate's rank-based association with duration, all cases against recorded-only
+- The last two read `05_feature_selection.R`'s saved tables rather than recomputing them.
+- Uses base R graphics, so no new packages are needed.
+- **Tested** on fake data, including a version with varied planted durations: all 34 plots were produced and checked by eye. Two fixes were made: dropping the explicit Cairo PNG type, which failed on the Mac, and skipping the duration chart when all its values are blank. Not yet run on the real data.
+
+### 62. New script: `r/07-a_random_forest.R`
+- **Josh's request:** code to run a random forest on the data.
+- **What it does:**
+  - Fits `ranger` random forests on training cases for two covariate sets: **main** (the dictionary's main covariates, using court rather than circuit or city, `cause_group` rather than `cause_title`, and `consolidation_role` rather than `is_consolidated`) and **sensitivity** (main plus `judge_group`, `senior_judge_at_filing`, `any_referral`, `defendant_firm_rank` and `pro_se`). `defendant_firm_rank` sits in the sensitivity set for now, pending Josh's decision.
+  - **Two kinds** (`rf_outcome`): a regression on log(1 + days) for cases that ended in court, or a random survival forest (log-rank splitting) with transferred-out cases censored.
+  - **Judged by out-of-bag error only:** OOB R², RMSE on the log scale and median absolute error in days, or the OOB C-index. The holdout isn't touched.
+  - Permutation importance, with each variable's number of categories, because many-category variables can look more important than they are.
+  - Unordered factors use `respect.unordered.factors = "order"`, which handles 94 courts and 201 cause groups efficiently.
+  - Settings: 500 trees, minimum leaf size 5, seed 226, optional random subsample (`rf_sample_n`), threads from Slurm, and fitted forests saved only if `save_models = TRUE`.
+  - **Outputs** in `~/scales_project/models/`: a summary CSV, importance CSVs and an importance plot (leaky variables in red).
+- **Needs the `ranger` package.** It isn't part of base R: on FarmShare run `install.packages("ranger")` once. For local testing, Claude installed ranger 0.18.0 from CRAN into the test library only, with Josh's permission.
+- **Tested** on fake data with planted durations (removed cases last about 400 days, others about 100), 100 trees:
+  - both outcomes ran
+  - arrival route was by far the top variable in both forests
+  - OOB R² 0.63 (main); OOB C-index 0.65–0.68
+  - all output files were written
+  - the main-vs-sensitivity message was reworded, since a tiny sample can give a negative gap
+  - Not yet run on the real data.
+
+### 63. New script: `r/02-e_data_checks_nocause.R` (cases with no cause of action)
+- **Josh's request:** the training data has 3,676 "(no cause)" cases. He asked for summary statistics on whether each has a jurisdiction and a nature of suit, and on court and pro se; then he asked what other data points would be useful.
+- **What it does:** on training cases, it compares no-cause cases (`cause_group` "(no cause)": a blank SCALES cause, or the recoded 99:9999 placeholder) with cases that have a cause.
+  - **Summary table:** % with a jurisdiction; % with a nature of suit; % pro se plaintiff by the FJC and by SCALES; % where the FJC has a cause title (TITL); median duration of cases that ended; % ending within 30 days; % transferred out; median docket entries; % SCALES stubs; % with no docket; % fee waiver; % class action.
+  - **Distributions** for no-cause cases, with each category's no-cause share: jurisdiction, nature of suit, court, FJC pro se, plaintiff representation, arrival route, filing year, first plaintiff type and first defendant type.
+  - **The FJC cause title** for no-cause cases.
+- **The extra data points were Claude's suggestion** (duration, docket size, arrival route, year, party types, fee waivers, class actions, stub flags), to tell "ordinary case with a missing field" from "odd record", as the no-FJC check did. The stub flags are used only if those columns exist.
+- Counts only; it looks at duration, which is allowed on training data.
+- **Tested** on fake data with 6 planted no-cause cases (one with a blank jurisdiction, three pro se) plus the recoded 99:9999 case. It found 7, and the summary and distributions match the planted values. Not yet run on the real data.
+
+### 64. First real random-forest run; a "main without n_counsel" set added
+- **First FarmShare run of `07-a_random_forest.R`** (log duration, 260,403 training cases that ended in court, 500 trees, about 2.5 minutes per forest):
+  - **main:** OOB R² 0.472, RMSE 0.856 (log scale), median absolute error 94 days
+  - **sensitivity:** OOB R² 0.523, RMSE 0.814, median absolute error 89 days, so the leaky variables add at most +0.051
+  - **Main-forest importance:** `n_counsel` 0.83, far ahead of `nature_suit` 0.35, `cause_group` 0.33, `court` 0.28 and `n_parties` 0.17. In the sensitivity forest, `judge_group` (0.30) and `defendant_firm_rank` (0.28) come next after `n_counsel`.
+- **Concern:** `n_counsel` is in the main set but its leakage tier is "leaky": lawyers are added as a case goes on. The `06` plot shows median duration rising from about 48 days with 0 counsel to about 550 days with 20 or more.
+- **Change (Josh's request):** `07-a` now also fits **`main_no_counsel`** (main minus `n_counsel`) by default (`model_sets`). It prints "main minus main_no_counsel" and the top 10 variables of both main forests.
+- **Also noted:** the Kaplan–Meier plots (`06`, plots 02–03) weren't produced on FarmShare, apparently because the `survival` package isn't available there. Josh doesn't plan to run the survival forest.
+- **Tested** on fake data: all three sets ran and the output files were written. The fake data has no `n_counsel`, so the two main sets are identical there. Not yet run on the real data.
+
+### 65. No-cause cases: cause filled from the FJC section (rule a)
+- **Why:** `02-e` and two follow-up tables (`nocause_fjc_by_nos.csv`, `nocause_top_causes_by_nos.csv`) showed that for many of the 3,773 no-cause training cases, the FJC record has a statute **section** even when its title is blank or 0. Of the 2,836 cases in the top 60 rows, 1,678 had a numeric section (e.g. 0227 = 47 U.S.C. 227, the TCPA; 2601 = FMLA; 1210 = ADA 12101, cut off by the FJC's 4-character field). The rest were -8 (missing, 529), letter codes (541; Josh noted MI/SC is the FJC's "miscellaneous") and placeholders 99/999 (88).
+- **Change (Josh, 28 Oct 2026), `00_sample.R` section 7a:** a case with no SCALES cause (including the 99:9999 placeholder) whose FJC SECTION is a number other than 0, 99, 999 or 9999 gets the SCALES cause that is **most common among training cases with the same nature-of-suit code** whose section matches: exactly, with letters after it, or (for a 4-digit FJC section, which may be cut off) starting with it. If the FJC title is a real number, the title must match too. No match: stays "(no cause)". New column `cause_from_fjc` marks filled cases. The lookup uses training cases only; the same rule applies to holdout cases.
+- **Not done:** option (b), filling the rest with the most common cause for their nature of suit. It would invent a cause, and nature of suit is already in the models. MI/SC and other letter codes stay "(no cause)".
+- `02-e` now prints how many causes were filled, by cause group (`nocause_0_filled_from_fjc.csv`).
+- **Tested** on fake data with 11 planted cases: numeric section, cut-off section (1210 to 12101), title 0, the 99:9999 placeholder and a holdout case were all filled correctly. MI/SC, -8, 99/99, a title mismatch, a section with no match and a nature of suit with no known causes all stayed "(no cause)". The lookup ignored holdout cases (a cause made more common by holdout cases did not win). Fake data without FJC TITL/SECTION columns still runs.
+- **Real run (28 Oct 2026, `02-e`):** about 1,990 of 3,773 no-cause training cases filled: 47:227 962, 42:12131 580 (almost all M.D. Fla., from the cut-off FJC "1213"), 28:1332 68, 29:2601 63, 42:12101 48, then small groups. 1,784 stay "(no cause)" (0.7% of training). They differ from cases with a cause: FJC pro se plaintiff 37% vs 12%, IFP 26% vs 13%, ended within 30 days 23% vs 7%, median 152 vs 245 days. Kept as their own group (Josh: no merge with rare causes).
+
+### 66. New script: `r/07-b_short_case_forest.R` (classification forests: is the case short?)
+- **History:** first written as a quantile-forest script (`07-b_quantile_forest.R`), never run on the real data. Josh judged it a red herring, because ranger builds the same mean-based trees. A version fitting log duration on short cases only was a misunderstanding and was replaced the same day (28 Oct 2026). The file was renamed.
+- **What it does:** two yes/no outcomes, one ranger probability forest each: **ended within 60 days?** and **ended within 120 days?** (`short_cutoffs`). Each is fitted for main, main_no_counsel and sensitivity. The splits target the quick end directly.
+- **Which cases:** all training cases with a duration. Cases that ended in court count as short if the duration is at or below the cutoff. A case transferred out after the cutoff is known not to be short, so it's kept as "no". A case transferred out before the cutoff has an unknown outcome and is dropped for that cutoff. Remands count as endings, as elsewhere.
+- **Judging (out-of-bag):** AUC, Brier score, and Brier skill (1 − Brier / Brier of predicting the overall share). Also permutation importance (rise in OOB Brier score). It prints "main minus main_no_counsel" and "sensitivity minus main" in AUC for each cutoff. `min.node.size` is 10.
+- **Output:** `~/scales_project/models/short_summary.csv`, `short_<cutoff>d_<set>_importance.csv`, `short_<cutoff>d_importance.png`.
+- **Tested** on fake data (100 trees): both cutoffs and all three sets ran, and all outputs were written. The planted effect (arrival route) was found (AUC 0.73 at 60 days, 0.83 at 120). Cases transferred out before the cutoff were dropped (7 at 120 days).
+- **Fix after the first real run (28 Oct 2026):** every `oob_auc` came out NA. On about 265,000 cases, n_short × n_other is too big for R's whole-number type, so R returned NA. Those counts are now stored as ordinary decimal numbers. Checked on 265,000 fake cases, the AUC is now computed. The Brier scores and importances from the first run were unaffected. First run: Brier skill for main / main_no_counsel / sensitivity was 0.313 / 0.251 / 0.348 at 60 days and 0.332 / 0.257 / 0.361 at 120 days. Rerun after the fix: OOB AUC 0.872 / 0.827 / 0.887 at 60 days and 0.851 / 0.811 / 0.865 at 120 days.
+- **AUC by duration band (Josh, 28 Oct 2026):** asks how much of the 120-day result comes from the same cases as the 60-day one. The 120-day short cases split into 0–60 and 61–120 days. The overall AUC is exactly the weighted average of "0–60 vs over 120" and "61–120 vs over 120", weighted by each band's share of the short cases. Also reported: "0–60 vs 61–120" (can the forest tell very quick cases from merely quick ones?). New output: `models/short_120d_by_band.csv` (comparison, pair counts, weight, OOB AUC, per set). The log prints each band's share of the main minus main_no_counsel gap. Counts only, no case identifiers; the other outputs are unchanged. **Tested** on fake data: the weighted band AUCs added up to the overall AUC (0.7234 main, 0.8223 sensitivity), and a band file was written for 120 only.
+
+### 67. New script: `r/02-f_data_checks_endings.R` (balance of cases that left the court)
+- **Why (Josh, 28 Oct 2026):** if transferred-out cases can't be matched to their receiving case, they may be dropped. Remands to state court, arbitration and similar endings should be looked at too.
+- **What it does:** counts of cases by FJC `DISP`: 0 transferred, 1 remanded to state court, 11 remanded to a U.S. agency, 15 award of arbitrator, 16 stayed pending bankruptcy, 18 statistical closing, plus groups (remands; left for another forum = 0, 1, 11; all six). For each, the training vs holdout share and the two-proportion z-test from `02_data_checks.R` (FLAG if |z| > 3). This uses an outcome in the holdout, so counts only. Training only: docket mentions of sending a case to arbitration (compel / stay / refer ... arbitration), by `DISP`. Outputs: `checks/endings_1_split_balance.csv`, `endings_2_arbitration_by_disp.csv`.
+- **Nothing is dropped yet;** the decision is Josh's after the check.
+- **Tested** on fake data: planted transfers, remands, an arbitration award, statistical closings and an arbitration docket entry, on both sides. All were counted correctly; PASS.
+- **Real run (28 Oct 2026):** FLAG, 8 of 9 rows balanced. Remanded to state court (DISP 1) is 3.45% of training vs 3.79% of the holdout (z = −4.35). Every other type and group is within |z| ≤ 3. The split is by consolidation group, so the case-level z-test may overstate the gap; this wasn't checked. 6,611 training dockets mention sending the case to arbitration (54% of DISP 15 cases, 11% of DISP 18).
+- **Decision (Josh, 28 Oct 2026):** remands to state court stay counted as endings, as before, so the imbalance isn't a concern. No code change.
+
+### 68. New script: `r/90_transfer_matching.R` (can transferred cases be followed?)
+- **Why (Josh, 28 Oct 2026):** transferred-out cases are censored. If each could be matched to its receiving-district case, the full time to resolution could be followed.
+- **What it does,** for training cases with `duration_status = 'transferred_out'`:
+  1. **Receiving docket:** an early entry (first 10) of a case in another court mentions a transfer and the origin's case number (year and number; "1:16-cv-00023", "16-cv-23" and N.D. Ill.'s "16 C 23" all match).
+  2. **Origin docket:** a transfer entry in the origin docket gives another case number that exists in another court.
+  Both require the receiving case to be filed between 30 days before and 365 days after the transfer. An origin with more than one candidate is counted as ambiguous. Method 3 (FJC only) counts FJC transferred-in records with the same nature of suit filed 0–60 days after the transfer, as a measure of ambiguity (only if `fjc_idb_civil.parquet` has ORIGIN, NOS and FILEDATE).
+- **Holdout:** holdout cases are never used as receiving cases, so all counts are lower bounds. A receiving case filed after 2017 is findable only if `cases.parquet` holds that year; the script prints the years it holds.
+- **Outputs:** `checks/transfers_1_pool_years.csv`, `_2_summary.csv`, `_3_receiving_cases.csv`, `_4_by_origin_court.csv`, `_5_fjc_candidates.csv`, `_spotcheck.csv` (case IDs of up to 50 matched pairs, no names).
+- **Tested** on fake data with 6 planted transfers: receiving-docket, origin-docket and "16 C" style matches were found. A holdout receiver and a receiver outside the window were not matched. A case with two receivers was counted as ambiguous. Not yet run on the real data.
+
+### 69. New script: `r/02-g_data_checks_counsel.R` (where does `n_counsel`'s leakage come from?)
+- **Why (Josh, 28 Oct 2026):** `n_counsel` counts every lawyer listing on the docket as SCALES collected it, usually after the case ended. This check splits it into parts, to see which grow with case length.
+- **What it does (training cases only, by side and by duration band: 0–60, 61–120, 121–365, 366–730, over 730 days, transferred out):**
+  - **Lawyers at collection:** distinct lawyer names on each side. A lawyer listed for several parties counts once; pro se listings aren't lawyers.
+  - **Lawyers at filing:** those named in a docket entry within `filing_window_days` (7) of filing. A name matches when both its first and last word appear in the entry. The counsel table has no dates, so docket text is the only source.
+  - **Added after filing:** at collection minus at filing.
+  - **Terminated listings:** a counsel field says TERMINATED. SCALES has no separate field, so the script also reports which fields contain it.
+  - **Pro hac vice listings:** `is_pro_hac_vice`, or a field says "pro hac vice".
+  - **Listings for dismissed parties:** lawyers for a party with its own terminating date.
+  - **Pro se plus lawyer:** the side has both a pro se listing and a lawyer.
+  - **Case level:** docket entries about withdrawal or substitution of counsel.
+  - **Spearman correlation with days to ending:** each count, for cases that ended in court.
+  - **Check on the method:** how often each lawyer is named in the docket at all, by side and court.
+  - **Check on the count:** how often `n_counsel` differs from the listings counted here (should be about 0).
+- **Outputs:** `checks/counsel_1_fields.csv`, `_2_by_band.csv`, `_3_withdrawals.csv`, `_4_decomposition.csv`, `_5_correlations.csv`, `_6_match_rate.csv`, `_spotcheck.csv` (30 random training case IDs with counts). No names are printed or saved. DuckDB is limited to 24 GB, with a temporary spill folder, so it stays inside the batch job.
+- **Tested** on fake data with planted cases. Every count matched what was planted:
+  - one lawyer listed for two plaintiffs
+  - lawyers named on day 0–2 (at filing) vs days 30–100 (later)
+  - a "TERMINATED: date" listing in `bar_status`
+  - a pro hac vice listing with a middle initial and "Jr."
+  - a lawyer for a dismissed defendant
+  - a pro se plaintiff who later had a lawyer
+  - a withdrawal entry
+  - an intervenor's lawyer counted as "other"
+
+  The count-mismatch check caught a fake `n_counsel`. Not yet run on the real data.
+
+### 70. `n_counsel` out of main; representation measured only where a lawyer appeared; XGBoost (07-c)
+- **Decisions (Josh, 28 Oct 2026), after `02-g_data_checks_counsel.R`:**
+  - **`n_counsel` is out of main: too leaky.** In 02-g, defense lawyers added after filing correlate 0.454 with days to ending, while defense lawyers at filing correlate −0.007. It stays in the sensitivity set.
+  - **Keep defense firm information, but only where a lawyer appeared.** "No counsel listed" is folded into a common category, so it can't be picked out.
+  - **Plaintiffs keep `plaintiff_firm_cases` as it is,** with "pro se / no counsel" as its own level, because plaintiff pro se is mostly known at filing. An earlier version of this change folded it into "1–10 cases"; that wasn't what Josh meant, so it was removed before anything ran.
+  - **Bring back a pro se defendant variable.**
+  - **Merge** defense "headcount not given" with "rank 181–200".
+- **`r/00_sample.R` (section 7b), two new columns.** The originals are unchanged.
+  - `defendant_firm_appeared`: `defendant_firm_rank`, with "no counsel listed" folded into "not in list", and "rank 181–200" merged with "large-firm list, headcount not given" into "rank 181–200 or headcount not given".
+  - `defendant_pro_se`: "yes" if FJC `PROSE` is 2 (defendant) or 3 (both); "no" if it's 0 or 1; otherwise "not recorded" or "no FJC record".
+  - **Known limits** (discussed before deciding):
+    - The ranked defense levels still need a lawyer to have appeared, so the leak shrinks but doesn't vanish.
+    - The new baseline mixes defended and undefended cases.
+    - `defendant_pro_se` carries some of the information that was folded away.
+- **New `r/covariate_sets.R`:** one place for the sets, now sourced by 06, 07-a, 07-b and 07-c.
+  - `main`: no `n_counsel`. `plaintiff_firm_cases` as before, plus `defendant_firm_appeared` and `defendant_pro_se`.
+  - `main_plus_counsel`: main + `n_counsel`. This replaces `main_no_counsel`, so the comparison now shows what `n_counsel` would add.
+  - `sensitivity`: main + `judge_group`, `senior_judge_at_filing`, `any_referral`, `defendant_firm_rank`, `pro_se` and `n_counsel`.
+- **Other scripts:**
+  - `05_feature_selection.R`: the two new variables are added to its list (37 covariates).
+  - `06`: now takes its lists from `covariate_sets.R`.
+  - `07-a` and `07-b`: use `make_sets()`. The headlines report main_plus_counsel minus main.
+  - `DATA_DICTIONARY.md`: Model column updated, two new rows. Their counts are derived from the 25 Oct counts and will be confirmed by the overnight 05.
+- **New `r/07-c_xgboost.R`:** XGBoost for log duration and for ended within 60 / 120 days, for the same three sets.
+  - 5-fold cross-validation within training. Early stopping uses a further 10% of each fold's training part, so a case's own fold is used only for scoring.
+  - Settings: learning rate 0.05, depth 6, minimum leaf weight 10, 80% row and column subsampling, at most 3,000 trees, stopping after 50 without improvement.
+  - Importance is gain, from one model on all training cases with the median number of trees, added up over each variable's one-hot columns.
+  - Outputs: `models/xgb_summary.csv`, `xgb_<outcome>_<set>_importance.csv`, `xgb_<outcome>_importance.png`.
+  - Needs `install.packages("xgboost")` on FarmShare. It works with xgboost 1.x to 3.x, where the validation argument changed name.
+- **New `r/run_overnight.sh`:** runs 05 → 06 → 07-a → 07-b → 07-c as one 12-hour batch job. A failed script doesn't stop the rest.
+- **Tested on fake data:**
+  - The recode rules were checked on planted values: every fold and merge, PROSE 0/1/2/3/−8, and no FJC record.
+  - 05, 06, 07-a and 07-b ran with the new sets.
+  - 07-c ran on 5,200 synthetic cases with planted effects. It found arrival route and defense firm as the top variables, and showed the gain from a planted `n_counsel` effect (+0.18 R²).
+  - A 50-case set too small to grow any tree no longer crashes. Its importances come out as 0.
+  - xgboost 3.2.1 was installed in the local test library for this, with Josh's OK.
+- **Not yet run on the real data.**
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.
