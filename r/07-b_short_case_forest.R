@@ -30,6 +30,7 @@
 #   short_summary.csv                       OOB performance for each cutoff and set
 #   short_<cutoff>d_<set>_importance.csv    permutation importance, largest first
 #   short_<cutoff>d_importance.png          importance plot, sets side by side
+#   short_<cutoff>d_<set>.rds               the fitted forest (if save_models = TRUE)
 #   short_<cutoff>d_by_band.csv             (120 only) AUC of 0-60 vs over 120, 61-120 vs over 120,
 #                                           and 0-60 vs 61-120; the first two average to the overall AUC
 #
@@ -49,6 +50,7 @@ model_sets    <- c("main", "main_plus_counsel", "sensitivity")
 num_trees     <- 500
 min_node      <- 10                # smallest number of cases in a leaf (probability forests)
 rf_seed       <- 226
+save_models   <- TRUE              # saves each fitted forest as .rds (FALSE to skip; several hundred MB each)
 n_threads     <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", parallel::detectCores()))
 
 # ---- Covariate sets (r/covariate_sets.R, same as 07-a) ----------------------------
@@ -82,7 +84,8 @@ fit_one <- function(cutoff, set_name) {
   fit <- ranger::ranger(x = d[vars], y = factor(y, levels = c(FALSE, TRUE), labels = c("no", "short")),
                         probability = TRUE, num.trees = num_trees, min.node.size = min_node,
                         importance = "permutation", respect.unordered.factors = "order",
-                        num.threads = n_threads, seed = rf_seed, write.forest = FALSE, verbose = FALSE)
+                        num.threads = n_threads, seed = rf_seed, write.forest = save_models, verbose = FALSE)
+  if (save_models) saveRDS(fit, file.path(model_dir, sprintf("short_%dd_%s.rds", cutoff, set_name)))
   p <- fit$predictions[, "short"]
   ok <- !is.na(p)                                                       # (a case in every tree's sample has no OOB prediction)
   brier <- mean((p[ok] - y[ok])^2); null <- mean(y) * (1 - mean(y))

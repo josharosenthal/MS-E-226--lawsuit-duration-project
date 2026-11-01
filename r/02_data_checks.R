@@ -68,7 +68,7 @@ if (!has_features) {
       if (length(features_stale)) paste("Covariates may be OUT OF DATE (changed since built):", paste(features_stale, collapse = ", "))
       else "Covariates are built and up to date with their inputs.")
   feat_cols <- c("case_number_parity", "consolidation_role", "circuit", "diversity_residence", "county_area_class",
-                 "senior_judge_at_filing", "first_plaintiff_type", "first_defendant_type",
+                 "judge_type", "first_plaintiff_type", "first_defendant_type",
                  "plaintiff_firm_cases", "defendant_firm_rank")
   # Missing values now carry labels (CHANGES.md 33), so count those labels as missing.
   missing_labels <- "('no FJC record', 'not recorded', 'county not recorded', 'unmatched county code', 'no judge listed',
@@ -84,13 +84,13 @@ if (!has_features) {
                            ". Missing values are labelled (e.g. 'no FJC record'); check whether that's enough.")
       else sprintf("No covariate is missing for more than 10%% of cases (largest: %s, %s%%). Missing values are labelled, not blank.",
                    miss$feature[which.max(miss$pct_missing)], max(miss$pct_missing)))
-  j <- q("SELECT count(*) FILTER (WHERE senior_judge_at_filing IN ('senior', 'active')) AS matched,
-                 count(*) FILTER (WHERE senior_judge_at_filing = 'appointed after filing') AS after_filing,
-                 count(*) FILTER (WHERE senior_judge_at_filing = 'magistrate') AS magistrate,
-                 count(*) FILTER (WHERE senior_judge_at_filing = 'territorial court') AS territorial,
-                 count(*) FILTER (WHERE senior_judge_at_filing = 'unassigned') AS unassigned,
-                 count(*) FILTER (WHERE senior_judge_at_filing = 'not matched') AS not_matched,
-                 count(*) FILTER (WHERE senior_judge_at_filing IS NOT NULL AND senior_judge_at_filing <> 'unassigned') AS with_judge,
+  j <- q("SELECT count(*) FILTER (WHERE judge_type IN ('senior', 'active')) AS matched,
+                 count(*) FILTER (WHERE judge_type = 'appointed after filing') AS after_filing,
+                 count(*) FILTER (WHERE judge_type = 'magistrate') AS magistrate,
+                 count(*) FILTER (WHERE judge_type = 'territorial court') AS territorial,
+                 count(*) FILTER (WHERE judge_type = 'unassigned') AS unassigned,
+                 count(*) FILTER (WHERE judge_type = 'not matched') AS not_matched,
+                 count(*) FILTER (WHERE judge_type IS NOT NULL AND judge_type <> 'unassigned') AS with_judge,
                  count(*) FILTER (WHERE judge_visiting) AS visiting
           FROM analysis_cases")
   say(if (j$not_matched > 0.10 * j$with_judge) "FLAG" else "PASS",
@@ -223,6 +223,30 @@ if (file.exists(split_file)) {
                 length(pending), fmt(all_row$training_removed), all_row$pct_training, fmt(all_row$holdout_removed),
                 all_row$pct_holdout, all_row$z, sum(abs(cand$z) <= 3), nrow(cand)))
     print(cand, row.names = FALSE)
+  }
+}
+# Cases dropped for missing data (00_sample.R section 5b; change 76): jury demand blank, and
+# no plaintiff found in the party table, case name or FJC. Same rule on both sides of the split.
+if (file.exists(split_file) && "population_drops" %in% dbListTables(con)) {
+  pd <- q("SELECT d.reason, a.is_holdout, count(*) AS n FROM population_drops d JOIN analysis_cases_all a USING (ucid)
+           WHERE a.is_holdout IS NOT NULL GROUP BY ALL")
+  if (nrow(pd)) {
+    all_n <- q("SELECT is_holdout, count(*) AS n FROM analysis_cases_all WHERE is_holdout IS NOT NULL GROUP BY 1")
+    n_tr0 <- all_n$n[!all_n$is_holdout]; n_ho0 <- all_n$n[all_n$is_holdout]
+    pdt <- do.call(rbind, lapply(c(unique(pd$reason), "ALL"), function(r) {
+      x <- if (r == "ALL") pd else pd[pd$reason == r, ]
+      k_tr <- sum(x$n[!x$is_holdout]); k_ho <- sum(x$n[x$is_holdout])
+      data.frame(reason = r, training_removed = k_tr, pct_training = round(100 * k_tr / n_tr0, 3),
+                 holdout_removed = k_ho, pct_holdout = round(100 * k_ho / n_ho0, 3),
+                 z = round(ztest(k_tr, n_tr0, k_ho, n_ho0), 2))
+    }))
+    pdt$balanced <- ifelse(abs(pdt$z) <= 3, "yes", "NO - check")
+    save_csv(pdt, "missing_data_drops_balance")
+    a <- pdt[pdt$reason == "ALL", ]
+    say(if (all(abs(pdt$z) <= 3)) "PASS" else "FLAG",
+        sprintf("Dropped for missing data (jury demand blank; no plaintiff found): %s training (%.2f%%) and %s holdout cases (%.2f%%), z = %.2f. Table: presplit_missing_data_drops_balance.csv.",
+                fmt(a$training_removed), a$pct_training, fmt(a$holdout_removed), a$pct_holdout, a$z))
+    print(pdt, row.names = FALSE)
   }
 }
 left_mdl <- q("SELECT count(*) AS n FROM analysis_cases WHERE coalesce(is_mdl, false)")$n

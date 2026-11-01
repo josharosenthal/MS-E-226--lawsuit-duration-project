@@ -50,7 +50,7 @@ model_sets   <- c("main", "main_plus_counsel", "sensitivity")
 num_trees    <- 500
 rf_sample_n  <- NA                 # NA = all training cases; e.g. 50000 for a quick run
 min_node     <- 5                  # smallest number of cases in a leaf
-save_models  <- FALSE              # TRUE saves each fitted forest as .rds (can be several GB)
+save_models  <- TRUE               # saves each fitted forest as .rds (about 1 GB each; FALSE to skip)
 rf_seed      <- 226
 n_threads    <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", parallel::detectCores()))
 

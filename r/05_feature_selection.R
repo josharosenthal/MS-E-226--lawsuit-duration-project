@@ -74,7 +74,7 @@ court,categorical,filing
 circuit,categorical,filing
 city,categorical,filing
 judge_group,categorical,leaky
-senior_judge_at_filing,categorical,leaky
+judge_type,categorical,leaky
 nature_suit,categorical,filing
 cause_title,categorical,filing
 cause_group,categorical,filing

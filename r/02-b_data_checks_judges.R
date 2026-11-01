@@ -4,7 +4,7 @@
 # Why: SCALES's judge field is the judge when SCALES COLLECTED the docket
 # (2020-21), not the judge at filing. Long cases are more likely to be reassigned
 # (judge retires, takes senior status, recuses; new judges take over dockets), so
-# judge_group and senior_judge_at_filing partly reflect duration (leakage).
+# judge_group and judge_type partly reflect duration (leakage).
 #
 # On a random sample of TRAINING cases (default 10,000):
 #   (1) finds the FIRST "assigned to Judge ..." entry on the docket and checks

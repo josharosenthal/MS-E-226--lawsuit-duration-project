@@ -13,7 +13,7 @@
 #   main_plus_counsel  main + n_counsel, to show what n_counsel (now out: too leaky,
 #                      02-g_data_checks_counsel.R) would add
 #   sensitivity        main + the leaky ones kept out of main: judge_group,
-#                      senior_judge_at_filing, any_referral, the original defense firm variable
+#                      judge_type, any_referral, the original defense firm variable
 #                      (defendant_firm_rank), pro_se and n_counsel.
 #                      The gain over main is an UPPER BOUND on what they add.
 # Not used: circuit and city (court instead), cause_title (cause_group instead),
@@ -27,7 +27,7 @@ main_vars <- c("n_parties", "n_plaintiffs", "n_defendants",
                "first_plaintiff_type", "first_defendant_type",
                "plaintiff_firm_cases", "defendant_firm_appeared", "defendant_pro_se", "plaintiff_org_attorney",
                "has_related_case", "consolidation_role", "tro_pi_motion_60d", "amicus")
-sens_extra <- c("judge_group", "senior_judge_at_filing", "any_referral",
+sens_extra <- c("judge_group", "judge_type", "any_referral",
                 "defendant_firm_rank", "pro_se", "n_counsel")
 num_vars   <- c("n_parties", "n_counsel", "n_plaintiffs", "n_defendants")
 

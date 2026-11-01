@@ -1003,6 +1003,173 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
   - xgboost 3.2.1 was installed in the local test library for this, with Josh's OK.
 - **Not yet run on the real data.**
 
+### 71. Saved forests; new `r/07-d_interactions.R` (step 1: do interactions matter?)
+- **Why (Josh, 29 Oct 2026):** before choosing interaction terms for the OLS, lasso and quantile regressions, check whether interactions matter at all. Build the steps that find pairs (2–4) **only if step 1 shows a meaningful gain**.
+- **`07-a` and `07-b`:** now save the fitted forests (`save_models <- TRUE`). Files: `models/rf_<outcome>_<set>.rds` and `models/short_<cutoff>d_<set>.rds`. 07-b's forests are now stored (`write.forest`) so they can be saved. These files are large, about 1 GB each for 07-a, and stay on FarmShare.
+- **New `07-d_interactions.R`, step 1 (the depth check):**
+  - XGBoost is refitted with trees of depth 1, 2 and 6, using the same folds and settings as 07-c, for log duration and ended within 60 / 120 days, main set. Depth 6 reproduces 07-c's main model.
+  - Depth 1 is additive (no interactions); depth 2 allows two-way interactions.
+  - Each gap (2 − 1, 6 − 2, 6 − 1) is measured fold by fold, with its standard error across folds and the number of folds where it was positive.
+  - The tree cap is higher for shallow trees (10,000 at depth 1, 6,000 at depth 2). `hit_cap` flags any model that reached it.
+  - Outputs: `models/interactions_1_depth_check.csv`, `interactions_1_depth_gaps.csv`.
+- **New `r/xgb_helpers.R`:** 07-c's data reading, folds, design matrix and early-stopping fit, moved here so 07-c and 07-d fit models the same way. 07-c's results are unchanged.
+- **`run_overnight.sh`:** now takes an optional list of scripts, e.g. `sbatch run_overnight.sh 07-a_random_forest 07-b_short_case_forest 07-d_interactions`. With no list it runs 05 → 07-c as before.
+- **Tested on fake data (5,200 synthetic cases):**
+  - A planted interaction (a big-firm effect only in removed cases) gave a two-way gap of +0.297 R², about 38 standard errors, positive in 5 of 5 folds.
+  - Effects planted additively on the log scale gave gaps of about 0 or slightly negative.
+  - Effects planted additively in *days* showed a real two-way gap (+0.045) on the log scale. Whether something counts as an "interaction" depends on the scale of the outcome.
+  - 07-c still ran after the refactor. The saved forests from 07-a and 07-b load, with their trees stored.
+- **Not yet run on the real data.**
+
+### 72. `plaintiff_firm_cases`: "no firm listed" counts as "1–10 cases"; "no defendant listed" and "diversity, not recorded" stay
+- **Why (Josh, 29 Oct 2026):** he reviewed the variables whose missing-type values had no decision on record.
+  - **"No firm listed"** (a plaintiff lawyer is listed but no firm is named; 18,988 training cases) is to be treated as the smallest firm group.
+  - **"No defendant listed"** (2,377) may carry information, so it stays its own category in `first_defendant_type`, `defendant_firm_rank` and `defendant_firm_appeared`. No code change.
+  - **`diversity_residence` "diversity, not recorded"** is disregarded: it stays its own category, with no special treatment. No code change.
+- **`r/00_sample.R` (section 7a recodes):** `plaintiff_firm_cases` "no firm listed" becomes "1–10 cases" in the analysis views. It's added to `feature_recodes`, only when the features are present. `case_features.parquet` is unchanged.
+- **Effect:** `plaintiff_firm_cases` now has 6 levels. "1–10 cases" becomes about 82,061 training cases (30.6%), from the 25 Oct counts. `02-d_data_checks_prose.R` no longer has a separate "lawyer, no firm listed" group, because those cases now count as "lawyer with firm".
+- **`DATA_DICTIONARY.md`:** `plaintiff_firm_cases` row and counts updated, and the decision noted on the `diversity_residence` row.
+- **Tested** on fake data: planted "no firm listed" cases became "1–10 cases", and "11–20 cases", "1–10 cases" and "pro se / no counsel" were unchanged. 05 ran.
+- **Still undecided** (from the same review): `jury_demand` "(NA)" (1,509), `first_plaintiff_type` "no plaintiff listed" (2,016), and FJC −8 or blank folded into "no" for `class_action_alleged` and `in_forma_pauperis`.
+
+### 73. New script: `r/02-h_data_checks_missing.R` (spot check: "no plaintiff listed" and jury demand (NA))
+- **Why (Josh, 29 Oct 2026):** these two missing-type categories are still undecided (change 72). The check shows what they are before deciding.
+  - "No plaintiff listed": 2,016 training cases.
+  - `jury_demand` "(NA)": 1,509 training cases.
+- **What it does (training cases only):** each group compared with the rest:
+  - FJC plaintiff pro se, IFP, removed, mean parties and defendants, median days, share ended within 60 days, share transferred out.
+  - The 15 largest courts, natures of suit, years, arrival routes and jurisdictions, with each value's share of the group vs of all training.
+  - For "no plaintiff listed": the party roles and party types those cases do have, and how many have no parties at all.
+  - For jury (NA): a cross-tab with the FJC's own `JURY` field, if the FJC file has it.
+  - For both: what the first docket entry is (complaint, notice of removal, transfer, petition or application, miscellaneous case, motion, subpoena or judgment registration, other), classified by keyword. No docket text is saved.
+- **Outputs:** `checks/missing_1_summary.csv`, `_2_<court|nature_suit|year_dir|arrival_route|jurisdiction>.csv`, `_3_plaintiff_roles.csv`, `_4_jury_fjc.csv`, `_5_first_entry.csv`, `missing_spotcheck.csv` (25 random cases per group: case ID, court, nature of suit, filing date, days, parties, jury fields, first-entry type, party roles; no names).
+- **Tested** on fake data with planted cases: both groups, a case in both, and an FJC `JURY` column with P / N / −8. Counts, the cross-tab, the first-entry types (complaint, notice of removal, no entries) and the spot-check file all matched what was planted. Not yet run on the real data.
+
+### 74. New script: `r/02-i_check_cause_exclusion.R` (balance if cause 33:2701 is cut)
+- **Why (Josh, 30 Oct 2026):** 02-h found that most "no plaintiff listed" cases, 1,501 of 2,016, are in E.D. La.
+  - Nature of suit: 893 Environmental Matters or 340 Marine.
+  - Parties labelled "requesting", "objecting" and "interested" party.
+  - Nearly all of the jury demand "(NA)" cases are the same batch, and the FJC records "no jury demand" (N) for every one of the 1,509.
+  - Josh looked at them: they appear to be Deepwater Horizon proceedings, not representative.
+  - Before deciding, he asked whether cutting cause 33:2701 (Oil Pollution Act) from the population keeps training and holdout balanced.
+- **What it does:** for the candidate, and for other ways of drawing the group, the number and share of training vs holdout cases removed, with the z-test from `02_data_checks.R`. The other ways are: 33:2701 in E.D. La. only, 33:2701 elsewhere, E.D. La. "no plaintiff listed", E.D. La. "no plaintiff listed" with another cause, and jury demand "(NA)". Covariates only, no outcomes. Training only: the courts and natures of suit of the 33:2701 cases.
+- **Outputs:** `checks/cause_exclusion_1_balance.csv`, `cause_exclusion_2_where_training.csv`.
+- **Nothing is excluded yet;** that's Josh's decision after the check.
+- **Tested** on fake data with planted 33:2701 cases on both sides, in and out of E.D. La., with and without a plaintiff. Every count matched the planted totals. Not yet run on the real data.
+
+### 75. New script: `r/02-j_data_checks_plaintiff_fill.R` (can "no plaintiff listed" cases get a plaintiff?)
+- **Why (Josh, 30 Oct 2026):** "no plaintiff listed" is messy, and plaintiffs seem to exist on many of these cases. Josh means to drop the jury demand "(NA)" cases (the Deepwater Horizon batch, 02-h and 02-i). For the rest, he asked to try filling the plaintiff from the FJC plaintiff name, then from the case name, and to see what's left.
+- **A diagnostic only:** nothing in the sample changes.
+- **Steps (training cases only):**
+  - **0.** Leave out the jury demand "(NA)" cases.
+  - **1.** Fill from FJC `PLT`, the FJC's first plaintiff name. Blank, −8 and similar placeholders count as empty.
+  - **2.** If still empty, fill from SCALES `case_name`: the text before " v. ", " v ", " vs. " or " vs ". Captions starting "In re", "In the matter of" and similar are counted separately: they have no plaintiff.
+  - Each filled name gets an entity type with the same rules as `first_plaintiff_type`. `entity_sql` is read straight from `01_build_features.R`, so the two can't drift apart.
+- **How far to trust each source:** on cases that do have a SCALES plaintiff, the share where each source gives the same entity type as SCALES.
+- **Still missing:** their party roles, each marked as mapped to a side or not (the side rule from 01, unmapped first), how many have no parties at all, and their natures of suit.
+- **"In re" count (added at Josh's request):** every training case whose case name starts "In re", "In the matter of" and similar. Split by: SCALES lists a plaintiff, jury "(NA)" left out, the FJC has a plaintiff name, or still missing. Also by nature of suit (largest 20).
+- **Outputs:** `checks/plaintiff_fill_1_steps.csv`, `_2_types.csv`, `_3_agreement.csv`, `_4_unmapped_roles.csv`, `_5_nature_suit.csv`, `_6_in_re.csv`, `_spotcheck.csv` (up to 40 still-missing case IDs). No names are printed or saved.
+- **Tested** on fake data with planted cases. Every case landed in the planted step:
+  - a jury "(NA)" case, left out
+  - an FJC name ("ACME CORP" → business)
+  - an FJC "−8" with a caption ("John Smith v. City of Chicago" → individual)
+  - an "In re" caption
+  - a case with nothing and no parties
+
+  Agreement came out as planted: 50% for FJC names (one deliberate mismatch), 100% for case names, including "vs." and "v" without a period. Not yet run on the real data.
+- **To revisit afterwards (Josh):** the `n_plaintiffs` count. A filled name gives the first plaintiff only, so these cases would still count 0 plaintiffs.
+
+### 76. Plaintiff fill; drop jury demand blank and cases with no plaintiff anywhere
+- **Decisions (Josh, 30 Oct 2026), after 02-h, 02-i and 02-j:**
+  - **Drop** the jury demand "(NA)" cases (1,509 training, 372 holdout; balanced, z = 0.24 in 02-i). These are almost all the Deepwater Horizon batch in E.D. La.
+  - **Drop** the "no plaintiff listed" cases that no source can fill: 54 training in 02-j, about 41 listing only defendants plus about 13 miscellaneous proceedings and "In re" matters, including two "2255" motions.
+  - **Fill** the rest: case name first, then the FJC plaintiff name. Set `n_plaintiffs` to 1, add 1 to `n_parties`, and flag the filled cases.
+- **`r/00_sample.R`, new section 5b:**
+  - The old `analysis_cases` view is now `analysis_cases_all`.
+  - **`plaintiff_fill`:** for every case with `first_plaintiff_type` = "no plaintiff listed", the fill name and its source. The name is taken from the case name (before " v. " / " vs. "), unless the caption is "In re …" or similar; otherwise from FJC `PLT`, where blank and −8 are empty.
+  - **Entity type:** from `entity_sql`, read from `01_build_features.R`. 01 is left unchanged, because editing it would make the features checksum report "out of date".
+  - **`population_drops`:** "jury demand blank" (SCALES `jury_demand` is null) and "no plaintiff found" (no fill), with jury first where both apply. Switches: `drop_jury_na`, `drop_no_plaintiff`.
+  - **`analysis_cases`:** = `analysis_cases_all` minus `population_drops`. The rules use covariates only and apply to both sides. The split isn't redrawn.
+- **Section 7a:** for filled cases, `first_plaintiff_type` gets the fill's entity type ("name not recorded" if the name has no letters), `n_plaintiffs` = 1, and `n_parties` + 1. `analysis_fjc` gains `plaintiff_from_fill`.
+  - Not changed: `plaintiff_firm_cases` still says "no plaintiff listed" for filled cases, because there's no counsel data for them. Josh's call whether to relabel it.
+- **The status line** printed by every script now reports the drops.
+- **`r/02_data_checks.R`:** a PASS/FLAG line and `presplit_missing_data_drops_balance.csv` with the training vs holdout counts and z-test for each drop reason.
+- **`DATA_DICTIONARY.md`:** rows for `n_parties`, `n_plaintiffs`, `jury_demand` and `first_plaintiff_type`. Their counts update at the next 05 run.
+- **Tested** on fake data with planted cases on both sides. The planted cases were:
+  - a jury-blank case in training and another in the holdout
+  - FJC-only, caption-only, and caption plus a different FJC name (the caption won: "Widget Corp" → business)
+  - a holdout case with a "vs" caption
+  - an "In re" case with no FJC name, and two cases with nothing
+
+  Results:
+  - The 5 drops and 4 fills matched what was planted, with `n_plaintiffs` 1 and `n_parties` + 1. Untouched cases were unchanged.
+  - 02 printed PASS with the balance table. 05, 07-a and 07-b ran.
+  - The old fake projects, with no case name or FJC `PLT`, still run with nothing filled or dropped.
+- **Re-run needed:** 02, then 05 → 07 (`run_overnight.sh`), then the dictionary counts.
+
+### 77. New script: `r/07-e_interaction_pairs.R` (interaction steps 2-4: which pairs, what they look like, do they help a regression)
+- **Why (Josh, 31 Oct 2026):** 07-d's depth check (change 71) showed two-way interactions add about 0.065 R² for log duration and about 0.02-0.03 AUC for the ended-within-60/120-day outcomes, all in 5 of 5 folds. These are the steps change 71 held back until that was known.
+- **Training cases only; main set; the same folds as 07-c and 07-d.** All three outcomes by default.
+- **Step 2, which pairs:** one depth-2 XGBoost model per outcome (each tree is one variable or one pair), with early stopping on 10% of the training cases. For a sample of 5,000 cases, XGBoost's SHAP interaction values split each prediction into a part per variable and a part per pair, with one-hot columns added up to their variable. A pair's strength is the average size of its part. Ranks in two random halves of the sample show whether the ranking is stable.
+  - Outputs: `interactions_2_pairs.csv`, `interactions_2_summary.csv` (main-effect vs pair totals), `interactions_2_top_pairs.png`.
+- **Step 3, what the top 6 pairs look like:** a grid of the two variables' levels (8 most common categories plus "other"; counts in up to 5 bins). Each cell has the model's mean interaction part, the raw mean outcome, and the raw departure from the two variables simply adding up. Cells under 30 cases are flagged.
+  - Outputs: `interactions_3_shapes.csv`, `interactions_3_<outcome>.png` (heat maps, each panel on its own colour scale, printed in the title).
+- **Step 4, do they help a regression:** 5-fold cross-validated OLS on the main set (counts as log(1 + count)), with no interactions, with each top pair added alone, and with all 6 together. Each pair is entered as the crossed lumped levels. The yes/no outcomes use a linear probability model scored by AUC and Brier skill. Gaps against the additive OLS have fold-to-fold standard errors. 07-d's XGBoost rows are shown for comparison.
+  - Output: `interactions_4_regression_check.csv`.
+  - The pairs are chosen from the same training cases, so the gains are slightly optimistic. The holdout is untouched.
+- **`07-d_interactions.R`:** a header line pointing to 07-e. Nothing else changed.
+- **Tested on fake data (about 4,400 synthetic cases), with the 07-d test's three planted patterns:**
+  - Interaction only (a big-firm effect only in removed cases): step 2 ranked that pair first, with 97% of all pair strength and rank 1 in both halves. Adding it to the OLS raised R² by 0.29 (35 standard errors, 5 of 5 folds); the other pairs added about 0.
+  - Effects additive in *days*: the same pair came first but weaker (R² +0.046 on the log scale), as in 07-d's test.
+  - Effects additive on the log scale: pair strength near 0, and no OLS gain.
+  - For the 120-day outcome, AUC didn't rise with the planted pair, because the additive model already ranked those cases last; Brier skill did rise (0.08 to 0.14). In the log-additive test Brier skill also rose (0.44 to 0.50) with no true interaction, since a linear probability model can't bend; read the yes/no step 4 rows with that in mind.
+- **Not yet run on the real data.**
+
+### 78. `DATA_DICTIONARY.md`: counts refreshed from the 31 Oct 2026 run of `05`
+- **Why (Josh, 31 Oct 2026):** update the dictionary with the latest information.
+- **Source:** `misc/run_2026-10-30/feature_selection/` (`fs_covariates.csv`, `fs_levels.csv`, `fs_high_pairs.csv`), the first `05` run after the change 76 drops and fill.
+- **Every count, smallest level and % missing** now uses the 266,444 training cases (1,563 fewer than before: 1,509 with jury demand blank, 54 with no plaintiff anywhere). The notes saying "the next 05 run will update them" are gone.
+- **What changed besides the counts:**
+  - `first_plaintiff_type`: "no plaintiff listed" is gone; "name not recorded" (3) is new and added to section 4.
+  - `plaintiff_firm_cases`: "no plaintiff listed" is now the 468 filled cases. Added to section 4 (relabel is Josh's call).
+  - "No defendant listed" fell from 2,377 to 879; the 5th Circuit from 30,122 to 28,601 (mostly the Deepwater Horizon cases).
+  - `cause_title` blank fell from 1.4% to 0.7% (1,766 "(no cause)" cases), because the counts now include the change 65 fill. The dictionary now warns that `lm()` / `glm()` / `rq()` drop those rows unless the blank is recoded. `cause_group` has 200 levels (201 before).
+  - New near-duplicate pairs listed: `pro_se` / `defendant_pro_se` and `defendant_firm_rank` / `defendant_firm_appeared` (1.0, by construction), court and city / `any_referral` (0.76).
+  - New item 7 in section 3 on the change 76 drops.
+- **The previous version is kept** as `DATA_DICTIONARY_2026-10-30.md`, unchanged except for a first line saying it's superseded. `.gitignore` now lists `DATA_DICTIONARY_*.md`, so dated copies stay off GitHub.
+- No code changed.
+
+### 79. `senior_judge_at_filing` renamed `judge_type`
+- **Why (Josh, 31 Oct 2026):** the variable also records magistrate judges (and territorial courts, unassigned cases and so on), not just senior status.
+- **Where:** `00_sample.R` renames the column as it reads `case_features.parquet`, so every script sees `judge_type`. `02_data_checks.R`, `02-b_data_checks_judges.R` (a comment), `05_feature_selection.R`, `covariate_sets.R` (still sensitivity only), `EXPLAINER.md` and `DATA_DICTIONARY.md` use the new name. Earlier entries in this log keep the old name.
+- **`01_build_features.R` is not changed**: it still builds the column as `senior_judge_at_filing`. 00 checks 01's checksum to tell whether `case_features.parquet` is out of date, so editing 01 would make every script warn "OUT OF DATE ... Re-run 01". (A first version of this change did edit 01; it was reverted the same day, before upload.) 00 renames whichever name it finds, so a later rebuild is fine either way.
+- The values and the variable's definition are unchanged.
+- **Tested** on fake data: 02 and 05 ran, `fs_covariates.csv` lists `judge_type`, and the unchanged 01 raises no out-of-date warning.
+
+### 80. New script: `r/02-k_check_fold_stability.R` (are the cross-validation folds the same every run?)
+- **Why (Josh, 31 Oct 2026):** `xgb_training_data()` in `xgb_helpers.R` (used by 07-c, 07-d and 07-e) reads the training cases with no `ORDER BY` and assigns folds by shuffling rows in the order DuckDB returns them. `train_fjc` is built from several joins, so nothing guarantees the same order between runs, machines or thread counts. If the order changes, so do the folds, and comparisons *between* scripts weren't on identical folds. Comparisons within one script (07-d's depth gaps, 07-e's step 4) are unaffected.
+- **What it does:** calls the real `xgb_training_data()` 4 times, each in a fresh DuckDB connection with `00_sample.R` re-run: twice with DuckDB's default thread count (which depends on the machine), then with 4 threads and 1 thread. Each time it reads 07-c's column list (all three sets) and 07-d/e's (main only). It compares row order and folds with run 1, and 07-d/e's folds with 07-c's. Cases are matched by their values, since the query doesn't read `ucid`.
+  - Output: `checks/fold_stability.csv` (`same_order`, `pct_same_fold`: 100 = identical folds, about 20 = effectively reshuffled), and a PASS/FLAG line.
+- **Tested** on fake data (49 training cases): PASS as is. With run 3's rows put in random order: FLAG, run 3 only, `pct_same_fold` 24–33% (about the 20% expected by chance), other runs 100%.
+- **Not yet run on the real data.** If it FLAGs, a fix would assign folds from each case's `ucid` instead of row order; that would change 07-c/d/e's folds slightly on their next run.
+
+### 81. FJC `CLASSACT` and `IFP`: −8 means "no" (decision recorded; explainer corrected)
+- **Why (Josh, 31 Oct 2026):** the record was inconsistent. Change 33 built `class_action_alleged` and `in_forma_pauperis` with −8 read as "no", but change 72 listed folding −8 into "no" as still undecided. `EXPLAINER.md` also said in one place that −8 "usually means missing, but in `IFP` it means 'not in forma pauperis'", which implied −8 is missing for `CLASSACT`, while another bullet read it as "no class action alleged".
+- **Decision:** in `CLASSACT` and `IFP`, −8 means **no**. Neither field has a separate code for no: in matched cases `CLASSACT` is 1 in 3.4% and −8 in 96.6% (`check_fjc_missing.csv`), so reading −8 as missing would leave the variable almost entirely missing. This settles the open item in change 72.
+- **`EXPLAINER.md`:** both bullets now say −8 means no for `CLASSACT` and `IFP`. The general note that −8 usually means missing is kept for other FJC fields.
+- **No code change:** `00_sample.R` already codes anything other than 1 (`CLASSACT`) or "FP" (`IFP`) as "no".
+
+### 82. Filled plaintiffs: "no plaintiff listed" firm counts as "1–10 cases"; "name not recorded" plaintiff counts as "individual"; no other rare-category merges
+- **Why (Josh, 31 Oct 2026):** two open items from changes 76 and 78, and the rare-category list in `DATA_DICTIONARY.md` section 4.
+- **`00_sample.R`, section 7a recodes** (rules, applied to training and holdout alike):
+  - `plaintiff_firm_cases` "no plaintiff listed" becomes **"1–10 cases"**, the smallest firm group, as "no firm listed" already does (change 72). After the change 76 drops these are only the 468 training cases whose plaintiff was filled from the case name or FJC name; they have no counsel data.
+  - `first_plaintiff_type` "name not recorded" (a plaintiff name with no letters; 3 training cases, all filled) becomes **"individual"**, as digits-only defendant names do (change 56). Josh chose "individual" over "other organization" or the smallest category.
+  - `plaintiff_from_fill` still marks the filled cases.
+- **Decision:** no other merges from `DATA_DICTIONARY.md` section 4. The rare categories (arrival route, nature of suit, cause title, diversity pairs, territorial courts, and so on) stay as they are.
+- **Side effect:** `02-d_data_checks_prose.R` treated "no plaintiff listed" as unknown representation; the 468 filled cases now count there as "lawyer with firm". 02-d is a past diagnostic and isn't rerun by default.
+- **`DATA_DICTIONARY.md`:** both rows, their counts (derived from the 31 Oct counts; the next 05 run will confirm them), section 4 marked done, and the decision noted.
+- **Tested** on fake data with planted cases: two filled cases with firm "no plaintiff listed" became "1–10 cases"; a filled case whose caption name is digits only, and a non-filled "name not recorded" plaintiff, became "individual"; a planted "no firm listed" still became "1–10 cases"; pro se plaintiffs and other cases were unchanged. 02 and 05 ran.
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.

@@ -358,15 +358,79 @@ if (file.exists(features_file)) {
   }
 }
 if (file.exists(features_file)) {
-  dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_cases AS
-    SELECT p.*, f.* EXCLUDE (ucid), h.is_holdout
+  # 01_build_features.R calls this column senior_judge_at_filing; it's renamed judge_type here
+  # (change 79), since it also records magistrate judges. 01 is left unchanged so that its
+  # checksum still matches case_features.parquet (see features_inputs() above)
+  f_cols <- dbGetQuery(con, sprintf("DESCRIBE SELECT * FROM '%s'", features_file))$column_name
+  f_select <- if ("senior_judge_at_filing" %in% f_cols)
+    "f.* EXCLUDE (ucid, senior_judge_at_filing), f.senior_judge_at_filing AS judge_type" else "f.* EXCLUDE (ucid)"
+  dbExecute(con, sprintf("CREATE OR REPLACE TEMP VIEW analysis_cases_all AS
+    SELECT p.*, %s, h.is_holdout
     FROM population_cases p
     LEFT JOIN '%s' f USING (ucid)
-    LEFT JOIN holdout_split h USING (ucid)", features_file))
+    LEFT JOIN holdout_split h USING (ucid)", f_select, features_file))
 } else {
-  dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_cases AS
+  dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_cases_all AS
     SELECT p.*, h.is_holdout FROM population_cases p LEFT JOIN holdout_split h USING (ucid)")
 }
+
+# ---- 5b. Plaintiff fill, and cases dropped for missing data (Josh, 30 Oct 2026; change 76) ----
+# Cases with no plaintiff in SCALES's party table (first_plaintiff_type = "no plaintiff listed")
+# get one from (1) the case name - the text before " v. " / " vs. " - or, if that fails or the
+# caption is "In re ...", (2) the FJC plaintiff name (PLT). The filled name gets an entity type
+# with the same rules as first_plaintiff_type (entity_sql, read from 01_build_features.R so the
+# two can't drift apart); section 7a applies it, with n_plaintiffs = 1 and n_parties + 1.
+# DROPPED from the analysis (02-h, 02-i, 02-j):
+#   jury demand blank   jury_demand blank in SCALES: almost all the Deepwater Horizon batch in
+#                       E.D. La. (the FJC records no jury demand for every one)
+#   no plaintiff found  no plaintiff in the party table, the case name or the FJC
+# The rules use covariates only and apply to both sides of the split, which is not redrawn
+# (02_data_checks.R reports the balance of what they remove).
+drop_jury_na      <- TRUE
+drop_no_plaintiff <- TRUE
+src01 <- readLines(file.path(r_dir, "01_build_features.R"))
+e0 <- grep('^entity_sql <- "CASE', src01); e1 <- grep("ELSE 'individual' END\"", src01)
+if (length(e0) != 1 || length(e1) != 1 || e1 < e0) stop("Couldn't find entity_sql in 01_build_features.R")
+eval(parse(text = src01[e0:e1]))                       # defines entity_sql, which reads a column `n`
+ac_cols <- dbListFields(con, "analysis_cases_all")
+if ("first_plaintiff_type" %in% ac_cols) {
+  plt <- if ("PLT" %in% names(dbGetQuery(con, sprintf("SELECT * FROM '%s/fjc_idb_civil.parquet' LIMIT 0", pq))))
+    "CAST(f.PLT AS VARCHAR)" else "CAST(NULL AS VARCHAR)"
+  cname <- if ("case_name" %in% ac_cols) "coalesce(CAST(a.case_name AS VARCHAR), '')" else "''"
+  name_n <- function(x) sprintf("trim(regexp_replace(lower(strip_accents(coalesce(%s, ''))), '[^a-z]+', ' ', 'g'))", x)
+  dbExecute(con, sprintf("CREATE OR REPLACE TEMP TABLE plaintiff_fill AS
+    WITH x AS (
+      SELECT a.ucid,
+             nullif(trim(regexp_extract(%s, '^(.*?)\\s+vs?\\.?\\s+', 1, 'i')), '') AS caption_name,
+             regexp_matches(%s, '^\\s*(in re|in the matter of|matter of|re:)\\b', 'i') AS caption_in_re,
+             CASE WHEN regexp_matches(coalesce(%s, ''), '^\\s*(-?8|0|unknown|n/?a|none)?\\s*$', 'i') THEN NULL
+                  ELSE trim(%s) END AS fjc_name
+      FROM analysis_cases_all a
+      LEFT JOIN best_link_unique l USING (ucid)
+      LEFT JOIN '%s/fjc_idb_civil.parquet' f ON f.fjc_row = l.fjc_row
+      WHERE a.first_plaintiff_type = 'no plaintiff listed'),
+    y AS (SELECT ucid,
+            CASE WHEN caption_name IS NOT NULL AND NOT caption_in_re THEN caption_name ELSE fjc_name END AS fill_name,
+            CASE WHEN caption_name IS NOT NULL AND NOT caption_in_re THEN 'case name'
+                 WHEN fjc_name IS NOT NULL THEN 'FJC plaintiff name' END AS fill_source
+          FROM x),
+    z AS (SELECT *, %s AS n FROM y)
+    SELECT ucid, fill_source, coalesce(%s, 'name not recorded') AS fill_type FROM z",
+    cname, cname, plt, plt, pq, name_n("fill_name"), entity_sql))
+} else {
+  dbExecute(con, "CREATE OR REPLACE TEMP TABLE plaintiff_fill AS
+    SELECT NULL::VARCHAR AS ucid, NULL::VARCHAR AS fill_source, NULL::VARCHAR AS fill_type WHERE false")
+}
+jury_rule <- if (drop_jury_na && "jury_demand" %in% ac_cols)
+  "SELECT ucid, 'jury demand blank' AS reason FROM analysis_cases_all WHERE jury_demand IS NULL" else
+  "SELECT NULL::VARCHAR AS ucid, NULL::VARCHAR AS reason WHERE false"
+plf_rule <- if (drop_no_plaintiff)
+  "SELECT ucid, 'no plaintiff found' FROM plaintiff_fill WHERE fill_source IS NULL" else
+  "SELECT NULL::VARCHAR, NULL::VARCHAR WHERE false"
+dbExecute(con, sprintf("CREATE OR REPLACE TEMP TABLE population_drops AS
+  SELECT DISTINCT ON (ucid) ucid, reason FROM (%s UNION ALL %s) ORDER BY ucid, reason", jury_rule, plf_rule))
+dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_cases AS
+  SELECT * FROM analysis_cases_all WHERE ucid NOT IN (SELECT ucid FROM population_drops)")
 
 # ---- 6-7. Analysis table: the population + its FJC match + its duration --------
 dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_fjc_base AS
@@ -392,6 +456,9 @@ dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_fjc_base AS
 #                         "report cause code") -> no cause. cause_group uses the corrected values
 #   nature_suit,          blank in SCALES -> the FJC value (NOS code, labelled with SCALES's own
 #   jurisdiction          wording for that code; JURIS 1-5 in words) - change 57
+#   plaintiff_firm_cases  "no firm listed" (a lawyer, but no firm named) -> "1-10 cases" - change 72
+#                         "no plaintiff listed" (filled plaintiffs, no counsel data) -> "1-10 cases" - change 82
+#   first_plaintiff_type  "name not recorded" (no letters in the name) -> "individual" - change 82
 # "Local Question" jurisdiction is NOT recoded: it's real (Guam and Virgin Islands, FJC JURIS 5).
 features_cols <- dbListFields(con, "analysis_fjc_base")
 if (all(c("county_area_class", "first_defendant_type") %in% features_cols)) {
@@ -418,6 +485,27 @@ if (all(c("county_area_class", "first_defendant_type") %in% features_cols)) {
   feature_join <- "LEFT JOIN recode_def_names dn ON dn.ucid = r.ucid"
 } else {
   feature_recodes <- ""; feature_join <- ""
+}
+# plaintiff_firm_cases: a lawyer with no firm named counts as the smallest firm group (Josh, 29 Oct 2026;
+# change 72); so does "no plaintiff listed" - after the change 76 drops, only cases whose plaintiff
+# was filled from the case name / FJC name, which have no counsel data (Josh, 31 Oct 2026; change 82)
+if ("plaintiff_firm_cases" %in% features_cols)
+  feature_recodes <- paste0(feature_recodes, ",
+    CASE WHEN r.plaintiff_firm_cases IN ('no firm listed', 'no plaintiff listed') THEN '1-10 cases'
+         ELSE r.plaintiff_firm_cases END AS plaintiff_firm_cases")
+# plaintiff filled from the case name / FJC name (section 5b; change 76): its entity type, one
+# plaintiff, and one more party. plaintiff_from_fill (in analysis_fjc_recoded) marks these cases.
+# A plaintiff whose name has no letters ("name not recorded") counts as "individual", as digits-only
+# defendant names do (Josh, 31 Oct 2026; change 82)
+if (all(c("first_plaintiff_type", "n_plaintiffs") %in% features_cols)) {
+  feature_recodes <- paste0(feature_recodes, ",
+    CASE WHEN (CASE WHEN pfl.fill_source IS NOT NULL THEN pfl.fill_type ELSE r.first_plaintiff_type END) = 'name not recorded'
+           THEN 'individual'
+         WHEN pfl.fill_source IS NOT NULL THEN pfl.fill_type ELSE r.first_plaintiff_type END AS first_plaintiff_type,
+    CASE WHEN pfl.fill_source IS NOT NULL THEN 1 ELSE r.n_plaintiffs END AS n_plaintiffs",
+    if ("n_parties" %in% features_cols) ",
+    CASE WHEN pfl.fill_source IS NOT NULL THEN coalesce(r.n_parties, 0) + 1 ELSE r.n_parties END AS n_parties" else "")
+  feature_join <- paste(feature_join, "LEFT JOIN plaintiff_fill pfl ON pfl.ucid = r.ucid")
 }
 # SCALES's own label for each 3-digit nature-of-suit code (its most common wording)
 dbExecute(con, "CREATE OR REPLACE TEMP TABLE recode_nos_labels AS
@@ -486,7 +574,8 @@ if (all(c("TITL", "SECTION") %in% fjc_cols_all)) {
 dbExecute(con, "CREATE OR REPLACE TEMP VIEW analysis_fjc_recoded AS
   SELECT r.* REPLACE (coalesce(r.cause_title, fc.fill_title) AS cause_title,
                       CASE WHEN r.cause_title IS NULL THEN fc.fill_section ELSE r.cause_section END AS cause_section),
-         r.cause_title IS NULL AND fc.ucid IS NOT NULL AS cause_from_fjc
+         r.cause_title IS NULL AND fc.ucid IS NOT NULL AS cause_from_fjc,
+         r.ucid IN (SELECT ucid FROM plaintiff_fill WHERE fill_source IS NOT NULL) AS plaintiff_from_fill
   FROM analysis_fjc_recoded_1 r LEFT JOIN recode_fjc_cause fc USING (ucid)")
 
 # ---- 7b. Covariates that depend on the TRAINING data, plus filing month/weekday ----
@@ -567,6 +656,9 @@ status <- dbGetQuery(con, "SELECT (SELECT count(*) FROM all_cases) AS n_base,
 fmt <- function(x) format(x, big.mark = ",")
 cat(sprintf("Population \"%s\": %s cases (base sample: %s).\n",
             population, fmt(status$n_cases), fmt(status$n_base)))
+drops <- dbGetQuery(con, "SELECT reason, count(*) AS n FROM population_drops GROUP BY 1 ORDER BY 1")
+if (nrow(drops)) cat(sprintf("Dropped for missing data (change 76): %s.\n",
+                             paste(sprintf("%s %s", drops$reason, fmt(drops$n)), collapse = "; ")))
 cat(sprintf("Duration cap: %s days (%s to %s); longer cases are marked is_overlong.\n",
             fmt(duration_cap_days), format(duration_cap_start), format(fjc_data_through)))
 if (!file.exists(features_file))

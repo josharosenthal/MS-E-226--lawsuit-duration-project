@@ -6,6 +6,8 @@
 #   ->  07-b_short_case_forest  ->  07-c_xgboost
 # If one script fails, the log says so and the next one still runs.
 # Submit from the FarmShare shell (not in R):   sbatch ~/scales_setup/r/run_overnight.sh
+# To run only some scripts, name them after it (without .R), e.g.
+#   sbatch ~/scales_setup/r/run_overnight.sh 07-a_random_forest 07-b_short_case_forest 07-d_interactions
 # Log: ~/overnight_<job id>.out
 # =============================================================================
 #SBATCH --job-name=overnight
@@ -15,7 +17,9 @@
 #SBATCH --output=overnight_%j.out
 
 module load r
-for s in 05_feature_selection 06_plots_and_correlations 07-a_random_forest 07-b_short_case_forest 07-c_xgboost; do
+scripts=("$@")
+[ ${#scripts[@]} -eq 0 ] && scripts=(05_feature_selection 06_plots_and_correlations 07-a_random_forest 07-b_short_case_forest 07-c_xgboost)
+for s in "${scripts[@]}"; do
   echo "===== $s   started $(date)"
   Rscript ~/scales_setup/r/$s.R || echo "!!!!! $s FAILED (exit code $?) - going on to the next script"
 done

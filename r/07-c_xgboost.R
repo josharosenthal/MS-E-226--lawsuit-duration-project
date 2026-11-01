@@ -60,68 +60,19 @@ n_threads  <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", parallel::detectCores
 # ---- Covariate sets and training data ---------------------------------------------------
 source(file.path(r_dir, "covariate_sets.R"))
 sets <- make_sets(dbListFields(con, "train_fjc"), model_sets)
-cat("Reading training cases...\n")
-d_all <- dbGetQuery(con, sprintf("SELECT %s, duration_capped_days, event_observed FROM train_fjc
-                                  WHERE duration_capped_days IS NOT NULL AND event_observed IS NOT NULL",
-                                 paste(unique(unlist(sets)), collapse = ", ")))
-for (v in setdiff(unique(unlist(sets)), num_vars)) d_all[[v]] <- factor(ifelse(is.na(d_all[[v]]), "(NA)", as.character(d_all[[v]])))
-for (v in intersect(num_vars, names(d_all))) d_all[[v]][is.na(d_all[[v]])] <- 0
-set.seed(xgb_seed)
-d_all$fold <- sample(rep_len(seq_len(n_folds), nrow(d_all)))     # the same folds for every outcome and set
-
-auc <- function(p, y) {                       # Mann-Whitney form of the area under the ROC curve
-  r <- rank(p); n1 <- as.numeric(sum(y)); n0 <- as.numeric(length(y)) - n1
-  if (n1 == 0 || n0 == 0) return(NA_real_)
-  (sum(r[y]) - n1 * (n1 + 1) / 2) / (n1 * n0)
-}
-# one-hot design matrix (every category gets a column); `vars` maps each column back to its variable
-design <- function(d, vars) {
-  d[vars] <- lapply(d[vars], function(x) if (is.factor(x)) droplevels(x) else x)
-  vars <- vars[vapply(vars, function(v) !is.factor(d[[v]]) || nlevels(d[[v]]) >= 2, TRUE)]   # a one-category variable can't split
-  f <- vars[vapply(d[vars], is.factor, TRUE)]
-  X <- Matrix::sparse.model.matrix(reformulate(vars, intercept = FALSE), d,
-                                   contrasts.arg = lapply(setNames(f, f), function(v) contrasts(d[[v]], contrasts = FALSE)))
-  list(X = X, vars = vars[attr(X, "assign")])
-}
-# xgb.train's validation-set argument was renamed from watchlist to evals in xgboost 2
-evals_arg <- if ("evals" %in% names(formals(xgboost::xgb.train))) "evals" else "watchlist"
-train_es <- function(X, y, obj, idx_fit, idx_stop) {
-  dfit  <- xgboost::xgb.DMatrix(X[idx_fit, , drop = FALSE], label = y[idx_fit])
-  dstop <- xgboost::xgb.DMatrix(X[idx_stop, , drop = FALSE], label = y[idx_stop])
-  args <- list(params = c(params, list(objective = obj, nthread = n_threads, seed = xgb_seed,
-                                       eval_metric = if (obj == "binary:logistic") "logloss" else "rmse")),
-               data = dfit, nrounds = max_rounds, early_stopping_rounds = early_stop, verbose = 0)
-  args[[evals_arg]] <- list(stop = dstop)
-  do.call(xgboost::xgb.train, args)
-}
-best_iter <- function(b) {
-  it <- xgboost::xgb.attr(b, "best_iteration")
-  if (is.null(it)) it <- b$best_iteration
-  as.integer(it) + if (evals_arg == "evals") 1L else 0L          # 0-based in xgboost 2+, 1-based before
-}
+source(file.path(r_dir, "xgb_helpers.R"))
+d_all <- xgb_training_data(sets, n_folds, xgb_seed)
 
 # ---- Fit one outcome and set: cross-validated predictions, then importance --------------
 fit_one <- function(outcome, set_name) {
-  if (outcome == "log_duration") {
-    d <- d_all[d_all$event_observed, ]; y <- log1p(d$duration_capped_days); obj <- "reg:squarederror"; dropped <- NA
-  } else {
-    cutoff <- as.integer(sub("short_", "", outcome))
-    keep <- d_all$event_observed | d_all$duration_capped_days > cutoff    # drop cases transferred out before the cutoff
-    d <- d_all[keep, ]; y <- as.numeric(d$duration_capped_days <= cutoff); obj <- "binary:logistic"; dropped <- sum(!keep)
-  }
+  od <- outcome_data(d_all, outcome); d <- od$d; y <- od$y; obj <- od$obj; dropped <- od$dropped
   vars <- sets[[set_name]]
   dm <- design(d, vars); X <- dm$X
   cat(sprintf("\n%s, %s set: %s cases, %d covariates (%d columns). %s\n", outcome, set_name,
               format(nrow(d), big.mark = ","), length(vars), ncol(X), format(Sys.time(), "%H:%M:%S")))
-  t0 <- Sys.time(); pred <- rep(NA_real_, nrow(d)); iters <- integer(0)
-  for (k in seq_len(n_folds)) {
-    train_idx <- which(d$fold != k)
-    set.seed(xgb_seed + k); stop_idx <- sample(train_idx, round(0.1 * length(train_idx)))
-    b <- train_es(X, y, obj, setdiff(train_idx, stop_idx), stop_idx)
-    iters <- c(iters, best_iter(b))
-    pred[d$fold == k] <- predict(b, xgboost::xgb.DMatrix(X[d$fold == k, , drop = FALSE]))
-    cat(sprintf("  fold %d: %d trees\n", k, tail(iters, 1)))
-  }
+  t0 <- Sys.time()
+  cv <- cv_predict(X, y, obj, d$fold, params, max_rounds, early_stop, n_threads, xgb_seed)
+  pred <- cv$pred; iters <- cv$iters
   perf <- data.frame(outcome = outcome, set = set_name, n_cases = nrow(d), n_dropped_transferred = dropped,
                      n_covariates = length(vars), n_columns = ncol(X), median_trees = median(iters))
   if (outcome == "log_duration") {
