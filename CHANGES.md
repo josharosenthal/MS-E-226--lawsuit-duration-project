@@ -1170,6 +1170,262 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
 - **`DATA_DICTIONARY.md`:** both rows, their counts (derived from the 31 Oct counts; the next 05 run will confirm them), section 4 marked done, and the decision noted.
 - **Tested** on fake data with planted cases: two filled cases with firm "no plaintiff listed" became "1–10 cases"; a filled case whose caption name is digits only, and a non-filled "name not recorded" plaintiff, became "individual"; a planted "no firm listed" still became "1–10 cases"; pro se plaintiffs and other cases were unchanged. 02 and 05 ran.
 
+### 83. `07-e_interaction_pairs.R`: saves each outcome as it finishes; one job per outcome; short_120 left out
+- **Why (Josh, 31 Oct 2026):** the first real run (job 1918104, 8 CPUs, 4-hour limit) timed out with nothing saved, because the CSVs and plots were only written at the end. Step 2 is the slow part: XGBoost's SHAP interaction values repeat the calculation for each of the about 500 one-hot columns. From the log (5,000 sampled cases):
+  - log_duration: 258,847 cases, 507 columns, 4,680 trees; SHAP about 5 minutes per 250 cases, about 1 h 40 min in all; steps 3–4 under a minute. Finished; its top pairs and regression check were printed to the log.
+  - short_60: 8,128 trees; about 11 minutes per 250 cases, so about 3 h 40 min. Stopped at 3,000 of 5,000.
+- **Changes:**
+  - Outputs are written per outcome as soon as that outcome is done: `interactions_2_pairs_<outcome>.csv`, `_2_summary_`, `_2_top_pairs_` (PNG), `_3_shapes_`, `_3_heatmaps_` (PNG), `_4_regression_check_`. The combined files of change 77 are gone.
+  - Outcomes can be named after the script, e.g. `Rscript 07-e_interaction_pairs.R short_60`, so each runs as its own job. An unknown name stops with a message.
+  - **short_120 is left out by default** (Josh). It can still be named.
+  - Guards: a fold that can't be scored (no short cases in it) gives NA instead of stopping step 4, and an outcome where no pair has any strength still draws its chart. Both came up only on tiny fake data.
+  - Header: real run times, and up to 6 hours per outcome.
+- **Tested** on fake data: the planted-interaction and log-additive tests from change 77 give the same results, written per outcome; a run naming `short_60` writes only short_60's files; no name runs log_duration and short_60; an unknown name stops.
+
+### 84. Cross-validation folds fixed by consolidation group, the same in every run
+- **Why (Josh, 1 Nov 2026):** the first real run of `02-k_check_fold_stability.R` FLAGged. In every comparison but one, only about **20%** of cases kept their fold, exactly what chance gives with 5 folds. So DuckDB returned the training rows in a different order every run, even with the same settings, and since folds were dealt out by row position, every run of 07-c, 07-d and 07-e drew a fresh random split. Only with 1 thread did the two column lists match. The order also changed what was drawn by row position: the 07-e log_duration model stopped at 4,680 trees in one run and 9,060 in the next, and the second run timed out.
+- **`xgb_helpers.R`, `xgb_training_data()`:**
+  - Rows are sorted by `ucid`, so the early-stopping sets and 07-e's SHAP sample are the same every run.
+  - Each case's fold comes from an MD5 hash of its **consolidation group** key plus the seed (226). Groups are defined as in `03_holdout.R`: court plus the lead case's number for a lead case and its members; any other case is its own group. A lead case and its members now share a fold, as they share a side of the holdout split.
+  - The hash scrambles the whole key, so folds are effectively random but fixed; another seed gives another split. Fold sizes are close to, not exactly, equal; they're printed. The real training data has about 393,000 groups, the largest 1,136 cases.
+  - The returned data now includes `ucid` (not used as a covariate).
+- **Effect:** 07-c, 07-d and 07-e results so far were each on their own random split. They need rerunning to share folds. Within-script comparisons (07-d's depth gaps, 07-e's step 4) were valid before and still are.
+- **`02-k`:** header notes the first result. Rerun it to confirm PASS.
+- **Tested** on fake data: 02-k PASS, including with the rows planted in random order (which FLAGged before); a lead case and its two members got the same fold; seed 227 matched seed 226's folds for 16% of cases (about 20% expected by chance); 07-d's and 07-e's planted-interaction tests gave the same results as before. In the synthetic 5,000-case test, folds were uneven (895–1,193) because the test copies one consolidated group 100 times.
+
+### 85. Regression specification: interactions and counts (decision; no code yet)
+- **Decided (Josh, 1 Nov 2026),** for the OLS of log duration and the quantile regressions of duration, after 07-e:
+  - **Interactions:** `nature_suit` × `plaintiff_firm_cases` and `nature_suit` × `jurisdiction`, **with all levels** (no lumping). In 07-e step 4 (lumped to the 8 most common levels) they added +0.0054 and +0.0035 cross-validated R² for log duration, each positive in 5 of 5 folds. The other four top pairs are left out.
+  - **Counts:** log of `n_plaintiffs` and of `n_defendants`; ~~`n_parties` left out~~ — revised the same day: `n_parties` stays, as a log (change 86).
+- **Notes for building it:**
+  - `n_defendants` is 0 for the 879 "no defendant listed" cases, so the log needs log(1 + count) or a separate term for zero.
+  - `n_parties` also counts parties who are neither plaintiff nor defendant (intervenors, third parties, interested parties), so leaving it out drops that information.
+  - The interactions were ranked and tested on the log scale; on the days scale used for quantile regression, effects that add up on the log scale can look like interactions and vice versa (change 71's test).
+- Not yet built.
+
+### 86. New `model_spec.xlsx`: which covariates go into which regression models
+- **Why (Josh, 1 Nov 2026):** a sheet to set the regression specification before the scripts are written.
+- **Decisions recorded in it:**
+  - `n_parties` **stays, as a log** (revises change 85), with `n_plaintiffs` and `n_defendants`.
+  - **Quantile regression leaves out the interactions.** The OLS / ridge / group lasso of log duration includes `nature_suit` × `plaintiff_firm_cases` and `nature_suit` × `jurisdiction`, all levels (change 85).
+  - **Two runs:** without the sensitivity variables, and with them.
+- **The sheet** (project folder, sheet "Model spec"): one row per covariate, plus the two interactions. Columns: set (main / sensitivity, with the 6 sensitivity rows grouped at the end), type, leakage tier, description, **Log?** (counts only, for the squared-error models), and **include?** for three model families: duration OLS / ridge / group lasso, duration quantile regression, and the short-case logistic models. Counts at the top give the number of variables in each family for each run. A "Legend" sheet explains it.
+  - Josh asked for one duration column; it's split into OLS-type and quantile columns because the interactions differ between them.
+- **Defaults Claude filled in, not decided by Josh** (marked in the sheet): every main and sensitivity variable is "Yes" in every model family; `n_counsel` is logged like the other counts; the interactions' short-case cells are blank (not decided).
+- **Noted in the sheet:** in a regression, two sensitivity variables overlap main ones because each main variable is built from them: `defendant_firm_rank` / `defendant_firm_appeared` and `pro_se` / `defendant_pro_se`.
+- Not code; no scripts read it yet.
+
+### 87. `model_spec.xlsx`: Josh's short-case choices
+- **Josh's edits (1 Nov 2026):**
+  - **Short-case interactions** (logistic, ended within 60 days): `nature_suit` × `plaintiff_firm_cases`, `nature_suit` × `jurisdiction`, and three short-case-only pairs: `cause_group` × `arrival_route`, `jury_demand` × `arrival_route`, `nature_suit` × `in_forma_pauperis`. None of the three goes into the duration models.
+  - **Short-case sensitivity only:** `has_related_case`, `consolidation_role`, `tro_pi_motion_60d` and `amicus` are left out of the short-case run 1 and added in run 2. They stay in the main set for the duration models.
+  - **Left out of every model:** `defendant_firm_rank` and `pro_se` (the sensitivity versions of `defendant_firm_appeared` and `defendant_pro_se`), which removes the overlap noted in change 86.
+- **Claude's tidying (no choices changed):** leakage tier and description for the three new interaction rows, with their 07-e step 4 gains; notes updated; the run 2 counts at the top now include "Sensitivity only"; the short-case drop-down allows "Sensitivity only"; a legend line explaining it. Josh's version before the tidying is kept in the scratchpad.
+- **Counts:** duration OLS 29 (run 1) / 33 (run 2); quantile 27 / 31; short-case 28 / 36.
+
+### 88. `model_spec.xlsx`: logs in every model; two more interactions
+- **Josh's answers (1 Nov 2026):**
+  - "Sensitivity only" in the short-case column means left out of run 1, added in run 2.
+  - The short-case column covers plain, ridge and lasso logistic regression.
+  - **Counts are logged in the logistic models too.** With change 85 (logs of the counts for the OLS and the quantile regression), the Log? column now applies to every model.
+  - **`n_counsel` is logged** (was Claude's default).
+  - **New interactions:** `n_parties` × `n_defendants` (the product of the two logs) in every run of the OLS-type duration models and the short-case models, not quantile; `arrival_route` × `defendant_firm_appeared` in the short-case run 2 only, because it may be leaky.
+- **Counts:** duration OLS 30 (run 1) / 34 (run 2); quantile 27 / 31; short-case 29 / 38.
+- **Still open:** a minimum cell size for the unlumped interactions in the plain logistic model.
+
+### 89. Logs in every model, including the quantile outcome; logistic cell-size rule; dictionary section 5 (interactions)
+- **Josh (1 Nov 2026):**
+  - **Logs in everything, for consistency:** the quantile regressions model **log(1 + duration)**, not days (this revises change 85). Counts were already logged in every model (change 88). A predicted quantile of log duration converts exactly to days.
+  - **Plain logistic interactions:** a cell gets its own term only if it has **at least 10 short and 10 non-short** training cases. Ridge and lasso keep every cell.
+  - That rule counts cells on the **full training data, across folds**, which the dictionary now flags in bold. Strictly, it uses outcomes of cases that a fold is predicting, so the plain logistic's cross-validated scores are slightly optimistic.
+  - **No separate main + `n_counsel` model:** `n_counsel` is in the sensitivity run only.
+- **`DATA_DICTIONARY.md`:**
+  - New **section 5, Interactions**: each interaction by model family and run, how it's built, its 07-e gain, the cell rule with the bold flag, and the outcomes.
+  - The **Model** column now follows `model_spec.xlsx`: counts "logged"; `has_related_case`, `consolidation_role`, `tro_pi_motion_60d` and `amicus` main for duration and sensitivity for short-case; `pro_se`, `defendant_firm_rank`, `circuit`, `city`, `cause_title` and `is_consolidated` "not used"; `n_counsel` sensitivity, with no separate model. The "Where the numbers come from" note on Model and the near-duplicate-pairs note are updated.
+- **`model_spec.xlsx`:** quantile column header (log duration), the cell rule on each short-case interaction, and legend lines 7 and 9.
+- **Not changed:** the 07-a, 07-b and 07-c tree scripts still also fit a main + `n_counsel` set (`main_plus_counsel` in `covariate_sets.R`). Josh: keep it there; the dictionary notes it (Model note and the `n_counsel` row).
+
+### 90. Regression scripts: decisions before writing them
+- **Josh (1 Nov 2026):**
+  1. Log-duration models use cases that **ended in court** (as the trees do); the short-case models use the 60-day sample (264,161 training cases).
+  2. **No 120-day outcome** in the regressions.
+  3. Columns are built from all training cases; a level absent from a fold's training part gets coefficient 0 (predicted like the reference level).
+  4. **Reference level:** each category's most common level (OLS, quantile, plain logistic).
+  5. **Ridge / lasso scaling:** dummies are not standardized; the logged counts and the `n_parties` × `n_defendants` product are **scaled to a standard deviation of 0.5** (Gelman's convention, matching an evenly split dummy). Scaled by hand, since `glmnet` standardizes all columns or none (Josh, option c).
+  6. **Penalty:** `lambda.min`, tuned by an inner cross-validation within each outer fold (nested).
+  7. Group lasso: an interaction may enter even if one of its main effects drops out. **Groups:** one per variable (all its dummies together) and one per interaction (Josh).
+  8. **The 10/10 rule also applies to main-effect levels in the plain logistic model.** Small levels merge into one "other (small)" level per variable (Claude's default), which joins the reference level if it still fails. `DATA_DICTIONARY.md` section 5 updated; the bold full-training-data flag now covers levels as well as cells.
+  9. Metrics as listed (OLS: R², RMSE, errors in days; quantile: pinball loss, pseudo-R¹, coverage, crossing; logistic: AUC, Brier skill, log loss, calibration). **Smearing correction** (Duan) applied when OLS predictions are turned into days (Josh).
+  10. **Standard errors** for the reported full-training fits: clustered by court and consolidation group.
+  11. **The holdout is used only after the models are picked.** Nothing touches it yet.
+  12. Package check on FarmShare: OK to run.
+  13. **Jobs split as small as possible**, to isolate problems.
+- No code yet.
+
+### 91. New: the 08 regression scripts (OLS, ridge, group lasso, quantile, logistic, ridge and lasso logistic)
+- **Why (Josh, 1 Nov 2026):** the regression models, specified in `model_spec.xlsx` and changes 85–90, with jobs "as small as possible" and the longest time limit.
+- **Files (all in `r/`):**
+  - `reg_helpers.R`: shared code, which reads the specification, builds each design matrix, fits the models, and runs one job.
+  - `model_spec.csv`: the choices from `model_spec.xlsx`, exported so R can read them without extra packages. **Regenerate it whenever the spreadsheet changes.**
+  - One script per model, each taking `<run 1|2> <fold 1-5|full>`: `08-a_ols.R`, `08-b_ridge.R`, `08-c_group_lasso.R`, `08-d1_quantile_50.R`, `08-d2_quantile_90.R`, `08-e_logistic.R`, `08-f_logistic_ridge.R`, `08-g_logistic_lasso.R`.
+  - `08-0_install_packages.R`: installs glmnet, grpreg and quantreg into the user library; run once on the login node.
+  - `08-z_regression_summary.R`: scores each model and run once all 5 folds are in.
+  - `submit_regressions.sh`: submits one Slurm job per model × run × fold (folds 1–5 plus "full"), 96 jobs for everything, each with a 2-day limit. Memory is set per model, more for run 2. It makes the log folder `~/reg_logs` first.
+- **How it works:**
+  - The training cases and folds come from `xgb_training_data()`, so folds are by consolidation group, as in 07-c/d/e.
+  - **Inner folds** for tuning penalties come from a second hash of the same groups (seed 227). `xgb_training_data()` gains an optional `inner_seed` argument; nothing else in it changes.
+  - A fold job fits on the other four folds and saves predictions for its own fold. A "full" job fits on all training cases and writes coefficients. Penalized full fits tune on the outer folds.
+  - Columns absent from a fold's training part are left out of that fit (coefficient 0).
+  - Unpenalized designs: intercept, each category against its most common level, logged counts, and interaction cells that don't involve a reference level.
+  - Penalized designs: every level and cell its own column; logged counts and the count product scaled to SD 0.5.
+  - Plain logistic: the 10/10 rule for levels and cells, counted on all training cases; small levels become "other (small)". It's fitted by IRLS on the sparse design.
+  - OLS and plain logistic full fits give standard errors clustered by court.
+  - Quantile regression uses quantreg's sparse Frisch–Newton solver. Aliased columns are dropped first, and the solver's work space is sized to the column count, because its defaults were too small. No standard errors.
+- **Claude's choices to check:**
+  - **grpreg standardizes (orthonormalizes) each group internally,** because its algorithm requires it. So "dummies not standardized" can't be applied to the group lasso; it applies to ridge and lasso (glmnet, `standardize = FALSE`).
+  - **The smearing correction is also used for ridge and group lasso** predictions in days, not only OLS.
+  - **The short-case lasso is the ordinary (not group) lasso,** per "logistic, ridge, lasso" in the sheet.
+  - **Small plain-logistic levels go to "other (small)"** (change 90).
+  - Penalties use glmnet's and grpreg's default lambda paths.
+- **Metrics** (08-z, `models/reg/reg_summary.csv`, `reg_per_fold.csv`, `reg_calibration.csv`):
+  - Duration models: R² and RMSE on the log scale; mean absolute error in days (smeared) and median absolute error in days (exp − 1).
+  - Quantile models: pinball loss, pseudo-R¹ and coverage; crossing between 0.5 and 0.9.
+  - Logistic models: AUC, Brier skill, log loss, and calibration by decile.
+  - Each comes with a standard error across folds.
+- **Tested** on about 4,900 synthetic cases (the fake project × 100), with planted effects:
+  - The OLS recovered all of them: removed +1.01 (planted 1.0), top-20 firm +0.81 (0.8), log(1 + `n_parties`) 0.39 (0.4), and the planted interaction cell (480 Consumer Credit × over-50-case firm) −1.55 (−1.5).
+  - The plain logistic converged in 6 iterations; the 10/10 rule merged the rare cause group and kept fewer interaction cells than OLS (16 vs 20; 12 vs 15).
+  - All 8 models ran all folds and "full". 08-z scored them: OLS R² 0.492, ridge 0.486, group lasso 0.471; quantile coverage 0.501 and 0.897 (targets 0.50 and 0.90), crossing 0; AUC 0.854 (plain), 0.844 (ridge), 0.838 (lasso).
+  - Run 2 ran: it added `n_counsel` and, for the plain logistic, `arrival_route` × `defendant_firm_appeared`.
+  - 02-k still PASSes and 07-d runs with the edited `xgb_helpers.R`.
+- **Not yet run on the real data.** Run times on 259,000 cases are unknown. Quantile and group lasso, especially in run 2 with `judge_group`'s about 1,450 levels, are the likeliest to be slow.
+
+### 92. Docs brought in line with the 08 scripts (docs only; no code changed)
+- **Why (Josh, 1 Nov 2026):** a review of the 08 scripts against the docs found places where the docs were stale or didn't match the code.
+- **`EXPLAINER.md`:**
+  - The `DATA_DICTIONARY.md` row says 37 covariates, not 35.
+  - Section 7B: "no counsel listed" is 23% of training cases (it was "about a third" before the prisoner exclusion). A new paragraph says which leaky variables the regression runs hold out: run 2 adds the judge variables and `n_counsel` everywhere, but `consolidation_role` and `amicus` are in run 1 of the duration models (change 87), so for duration the run 1 vs run 2 comparison doesn't show what they add.
+  - The plaintiff-representation decision now lists the current categories ("no firm listed" and the filled "no plaintiff listed" count as "1–10 cases", changes 72 and 82), and the `pro_se` paragraph says the defendant side was settled in change 70 (`defendant_pro_se`, `defendant_firm_appeared`).
+  - Section 6: "no FJC record" removed from the examples of missing labels (those cases are excluded, change 42).
+  - Section 5: the commands for the 08 jobs (install, submit, check, summarize).
+- **`DATA_DICTIONARY.md` section 5:**
+  - The count × count product uses **centred** logs (as the code and `model_spec.xlsx` do), and what that means for the main effects.
+  - Clustered standard errors are for OLS and plain logistic only; the quantile fits have none.
+  - Smearing is also applied to ridge and group lasso (change 91).
+  - A level missing from a fold's training part: predicted like the reference level in the unpenalized models, at the intercept in ridge and lasso. (Change 90 item 3 said "like the reference level" for all models; left as written, since it's the record of the decision.)
+- **`model_spec.xlsx`:** the label in row 7 reads "Counts logged (all models)", not "(squared-error models)" (change 88). The version before the edit is in the scratchpad.
+- **Open, not changed:** change 90 item 10 recorded standard errors "clustered by court and consolidation group"; the code (change 91) clusters by court only. The dictionary now flags this. Josh to decide.
+
+### 93. 08 regression scripts: fixes from the review (Josh's picks)
+- **Why (Josh, 1 Nov 2026):** after the review behind change 92, Josh chose which code fixes to make. Not made: removing `--exclude=barley-03,barley-04` from `submit_regressions.sh` (left as is; its reason isn't recorded here).
+- **`reg_helpers.R`:**
+  - **Fold-specific setup (I):** reference levels, the SD-0.5 scaling and the centring of the count product come from each fold's training part. The 10/10 rule still counts on all training cases (change 89).
+  - **Judge columns left out by a rule (H), run 2, unpenalized models:** judges are nested in courts, so some judge columns are redundant, and before this the QR step dropped them by column order. Now: in a court whose cases all have a named judge, the court's busiest judge is left out (that court's reference); across all levels, the most common level spanning courts (usually "other (fewer than 20 training cases)") is left out. Only redundant columns go, so the fit doesn't change. **A first version also dropped the busiest judge in courts that had cross-court cases. That restricted the model (one shared "other" effect against different references), and the test caught it (planted judge differences of 0.5 came out as low as 0.28). It was replaced before handover.**
+  - **Step-halving (B)** in the plain logistic's IRLS, as in `glm()`; `halvings` is saved, and a fit that doesn't converge prints a WARNING.
+  - **Penalty boundary (C):** each ridge, lasso and group lasso job saves `lambda_boundary` ("smallest", "largest" or "none").
+  - **Inner folds in parallel (E):** `cv.glmnet(parallel = TRUE)` through doParallel; for the group lasso, the cross-validation is done in the helper the way `cv.grpreg` does it (path on all rows, each fold refitted on the same lambdas, pooled squared error), because `cv.grpreg` 3.6 can't run folds in parallel. Up to 5 processes (one per fold), forked so they share the data.
+  - **Spec fingerprint (D):** each job saves the MD5 of `model_spec.csv`.
+  - **Standard errors (G; Josh: keep court clustering, with warnings):** coefficients files gain `n_courts` (how many courts each column appears in) and `se_usable` (FALSE when it's one court, which includes every court dummy and judge). The header explains why.
+- **`08-z_regression_summary.R`:**
+  - **(A)** `folds_converged` for the plain logistic, `folds_lambda_at_boundary` for the penalized models, as rows of `reg_summary.csv` and FLAG lines.
+  - **(D)** a model and run whose 5 folds don't share one `model_spec.csv` MD5 (or were made before this change) is listed as not scored.
+  - **(J)** R² and Brier skill use the fold's training mean as the baseline (pseudo-R¹ already used the training quantile). `mean_abs_error_days` now uses exp(prediction) − 1, like the median error.
+  - **Claude's addition, to check:** a new `rmse_days` with the smeared mean prediction, so the smearing factor (Josh, change 90) still has a metric it suits.
+- **`08-0_install_packages.R`:** also installs doParallel (and with it foreach). **Rerun it once on the login node.**
+- **`submit_regressions.sh`:** comment on what the 8 CPUs are used for. Memory unchanged.
+- **Docs:** `DATA_DICTIONARY.md` section 5 (fold-specific setup, judge rule, the SE warning, scoring; the change 92 open item is settled); `EXPLAINER.md` rows for 08-0 and 08-z.
+- **Tested** on about 4,800 synthetic cases (the fake project × 100), with judges nested in 6 courts, "other (fewer than 20 training cases)" only in 2 of them, and planted judge effects (J1 +0.5, J2 −0.5):
+  - All 8 models ran all folds and "full" in both runs; 08-z scored them.
+  - **Same fit:** the judge rule against plain treatment coding (the code before this change), OLS and logistic: equal rank, fitted values equal to within 1e-12. The rule left out the busiest judge in 4 courts plus the "other" level.
+  - **Judge effects recovered:** J1 +0.43 to +0.54 and J2 −0.42 to −0.57 against each court's reference; `se_usable` FALSE for all court and judge rows (17 of 88 OLS columns).
+  - **Group lasso CV:** lambda.min equal to `cv.grpreg`'s on the same folds (0.024230). Parallel `cv.glmnet` equal to serial.
+  - **Step-halving:** with steps deliberately made 3 times too long, the fit still converged to glm's answer (11 halvings); on normal data, 0 halvings and glm's coefficients.
+  - **08-z:** a fold with a changed MD5 left OLS run 1 unscored with the reason; a fold marked not converged gave "FLAG logistic run 2: 4 of 5 folds converged".
+  - **Ridge and ridge logistic hit the smallest lambda in every fold** on the synthetic data (strong signal, many cases per column). The flag works; whether it happens on the real data is to be seen.
+- **Not yet run on the real data.**
+
+### 94. Regression decisions after the review (no code changed)
+- **Josh (1 Nov 2026):**
+  - **Ridge at the smallest penalty:** if `lambda.min` is at the end of glmnet's path on the real data, note the result and move on (08-z's FLAG line records it). The path isn't extended.
+  - **Memory for the parallel inner folds:** decide after the pilot.
+  - **Pilot first:** fold 1 of each model, runs 1 and 2, to measure time and memory before submitting the rest.
+  - **`rmse_days` kept** (change 93's addition).
+  - **`amicus` and `consolidation_role` stay in run 1 of the duration models**, on purpose (change 92's note).
+  - **Holdout choice:** the model with the best cross-validated score within each family goes to the holdout.
+- **`submit_regressions.sh`:** the usage comment for a subset now starts with `env`, since `RUNS=... bash ...` doesn't work in tcsh, FarmShare's login shell.
+- **Standard errors for the court (and judge) dummies:** settled in change 95 (option a).
+
+### 95. Standard errors: option (a), a second set clustered by consolidation group
+- **Why (Josh, 1 Nov 2026):** with court in the model, court clustering gives the court and judge dummies no usable standard error (change 93's `se_usable = FALSE`), because each court's residuals add up to zero. Josh chose option (a): keep court clustering for everything else, and use standard errors clustered by consolidation group for those coefficients.
+- **`xgb_helpers.R`:** when `inner_seed` is given (the 08 scripts only), `xgb_training_data()` also returns `cons_group`, an anonymous code for each case's consolidation group (the MD5 of its key, as defined in `03_holdout.R`). The folds and everything else are unchanged; 07-c/d/e don't pass `inner_seed`.
+- **`reg_helpers.R`**, full fits of OLS and the plain logistic: the coefficients files gain:
+  - `se_cluster_group`: clustered by consolidation group. Most groups are one case, so it's close to ordinary robust standard errors.
+  - `se_reported`: the court-clustered value where `se_usable` is TRUE, and the group-clustered one otherwise (the court dummies, the judges, cells found in one court).
+  - `se_type`: "court" or "consolidation group".
+  - The quantile and penalized files get an empty `se_cluster_group`.
+- **`DATA_DICTIONARY.md` section 5:** describes the second set.
+- **Tested** on the synthetic data (6 courts): the court dummies' court-clustered SEs were about 0.003, misleadingly small, while their group-clustered SEs were about 0.035. `se_reported` took the group value for the 5 court dummies and the court value for the rest (70 of 75 rows in the logistic). The quantile run still writes its file.
+
+### 96. Group lasso: more memory and fewer inner folds at once
+- **Why (Josh, 1 Nov 2026):** in the pilot, `group_lasso` run 1 fold 1 ran out of its 48 GB after 20 minutes (peak about 50 GB). grpreg needs a dense copy of the design, and change 93 runs the 5 inner-fold fits in parallel, each forked process with its own working copies. Josh: do both, more memory and fewer at once.
+- **`reg_helpers.R`:** the group lasso runs **2 inner folds at a time** instead of 5 (`gl_workers`, from the environment variable `REG_GL_WORKERS`, default 2). The fit doesn't change, only how many folds run at once. Ridge and the logistic penalized models are unchanged (glmnet, 5 at a time).
+- **`submit_regressions.sh`:** group lasso memory **128 GB for run 1** (was 48) and **176 GB for run 2** (was 96; it fits FarmShare's 191 GB nodes).
+- **Tested** on the synthetic data: group lasso folds ran with 2 workers and with 1.
+- At the time of this change the pilot's run 2 group lasso (96 GB, 5 at once, the old settings) was still running.
+- **Error message fixed:** when the out-of-memory killer stops one forked worker, `mclapply` returns nothing for that fold, and the old check then failed with a second, unclear error ("values must be length 1"), which is what the run 1 log showed. Now it says which inner fold failed and that the process was probably killed for memory. Tested by faking a worker that returns nothing.
+- **Pilot timings (fold 1, real data):** every model except the group lasso finished in **0.3–1.3 minutes**, run 1 and run 2.
+  - Columns, run 1 / run 2: OLS 973 / 2,426; ridge 1,158 / 2,617; quantile 482 / 1,935; plain logistic 755 / 1,560; ridge and lasso logistic 1,916 / 3,436.
+  - In the plain logistic, the 10/10 rule merged 48 cause groups, 9 diversity pairs, 8 natures of suit and 3 courts, plus 672 judges in run 2. It kept 188 of the 411 nature of suit × plaintiff firm cells, and 44 of the 584 cause group × arrival route cells.
+
+### 97. XGBoost on the regressions' variables, and one comparison of all the models
+- **Why (Josh, 2 Nov 2026):** to compare XGBoost, OLS and the quantile median fairly. The models already share their cases and folds; this matches the variables, saves XGBoost's per-case predictions and scores every model on every metric in one place.
+- **`07-c_xgboost.R`:**
+  - **Two new sets, `reg_run1` and `reg_run2`:** exactly the variables of the 08 models' run 1 and run 2 (the non-interaction rows of `model_spec.csv`; the duration list for log duration, the short-case list for ended within 60 days). No logs or interaction terms, which trees don't need.
+  - **For log duration, `reg_run1` is the same 27 variables as the `main` set,** so the old main-set XGBoost was already matched to run 1 there. `reg_run2` is `sensitivity` without `defendant_firm_rank` and `pro_se` (31 vs 33). For ended within 60 days, `reg_run1` also leaves out the 4 "Sensitivity only" variables (23).
+  - **Each case's cross-validated prediction is saved** in `models/xgb_cv/xgb_<outcome>_<set>_cv.rds`, with its fold, outcome, each fold's smearing factor (log duration) and the `model_spec.csv` MD5.
+  - **Outcomes and sets from the command line** (`Rscript 07-c_xgboost.R log_duration,short_60 reg_run1,reg_run2`); with arguments, the summary and plot names get a suffix so they don't overwrite the full run's files. With no arguments it runs as before.
+- **`xgb_helpers.R`:** `cv_predict()` can also return each fold's smearing factor (mean of exp(residual) on its training part). Off by default, so 07-d is unchanged.
+- **New `08-y_compare_models.R`:** for each run, OLS, ridge, group lasso, quantile median and XGBoost (log duration), and plain, ridge and lasso logistic and XGBoost (ended within 60 days):
+  - every model on every metric: R², RMSE and mean absolute error (log), mean and median absolute error in days, RMSE in days (not for the quantile median); AUC, Brier skill, log loss;
+  - baselines from each fold's training part, as 08-z (07-c's own summary uses the mean of all cases; the R² differs in the 4th decimal);
+  - paired differences for every pair, with SE = sd(5 per-fold differences) / sqrt(5) and the number of folds each model was ahead;
+  - stops if the models don't share cases, folds and outcomes, or came from different `model_spec.csv` versions.
+- **Tested** on the synthetic data (7 regression models x 2 runs x 5 folds, then 07-c with the new sets): 08-y's scores for the regressions matched 08-z's exactly (48 values); XGBoost's RMSE and AUC matched 07-c's summary and its R² differed in the 4th decimal (the baseline); the variable counts matched `model_spec.csv` (27 / 31 duration, 23 / 31 short-case).
+
+### 98. Random forests on the regressions' variables and the shared folds
+- **Why (Josh, 2 Nov 2026):** to put the forests into the same comparison. Josh asked whether out-of-bag error is good enough to choose models for the test set. It's fine for choosing among forests, but it doesn't keep consolidation groups together (a case's related cases can be in the trees that predict it), and it can't be paired fold by fold with the other models.
+- **New `07-f_forest_cv.R`:** the forests of 07-a (log duration, 500 trees, leaf 5) and 07-b (ended within 60 days, probability forest, 500 trees, leaf 10) on the `reg_run1` / `reg_run2` variables (as 07-c, change 97):
+  - each fitted 5 times, on 4 folds, predicting the 5th, with the same cases and folds as 07-c and the 08 models;
+  - smearing factor for days from each fold's training part, using the forest's out-of-bag predictions (its in-sample residuals are far too small);
+  - one more forest on all the cases gives the out-of-bag score on the same cases; `forest_cv_summary_*.csv` shows cross-validated vs out-of-bag and the gap;
+  - each case's predictions saved in `models/forest_cv/`; no permutation importance, forests not saved.
+- **`08-y_compare_models.R`:** includes the forest for both outcomes when its file is there.
+- **07-a and 07-b are unchanged.**
+- **Tested** on the synthetic data, with the 08 models and 07-c run in the same session: the forest went into 08-y's tables and pairs for both outcomes and runs.
+
+### 99. Run 3 (run 2 without n_counsel), and SHAP values for XGBoost
+- **Why (Josh, 2 Nov 2026):** "I can't in good conscience keep n_counsel. There's too much evidence of leak." In run 2, `n_counsel` took 30% of XGBoost's gain for log duration and 24% for ended within 60 days, about twice the next variable. Josh asked for a run 3 (the sensitivity variables without `n_counsel`) for the tree models, OLS and plain logistic, to keep the SHAP files this time, and to be able to comment on circuit, court and judge.
+- **`xgb_helpers.R`:** new `spec_keep()`, the one place that says which `model_spec.csv` rows each run uses. Runs 1 and 2 are unchanged. Run 3 is run 2 without `n_counsel` and without any interaction that uses it (there are none now). `model_spec.csv` and `model_spec.xlsx` are not changed, so the MD5 check still passes for runs 1 and 2.
+- **`reg_helpers.R`:** `spec_terms()` uses `spec_keep()`; jobs accept run 3. The 08-a to 08-g usage lines say `<run 1|2|3>`.
+- **`submit_regressions.sh`:** run 3 gets run 2's memory (`env RUNS="3" bash ... ols logistic`).
+- **`07-c_xgboost.R`:**
+  - set `reg_run3`; the reg_run sets use `spec_keep()` (so `xgb_helpers.R` is now sourced before them);
+  - circuit is read too, only to group the SHAP values (it isn't a model variable: courts nest in circuits);
+  - **SHAP** (`n_shap`, default 20,000 sampled cases; 0 turns it off) from the all-cases model 07-c already fits for gain. Each prediction is split exactly into a part for each variable (one-hot columns added back up); the parts add up to the prediction, which the script checks. Saved per case in `models/xgb_shap/xgb_<outcome>_<set>_shap.rds` (row, outcome, prediction, baseline, SHAP by variable, the variables' values and circuit), and the model itself as `xgb_<outcome>_<set>_full.json`;
+  - `xgb_<outcome>_<set>_shap_summary.csv`: mean |SHAP| by variable and its share, and for categories `share_within_levels`, the part of a variable's SHAP spread within its own levels (the same court contributing differently in different cases, which happens only through interactions with other variables);
+  - `_shap_location.csv` (when court is in the set): court's SHAP, judge_group's, and the two added, each as shares of its sum of squares between circuits, between courts in a circuit, between judges in a court (judges keyed within their court), and within;
+  - `_shap_by_court.csv`: mean SHAP of court, judge_group and the two added, by circuit and court. Judge-level values stay in the `.rds`, not in a csv;
+  - this runs for every set 07-c fits, not just `reg_run3`.
+- **`07-f_forest_cv.R`:** set `reg_run3`; permutation importance from the all-cases forest it already fits (`rf_<outcome>_<set>_importance.csv`). It's out-of-bag, so not group-safe, but fine for ranking. No forest SHAP (ranger has none; it would need the `treeshap` package).
+- **Docs:** EXPLAINER.md (07-c, 07-f, 08 scripts, 08-y, 08-z, `submit_regressions.sh`, output files, the run 3 note and command) and DATA_DICTIONARY.md (run 3 in the model key and on the `n_counsel` row).
+- **`08-y_compare_models.R`, `08-z_regression_summary.R`:** include run 3. In 08-y, models not fitted on run 3 (ridge, lasso, group lasso) are listed as not included. Josh then added both quantile models to run 3 for completeness (no code change; the 90th percentile is scored in 08-z, not 08-y).
+- **Submitted on FarmShare (2 Nov 2026):** 24 regression jobs for run 3 (OLS, quantile median and 90th, plain logistic; folds 1–5 and full; jobs 1926298–1926321), XGBoost (1926324) and the forests (1926325).
+- **Tested** on the synthetic data, with circuits and judges planted (circuit 9's two courts +0.5; one judge in one court +0.7 on log duration):
+  - run 3 = run 2 minus `n_counsel` for both families, same interactions;
+  - OLS and plain logistic, runs 2 and 3, folds 1–5 and full; 07-c on `reg_run2,reg_run3`; 07-f on `reg_run3`; 08-y and 08-z both included run 3;
+  - SHAP added up to the predictions (largest gap 6e-06); the SHAP rows matched the cross-validation file's; the saved model reloaded;
+  - the location split found the planted effects: 96% of court's SHAP between circuits, and 74% of judge_group's between judges within a court.
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.

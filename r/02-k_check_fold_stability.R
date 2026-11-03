@@ -20,6 +20,9 @@
 #   pct_same_fold         % of cases in the same fold (100 = identical folds; about 20
 #                         would mean the folds are effectively reshuffled)
 # PASS if every comparison is identical; FLAG otherwise.
+# First real run (1 Nov 2026): FLAG, about 20% of cases in the same fold, i.e. a fresh random
+# split every run. Fixed in change 84 (folds from a hash of the consolidation group, rows sorted
+# by ucid); rerun this to confirm.
 # Output: ~/scales_project/checks/fold_stability.csv
 # Batch job: --cpus-per-task=8 --mem=24G, under an hour (00_sample.R runs 4 times).
 # =============================================================================

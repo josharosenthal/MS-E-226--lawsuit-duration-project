@@ -1,15 +1,16 @@
 # =============================================================================
 # 07-e_interaction_pairs.R — WHICH pairs of covariates interact, what the interactions
 # look like, and do they help a regression? TRAINING CASES ONLY (Josh, 31 Oct 2026).
-# Steps 2-4 of the interaction plan; step 1 (do interactions matter at all?) is
-# 07-d_interactions.R, whose depth check found most of the gain comes from two-way pairs.
+# Steps 2-4 of the interaction plan, for log duration and ended within 60 days (short_120 is
+# left out by default); step 1 (do interactions matter at all?) is 07-d_interactions.R, whose
+# depth check found most of the gain comes from two-way pairs.
 #
 # STEP 2 — which pairs. One XGBoost model per outcome with trees of depth 2 (so every tree is
 #   one variable or one pair), main set, fitted on the training cases. For a sample of cases,
 #   XGBoost splits each prediction exactly into a part for each variable ("main effect") and
 #   a part for each pair ("SHAP interaction values"). A pair's strength is the average size of
 #   its part, in the model's units: log(1 + days) for log duration, log-odds for the
-#   ended-within-60/120-day outcomes. Categories' one-hot columns are added up to their
+#   ended-within-60-day outcome. Categories' one-hot columns are added up to their
 #   variable first. rank_half_a / rank_half_b are the ranks in two random halves of the
 #   sample: if they're close, the ranking is stable.
 # STEP 3 — what the top pairs look like. For each top pair, a grid of the two variables'
@@ -30,19 +31,24 @@
 #   chosen from these same training cases, so the gains are slightly optimistic; the holdout
 #   is untouched. XGBoost rows from step 1 are shown for comparison if that file exists.
 #
-# Output: ~/scales_project/models/
-#   interactions_2_pairs.csv              every pair, ranked, per outcome
-#   interactions_2_summary.csv            per outcome: total main-effect vs pair strength
-#   interactions_2_top_pairs.png          the strongest pairs, outcomes side by side
-#   interactions_3_shapes.csv             the level-by-level grid for each top pair
-#   interactions_3_<outcome>.png          heat maps of mean_shap_interaction for the top pairs
+# Output: ~/scales_project/models/, one set per outcome, written as soon as that outcome is done
+# (<outcome> = log_duration or short_60; short_120 if named):
+#   interactions_2_pairs_<outcome>.csv              every pair, ranked
+#   interactions_2_summary_<outcome>.csv            total main-effect vs pair strength
+#   interactions_2_top_pairs_<outcome>.png          the strongest pairs
+#   interactions_3_shapes_<outcome>.csv             the level-by-level grid for each top pair
+#   interactions_3_heatmaps_<outcome>.png           heat maps of mean_shap_interaction for the top pairs
 #                                         (red = the pair pushes the prediction up: longer for
 #                                         log duration, MORE likely to end within the cutoff for
-#                                         short_60 / short_120; blue = down; grey = under 10
+#                                         short_60; blue = down; grey = under 10
 #                                         sampled cases; each panel has its own colour scale)
-#   interactions_4_regression_check.csv   cross-validated OLS with and without the pairs
+#   interactions_4_regression_check_<outcome>.csv   cross-validated OLS with and without the pairs
 #
-# Needs the xgboost package (as 07-c). Batch job: --cpus-per-task=8 --mem=32G, about 1-2 hours.
+# Run time is mostly step 2, and grows with trees x sampled cases x columns. On the real data
+# (31 Oct 2026, 8 CPUs, about 500 columns, 5,000 cases): log_duration about 1 h 40 min
+# (4,680 trees), short_60 about 3 h 40 min (8,128 trees). One job per outcome is quickest:
+#   sbatch ... --wrap="... Rscript ~/scales_setup/r/07-e_interaction_pairs.R short_60"
+# Needs the xgboost package (as 07-c). Batch job: --cpus-per-task=8 --mem=32G, up to 6 hours per outcome.
 # =============================================================================
 
 r_dir <- path.expand(Sys.getenv("SCALES_R_DIR", "~/scales_setup/r"))
@@ -53,7 +59,9 @@ if (!requireNamespace("xgboost", quietly = TRUE))
 model_dir <- file.path(project_dir, "models"); dir.create(model_dir, showWarnings = FALSE)
 
 # ---- Settings (edit these) --------------------------------------------------------
-outcomes    <- c("log_duration", "short_60", "short_120")
+outcomes    <- c("log_duration", "short_60")   # short_120 left out (Josh, 31 Oct 2026); any of the
+                                                # three can be named after the script instead:
+                                                #   Rscript 07-e_interaction_pairs.R short_60
 model_set   <- "main"
 pair_depth  <- 2                  # depth-2 trees: each tree is one variable or one pair
 params      <- list(eta = 0.05, min_child_weight = 10, subsample = 0.8, colsample_bytree = 0.8,
@@ -70,6 +78,13 @@ n_bins      <- 5                  # bins for counts in step 3
 min_cell    <- 30                 # step 3 cells with fewer training cases are flagged small_cell
 n_folds     <- 5
 log_counts  <- TRUE               # step 4: counts enter the OLS as log(1 + count)
+
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args)) {
+  bad <- setdiff(args, c("log_duration", "short_60", "short_120"))
+  if (length(bad)) stop("Unknown outcome(s): ", paste(bad, collapse = ", "), ". Use log_duration, short_60 or short_120.")
+  outcomes <- args
+}
 
 source(file.path(r_dir, "covariate_sets.R"))
 sets <- make_sets(dbListFields(con, "train_fjc"), model_set)
@@ -95,6 +110,41 @@ bin <- function(x, k = n_bins) {
 cell_var <- function(d, v) if (v %in% num_vars) bin(d[[v]]) else lump(d[[v]])
 
 pair_rows <- list(); summary_rows <- list(); shape_rows <- list(); reg_rows <- list(); top <- list()
+
+# ---- Outputs for one outcome, written as soon as it's done (so a timeout keeps what's finished) ----
+short <- function(s, k = 22) ifelse(nchar(s) > k, paste0(substr(s, 1, k - 1), "~"), s)
+save_outcome <- function(o) {
+  out <- function(name, ext = "csv") file.path(model_dir, sprintf("interactions_%s_%s.%s", name, o, ext))
+  write.csv(pair_rows[[o]], out("2_pairs"), row.names = FALSE)
+  write.csv(summary_rows[[o]], out("2_summary"), row.names = FALSE)
+  x3 <- do.call(rbind, Filter(function(z) z$outcome[1] == o, shape_rows))
+  write.csv(x3, out("3_shapes"), row.names = FALSE)
+  write.csv(reg_rows[[o]], out("4_regression_check"), row.names = FALSE)
+  png(out("2_top_pairs", "png"), width = 700, height = 900, res = 110)
+  par(mar = c(4, 17, 3, 1))
+  x <- head(pair_rows[[o]], 15); x <- x[rev(seq_len(nrow(x))), ]
+  barplot(x$share_of_all_pairs, horiz = TRUE, xlim = c(0, max(x$share_of_all_pairs, 0.01)), names.arg = paste(x$var1, "x", x$var2), las = 1, cex.names = 0.6,
+          main = o, xlab = "share of all pair strength")
+  dev.off()
+  if (is.null(x3) || !nrow(x3)) return(invisible())
+  png(out("3_heatmaps", "png"), width = 1500, height = 1000, res = 100)
+  par(mfrow = c(2, 3), mar = c(9, 11, 3, 1))
+  for (r in sort(unique(x3$pair_rank))) {
+    z <- x3[x3$pair_rank == r, ]; z$mean_shap_interaction[z$n_shap_cases < 10] <- NA   # grey: under 10 sampled cases
+    lim <- max(abs(z$mean_shap_interaction), 1e-9, na.rm = TRUE)                         # each panel its own scale
+    r1 <- unique(z$level1); r2 <- unique(z$level2)
+    m <- matrix(NA, length(r1), length(r2)); m[cbind(match(z$level1, r1), match(z$level2, r2))] <- z$mean_shap_interaction
+    image(seq_along(r1), seq_along(r2), m, col = hcl.colors(21, "Blue-Red 3"), zlim = c(-lim, lim),
+          axes = FALSE, xlab = "", ylab = "", main = sprintf("%d. %s x %s\n(colour scale -%.3f to +%.3f)", r, z$var1[1], z$var2[1], lim, lim), cex.main = 0.85)
+    if (anyNA(m)) image(seq_along(r1), seq_along(r2), ifelse(is.na(m), 1, NA), col = "grey85", add = TRUE)
+    text(row(m), col(m), ifelse(is.na(m), "", formatC(m, format = "f", digits = 3)), cex = 0.7,
+         col = ifelse(!is.na(m) & abs(m) > 0.6 * lim, "white", "black"))
+    axis(1, seq_along(r1), short(r1), las = 2, cex.axis = 0.65); axis(2, seq_along(r2), short(r2), las = 1, cex.axis = 0.65)
+    box()
+  }
+  dev.off()
+  cat(sprintf("  %s: outputs saved (interactions_*_%s.*) %s\n", o, o, format(Sys.time(), "%H:%M:%S")))
+}
 
 for (o in outcomes) {
   od <- outcome_data(d_all, o); binary <- od$obj == "binary:logistic"
@@ -130,7 +180,7 @@ for (o in outcomes) {
                    s_b = apply(pr, 1, function(r) pv(r[1], r[2], half == 2)))
   pt <- pt[order(-pt$strength), ]
   pt$rank <- seq_len(nrow(pt)); pt$rank_half_a <- rank(-pt$s_a, ties.method = "min"); pt$rank_half_b <- rank(-pt$s_b, ties.method = "min")
-  pt$share_of_all_pairs <- round(pt$strength / sum(pt$strength), 4)
+  pt$share_of_all_pairs <- if (sum(pt$strength) > 0) round(pt$strength / sum(pt$strength), 4) else 0
   pt$main_effect_var1 <- round(main_abs[pt$var1], 4); pt$main_effect_var2 <- round(main_abs[pt$var2], 4)
   pt$strength <- round(pt$strength, 4)
   pt <- pt[c("outcome", "rank", "var1", "var2", "strength", "share_of_all_pairs", "rank_half_a", "rank_half_b",
@@ -205,11 +255,11 @@ for (o in outcomes) {
   metric <- if (binary) "cv_auc" else "cv_r_squared"
   base <- ols_cv()
   reg_row <- function(label, added, res) {
-    dlt <- res$per_fold - base$per_fold; se <- sd(dlt) / sqrt(length(dlt))
+    dlt <- res$per_fold - base$per_fold; se <- sd(dlt, na.rm = TRUE) / sqrt(sum(!is.na(dlt)))   # NA if a fold can't be scored
     data.frame(outcome = o, model = label, columns_added = added, metric = metric, value = round(res$all, 4),
-               brier_skill = round(res$brier_skill, 4), gap_vs_additive = round(mean(dlt), 4), se_across_folds = round(se, 4),
-               gap_over_se = if (se > 0) round(mean(dlt) / se, 1) else NA,
-               folds_positive = sprintf("%d of %d", sum(dlt > 0), length(dlt)))
+               brier_skill = round(res$brier_skill, 4), gap_vs_additive = round(mean(dlt, na.rm = TRUE), 4), se_across_folds = round(se, 4),
+               gap_over_se = if (is.finite(se) && se > 0) round(mean(dlt, na.rm = TRUE) / se, 1) else NA,
+               folds_positive = sprintf("%d of %d", sum(dlt > 0, na.rm = TRUE), sum(!is.na(dlt))))
   }
   rows <- list(reg_row("OLS, main effects only (additive)", 0L, base))
   Zs <- lapply(seq_len(nrow(top[[o]])), function(r) pair_cols(top[[o]]$var1[r], top[[o]]$var2[r]))
@@ -228,45 +278,8 @@ for (o in outcomes) {
   }
   reg_rows[[o]] <- do.call(rbind, rows)
   print(reg_rows[[o]][, -1], row.names = FALSE)
+  save_outcome(o)
   rm(A, X0, XX, XXk, Zs, Zall); invisible(gc())
 }
 
-pairs_tab <- do.call(rbind, pair_rows); shapes_tab <- do.call(rbind, shape_rows); reg_tab <- do.call(rbind, reg_rows)
-write.csv(pairs_tab, file.path(model_dir, "interactions_2_pairs.csv"), row.names = FALSE)
-write.csv(do.call(rbind, summary_rows), file.path(model_dir, "interactions_2_summary.csv"), row.names = FALSE)
-write.csv(shapes_tab, file.path(model_dir, "interactions_3_shapes.csv"), row.names = FALSE)
-write.csv(reg_tab, file.path(model_dir, "interactions_4_regression_check.csv"), row.names = FALSE)
-
-# ---- Plots ------------------------------------------------------------------------------
-png(file.path(model_dir, "interactions_2_top_pairs.png"), width = 650 * length(outcomes), height = 900, res = 110)
-par(mfrow = c(1, length(outcomes)), mar = c(4, 17, 3, 1))
-for (o in outcomes) {
-  x <- head(pair_rows[[o]], 15); x <- x[rev(seq_len(nrow(x))), ]
-  barplot(x$share_of_all_pairs, horiz = TRUE, names.arg = paste(x$var1, "x", x$var2), las = 1, cex.names = 0.6,
-          main = o, xlab = "share of all pair strength")
-}
-dev.off()
-short <- function(s, k = 22) ifelse(nchar(s) > k, paste0(substr(s, 1, k - 1), "~"), s)
-for (o in outcomes) {
-  x <- shapes_tab[shapes_tab$outcome == o, ]; if (!nrow(x)) next
-  png(file.path(model_dir, sprintf("interactions_3_%s.png", o)), width = 1500, height = 1000, res = 100)
-  par(mfrow = c(2, 3), mar = c(9, 11, 3, 1))
-  for (r in sort(unique(x$pair_rank))) {
-    z <- x[x$pair_rank == r, ]; z$mean_shap_interaction[z$n_shap_cases < 10] <- NA   # grey: under 10 sampled cases
-    lim <- max(abs(z$mean_shap_interaction), 1e-9, na.rm = TRUE)                       # each panel its own scale
-    r1 <- unique(z$level1); r2 <- unique(z$level2)
-    m <- matrix(NA, length(r1), length(r2)); m[cbind(match(z$level1, r1), match(z$level2, r2))] <- z$mean_shap_interaction
-    image(seq_along(r1), seq_along(r2), m, col = hcl.colors(21, "Blue-Red 3"), zlim = c(-lim, lim),
-          axes = FALSE, xlab = "", ylab = "", main = sprintf("%d. %s x %s\n(colour scale -%.3f to +%.3f)", r, z$var1[1], z$var2[1], lim, lim), cex.main = 0.85)
-    if (anyNA(m)) image(seq_along(r1), seq_along(r2), ifelse(is.na(m), 1, NA), col = "grey85", add = TRUE)
-    text(row(m), col(m), ifelse(is.na(m), "", formatC(m, format = "f", digits = 3)), cex = 0.7,
-         col = ifelse(!is.na(m) & abs(m) > 0.6 * lim, "white", "black"))
-    axis(1, seq_along(r1), short(r1), las = 2, cex.axis = 0.65); axis(2, seq_along(r2), short(r2), las = 1, cex.axis = 0.65)
-    box()
-  }
-  dev.off()
-}
-
-cat("\nRegression check (cross-validated, training cases only; the holdout is untouched):\n")
-print(reg_tab, row.names = FALSE)
 cat("\nAll outputs saved in", model_dir, "\n")

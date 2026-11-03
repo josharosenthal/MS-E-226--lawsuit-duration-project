@@ -1,0 +1,41 @@
+term,set,type,log,duration_ols,duration_quantile,short_case
+n_parties,main,count,Yes,Yes,Yes,Yes
+n_plaintiffs,main,count,Yes,Yes,Yes,Yes
+n_defendants,main,count,Yes,Yes,Yes,Yes
+year_dir,main,category,,Yes,Yes,Yes
+filing_month,main,category,,Yes,Yes,Yes
+filing_weekday,main,category,,Yes,Yes,Yes
+case_number_parity,main,category,,Yes,Yes,Yes
+court,main,category,,Yes,Yes,Yes
+nature_suit,main,category,,Yes,Yes,Yes
+cause_group,main,category,,Yes,Yes,Yes
+jurisdiction,main,category,,Yes,Yes,Yes
+jury_demand,main,category,,Yes,Yes,Yes
+arrival_route,main,category,,Yes,Yes,Yes
+class_action_alleged,main,category,,Yes,Yes,Yes
+in_forma_pauperis,main,category,,Yes,Yes,Yes
+diversity_residence,main,category,,Yes,Yes,Yes
+county_area_class,main,category,,Yes,Yes,Yes
+first_plaintiff_type,main,category,,Yes,Yes,Yes
+first_defendant_type,main,category,,Yes,Yes,Yes
+plaintiff_firm_cases,main,category,,Yes,Yes,Yes
+defendant_firm_appeared,main,category,,Yes,Yes,Yes
+defendant_pro_se,main,category,,Yes,Yes,Yes
+plaintiff_org_attorney,main,category,,Yes,Yes,Yes
+has_related_case,main,category,,Yes,Yes,Sensitivity only
+consolidation_role,main,category,,Yes,Yes,Sensitivity only
+tro_pi_motion_60d,main,category,,Yes,Yes,Sensitivity only
+amicus,main,category,,Yes,Yes,Sensitivity only
+nature_suit x plaintiff_firm_cases,main,interaction,,Yes,No,Yes
+nature_suit x jurisdiction,main,interaction,,Yes,No,Yes
+cause_group x arrival_route,main,interaction,,No,No,Yes
+jury_demand x arrival_route,main,interaction,,No,No,Yes
+nature_suit x in_forma_pauperis,main,interaction,,No,No,Yes
+n_parties x n_defendants,main,interaction,,Yes,No,Yes
+arrival_route x defendant_firm_appeared,main,interaction,,No,No,Sensitivity only
+judge_group,sensitivity,category,,Yes,Yes,Yes
+judge_type,sensitivity,category,,Yes,Yes,Yes
+any_referral,sensitivity,category,,Yes,Yes,Yes
+defendant_firm_rank,sensitivity,category,,No,No,No
+pro_se,sensitivity,category,,No,No,No
+n_counsel,sensitivity,count,Yes,Yes,Yes,Yes

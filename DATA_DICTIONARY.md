@@ -8,49 +8,49 @@ These are the 37 covariates in `r/05_feature_selection.R` (35, plus the two adde
   - Counts for each category (section 2): `misc/run_2026-10-30/feature_selection/fs_levels.csv`
   - Pairs that say nearly the same thing: `misc/run_2026-10-30/feature_selection/fs_high_pairs.csv`
 - **Leakage tiers:** from EXPLAINER section 7. *filing* means known when the case is filed; *partly* means recorded later (7C); *leaky* means kept knowingly despite leakage (7B).
-- **Model:** **main**, or **sensitivity** only (changes 45, 58 and 70). The sets used by 06 and the 07 scripts are defined in `r/covariate_sets.R`.
+- **Model:** the regression specification in `model_spec.xlsx` (changes 85–89). **main** = in both runs; **sensitivity** = added only in the second run ("with sensitivity"); where the duration and short-case models differ, both are given; **not used** = in no regression model. Counts are logged in every model. There is no separate main + `n_counsel` regression model. **Run 3** (Josh, 2 Nov 2026; change 99) = the second run without `n_counsel` (too much evidence that it leaks), fitted for OLS, both quantile models, plain logistic, XGBoost and the forests; the variables are otherwise the same as the second run's. Interactions are in section 5. The tree models (06 and the 07 scripts) use the sets in `r/covariate_sets.R`; **07-a, 07-b and 07-c also fit a main + `n_counsel` set (`main_plus_counsel`)**, kept to show what `n_counsel` would add.
 
 ## 1. All covariates
 
 | Variable | What it is | Source | Type | Levels (training) | Smallest level (training cases) | % missing | Leakage | Model |
 |---|---|---|---|---|---|---|---|---|
-| `n_parties` | Number of parties listed (+1 where the plaintiff was filled, change 76) | SCALES parties, at collection | count | — | — | 0 | partly | main |
-| `n_counsel` | Number of lawyer listings | SCALES counsel, at collection | count | — | — | 0 | **leaky** | **sensitivity only** (out of main: too leaky, `02-g_data_checks_counsel.R`; change 70) |
-| `n_plaintiffs` | Number of plaintiffs (set to 1 where the plaintiff was filled, change 76) | SCALES parties by role | count | — | — | 0 | partly | main |
-| `n_defendants` | Number of defendants | SCALES parties by role | count | — | — | 0 | partly | main |
+| `n_parties` | Number of parties listed (+1 where the plaintiff was filled, change 76) | SCALES parties, at collection | count | — | — | 0 | partly | main (logged) |
+| `n_counsel` | Number of lawyer listings | SCALES counsel, at collection | count | — | — | 0 | **leaky** | **sensitivity** (logged). No separate main + `n_counsel` regression model (Josh, 1 Nov 2026; change 89); the 07-a/b/c tree scripts do fit one (`main_plus_counsel`). Out of main: too leaky (`02-g_data_checks_counsel.R`; change 70). **Dropped from run 3** (change 99): in run 2 it took 24–30% of XGBoost's gain |
+| `n_plaintiffs` | Number of plaintiffs (set to 1 where the plaintiff was filled, change 76) | SCALES parties by role | count | — | — | 0 | partly | main (logged) |
+| `n_defendants` | Number of defendants | SCALES parties by role | count | — | — | 0 | partly | main (logged) |
 | `year_dir` | Year in the case number (16 or 17) | SCALES case number | category | 2 | 131,882 | 0 | filing | main |
 | `filing_month` | Month filed (1–12) | filing date (SCALES; FJC if blank) | category | 12 | 20,066 | 0 | filing | main |
 | `filing_weekday` | Day of the week filed | filing date | category | 7 | 2,192 (Saturday) | 0 | filing | main |
 | `case_number_parity` | Odd or even last digit of the case sequence number (some courts split work between clerks by parity) | SCALES case number | category | 2 | 133,064 | 0 | filing | main |
 | `court` | District court, e.g. `ilnd` | SCALES | category | 94 | **36** | 0 | filing | main |
-| `circuit` | Federal circuit (0 = D.C., 1–11) | FJC district crosswalk | category | 12 | 3,459 | 0 | filing | main (alternative to court) |
-| `city` | Courthouse or divisional office | SCALES | category | 283 | **2** | 0 | filing | main |
+| `circuit` | Federal circuit (0 = D.C., 1–11) | FJC district crosswalk | category | 12 | 3,459 | 0 | filing | not used (court instead) |
+| `city` | Courthouse or divisional office | SCALES | category | 283 | **2** | 0 | filing | not used (court instead) |
 | `judge_group` | Judge at collection (court \| name); "other" if fewer than 20 training cases; "unassigned" and "(no judge listed)" kept separate | SCALES judge, plus training counts | category | 1,448 | 20 | 0 | **leaky** | **sensitivity** |
 | `judge_type` | The collection-time judge's type on the filing date: active, senior, magistrate, appointed after filing, territorial court, unassigned, no judge listed or not matched. Renamed from `senior_judge_at_filing` (change 79), since it also records magistrate judges | SCALES judge plus the FJC Biographical Directory | category | 8 | 228 | 0.4 | **leaky** | **sensitivity** |
 | `nature_suit` | Nature of suit, e.g. "440 Other Civil Rights" (blank filled from the FJC) | SCALES (FJC) | category | 84 | **3** | 0 | filing | main |
-| `cause_title` | U.S. Code title of the cause of action, e.g. 28 (typos corrected; blank filled from the FJC section where possible, change 65). **Blank for the 1,766 "(no cause)" cases**: `lm()`, `glm()` and `rq()` drop those rows unless the blank is recoded first | SCALES cause (FJC) | category | 44 | **1** | 0.7 | filing | main (or `cause_group`) |
-| `cause_group` | Title:section if at least 100 training cases, otherwise title:other; "(no cause)" if there's no cause (kept as its own category, change 65) | SCALES cause, plus training counts | category | 200 | **1** | 0 | filing | main (or `cause_title`) |
+| `cause_title` | U.S. Code title of the cause of action, e.g. 28 (typos corrected; blank filled from the FJC section where possible, change 65). **Blank for the 1,766 "(no cause)" cases**: `lm()`, `glm()` and `rq()` drop those rows unless the blank is recoded first | SCALES cause (FJC) | category | 44 | **1** | 0.7 | filing | not used (`cause_group` instead) |
+| `cause_group` | Title:section if at least 100 training cases, otherwise title:other; "(no cause)" if there's no cause (kept as its own category, change 65) | SCALES cause, plus training counts | category | 200 | **1** | 0 | filing | main |
 | `jurisdiction` | Basis of jurisdiction (blank filled from the FJC) | SCALES (FJC) | category | 5 | **12** | 0 | filing | main |
 | `jury_demand` | Who demanded a jury. Cases with it blank are dropped (change 76) | SCALES | category | 4 | 17,828 | 0 | partly | main |
 | `arrival_route` | How the case arrived (FJC `ORIGIN`) | FJC | category | 5 | **40** | 0 | filing | main |
 | `class_action_alleged` | Class action alleged (FJC `CLASSACT`) | FJC | category | 2 | 11,353 | 0 | filing | main |
 | `in_forma_pauperis` | Filing-fee waiver (FJC `IFP`) | FJC, recorded at termination | category | 2 | 35,149 | 0 | partly | main |
-| `pro_se` | Who is self-represented (FJC `PROSE`) | FJC, recorded at termination | category | 4 | 1,296 | 0 | partly | sensitivity (main uses `defendant_pro_se`; change 70) |
+| `pro_se` | Who is self-represented (FJC `PROSE`) | FJC, recorded at termination | category | 4 | 1,296 | 0 | partly | not used (main uses `defendant_pro_se`, which is built from it; change 88) |
 | `diversity_residence` | Citizenship pair in diversity cases (FJC `RESIDENC`), or "not diversity". "Diversity, not recorded" (a diversity case with no usable residence code) stays its own category: Josh chose to disregard it (change 72) | FJC | category | 35 | **5** | 0 | filing | main |
 | `county_area_class` | First plaintiff's county, classified urban / suburban / rural (NCHS 2013) | FJC `COUNTY` plus NCHS | category | 7 | **1** | 0 | filing | main |
 | `first_plaintiff_type` | Kind of party, guessed from the first plaintiff's name. If SCALES lists no plaintiff, from the case name, then the FJC plaintiff name (`plaintiff_from_fill` = TRUE). A name with no letters ("name not recorded") counts as "individual" (change 82). Cases with no plaintiff anywhere are dropped (change 76) | SCALES parties; case name; FJC `PLT` | category | 5 | 1,338 | 0 | partly | main |
 | `first_defendant_type` | The same, for the first defendant | SCALES parties | category | 7 | **8** | 0.3 | partly | main |
 | `plaintiff_firm_cases` | How many cases the first plaintiff's lead firm appears in, or pro se | SCALES counsel | category | 5 | 25,511 | 0 | partly | **main: the single plaintiff representation variable** (its "pro se / no counsel" category is the plaintiff pro se measure; kept as is in change 70; "no firm listed" counts as "1–10 cases" since change 72, and so does "no plaintiff listed" (the filled plaintiffs, which have no counsel data) since change 82. "No defendant listed" stays its own level in the defendant variables: it may carry information) |
-| `defendant_firm_rank` | First defendant's lead firm, by BCG headcount rank (groups of 20) | SCALES counsel plus the BCG list | category | 14 | 173 | 0.3 | **leaky** ("no counsel listed") | sensitivity (main uses `defendant_firm_appeared`; change 70) |
+| `defendant_firm_rank` | First defendant's lead firm, by BCG headcount rank (groups of 20) | SCALES counsel plus the BCG list | category | 14 | 173 | 0.3 | **leaky** ("no counsel listed") | not used (main uses `defendant_firm_appeared`, which is built from it; change 88) |
 | `plaintiff_org_attorney` | Any plaintiff-side attorney with a `.org` email | SCALES counsel | category | 2 | 4,689 | 0 | partly | main |
 | `defendant_firm_appeared` | `defendant_firm_rank` with "no counsel listed" folded into "not in list", and "rank 181–200" merged with "headcount not given" (change 70) | SCALES counsel plus the BCG list | category | 12 | 450 | 0.3 | partly (the ranked levels still need a lawyer to have appeared) | **main** |
 | `defendant_pro_se` | FJC `PROSE` says the defendant (or both sides) is pro se (change 70) | FJC, recorded at termination | category | 2 | 9,369 | 0 | partly | **main** |
 | `any_referral` | Referred to a magistrate judge | SCALES | category | 2 | 123,587 | 0 | **leaky** | **sensitivity** |
-| `has_related_case` | Related cases listed | SCALES | category | 2 | 11,218 | 0 | partly | main |
-| `is_consolidated` | Has a lead case (lead or member) | SCALES `lead_case_id` | category | 2 | 5,382 | 0 | **leaky** | main (or `consolidation_role`) |
-| `consolidation_role` | Lead / member / not consolidated | SCALES `lead_case_id` | category | 3 | 1,597 | 0 | **leaky** | main (or `is_consolidated`) |
-| `tro_pi_motion_60d` | TRO or preliminary-injunction motion within 60 days of filing | SCALES docket text | category | 2 | 6,757 | 0 | partly | main |
-| `amicus` | An amicus appears in the case | SCALES docket text or party role | category | 2 | 822 | 0 | **leaky** | main |
+| `has_related_case` | Related cases listed | SCALES | category | 2 | 11,218 | 0 | partly | main for duration; **sensitivity** for short-case (change 87) |
+| `is_consolidated` | Has a lead case (lead or member) | SCALES `lead_case_id` | category | 2 | 5,382 | 0 | **leaky** | not used (`consolidation_role` instead) |
+| `consolidation_role` | Lead / member / not consolidated | SCALES `lead_case_id` | category | 3 | 1,597 | 0 | **leaky** | main for duration; **sensitivity** for short-case (change 87) |
+| `tro_pi_motion_60d` | TRO or preliminary-injunction motion within 60 days of filing | SCALES docket text | category | 2 | 6,757 | 0 | partly | main for duration; **sensitivity** for short-case (change 87) |
+| `amicus` | An amicus appears in the case | SCALES docket text or party role | category | 2 | 822 | 0 | **leaky** | main for duration; **sensitivity** for short-case (change 87) |
 
 **Bold** in the "Smallest level" column marks a level with fewer than about 50 training cases; see section 4. "% missing" counts the missing labels ("not recorded", "no judge listed", "no defendant listed", "no plaintiff listed" and so on) and blanks. It isn't the same as a category like "unassigned", which is real information.
 
@@ -58,7 +58,7 @@ These are the 37 covariates in `r/05_feature_selection.R` (35, plus the two adde
 - court / circuit / city (Cramér's V 0.97–1.0)
 - `cause_title` / `cause_group` (1.0)
 - `is_consolidated` / `consolidation_role` (1.0)
-- `pro_se` / `defendant_pro_se` (1.0) and `defendant_firm_rank` / `defendant_firm_appeared` (1.0): each main-set variable is built from the sensitivity one, so only one of each pair is in any set
+- `pro_se` / `defendant_pro_se` (1.0) and `defendant_firm_rank` / `defendant_firm_appeared` (1.0): each main-set variable is built from the other one, so the regression models use only the main-set version (change 88)
 - `judge_group` / court (0.98), circuit (0.98) and `judge_type` (0.94)
 - `judge_group` / `any_referral` (0.86); court and city / `any_referral` (0.76)
 - `n_parties` / `n_defendants` (Spearman 0.85)
@@ -164,3 +164,29 @@ A category with only a handful of training cases can't be estimated reliably, an
 | `defendant_firm_rank` | rank 181–200: 173 · headcount not given 277 | **done in `defendant_firm_appeared`** (change 70): merged into "rank 181–200 or headcount not given" (450) |
 
 **Decision (Josh, 31 Oct 2026; change 82):** apart from the rows marked **done**, none of these merges is made. The rare categories stay as they are; regularization, or a choice made later for a particular model, can deal with them. Any merge would be built in `00_sample.R` from **training** counts, like `judge_group` and `cause_group`.
+
+## 5. Interactions in the regression models
+
+From `model_spec.xlsx` (Josh, 1 Nov 2026; changes 85–89), chosen after `07-e_interaction_pairs.R`. Category × category interactions cross **all levels** of both variables (no lumping); empty combinations drop out. Count × count is the product of the two logged counts, each **centred** at its training mean first (as in `model_spec.xlsx`). That doesn't change the fit, but it means each count's main-effect coefficient is its effect at the average of the other count, not at zero. The main effects of both variables stay in. Quantile regression has **no** interactions.
+
+| Interaction | Duration: OLS / ridge / group lasso | Duration: quantile (0.5, 0.9) | Short-case: logistic, ridge, lasso | 07-e step 4 (lumped to 8 levels) |
+|---|---|---|---|---|
+| `nature_suit` × `plaintiff_firm_cases` | both runs | — | both runs | +0.0054 R² (log duration); +0.0025 AUC (short_60) |
+| `nature_suit` × `jurisdiction` | both runs | — | both runs | +0.0035 R² (log duration); not in short_60's top 6 |
+| `n_parties` × `n_defendants` | both runs | — | both runs | +0.0011 R² (log duration); +0.0008 AUC (short_60) |
+| `cause_group` × `arrival_route` | — | — | both runs | +0.0031 AUC (short_60) |
+| `jury_demand` × `arrival_route` | — | — | both runs | +0.0015 AUC (short_60) |
+| `nature_suit` × `in_forma_pauperis` | — | — | both runs | +0.0012 AUC (short_60) |
+| `arrival_route` × `defendant_firm_appeared` | — | — | **sensitivity run only** (may be leaky) | +0.0032 AUC (short_60) |
+
+**Plain logistic regression only: in a category × category interaction, a cell gets its own term only if it has at least 10 training cases that ended within 60 days and at least 10 that didn't** (Josh, 1 Nov 2026). Smaller cells get no interaction term; their cases are predicted from the two main effects. This guards against separation (a cell where every case has the same outcome). Ridge and lasso keep every cell. (`n_parties` × `n_defendants` has no cells, so the rule doesn't apply to it.)
+
+**The same 10/10 rule applies to main-effect levels in the plain logistic model** (Josh, 1 Nov 2026): a category level with fewer than 10 short or fewer than 10 non-short training cases is merged into one "other (small)" level for that variable, in the plain logistic model only; if that merged level still fails the rule, it joins the variable's reference level (its most common level). This mostly affects `judge_group` (run 2), rare courts, natures of suit, cause groups and diversity pairs. *(Merging into "other (small)" is Claude's default; Josh decided the rule, not where the small levels go.)*
+
+**These cell and level counts are taken from the full training data, across all cross-validation folds, not from each fold's training part. The choice of which cells to keep therefore uses outcomes from cases that, in a given fold, are being predicted.** The effect should be small with folds of about 53,000 cases, but the cross-validated scores of the plain logistic model are slightly optimistic because of it. The holdout is not used.
+
+**Other model settings** (change 90): reference level = each category's most common level (OLS, quantile, plain logistic). Reference levels, the SD-0.5 scaling and the centring of the count product are set from each fold's **training part** only (change 93); the 10/10 rule still counts on all training cases. **`judge_group` (run 2, unpenalized models):** judges are nested in courts, so some judge columns are redundant. In a court whose cases all have a named judge, the court's busiest judge is left out (that court's reference); across all levels, the most common level that spans courts (usually "other (fewer than 20 training cases)") is left out. This is a labelling rule, not a model change: the fit is the same either way (change 93). Read judge coefficients as differences between judges of the same court. Ridge and lasso: dummies not standardized; logged counts and `n_parties` × `n_defendants` scaled to a standard deviation of 0.5; penalty `lambda.min`, tuned within each cross-validation fold. Group lasso: one group per variable and one per interaction; an interaction may enter without its main effects. OLS predictions in days use Duan's smearing correction (the code also applies it to ridge and group lasso; change 91). A level missing from a fold's training part gets coefficient 0: in the unpenalized models its cases are predicted like the reference level; in ridge and lasso, which have no reference level, they're predicted at the intercept. Standard errors of the full-training fits are clustered by court (consolidation groups lie within courts), for **OLS and plain logistic only**: the quantile fits have none, and the penalized fits have none by design. **Court clustering kept, with warnings (Josh, 1 Nov 2026; change 93):** court is also in the model, so the clustered variance has rank at most 93, far below the number of coefficients, and a coefficient whose column appears in only one court (every court dummy, every judge, any cell found in one court) rests on a single cluster. The coefficients files give `n_courts` for each column and mark those standard errors `se_usable = FALSE`. **A second set, clustered by consolidation group, covers those coefficients (option (a); Josh, 1 Nov 2026; change 95):** `se_cluster_group` for every coefficient (most groups are one case, so it's close to ordinary robust standard errors), and `se_reported` uses the court-clustered value where it's usable and the group-clustered one otherwise, with `se_type` saying which. So court and judge effects get group-clustered standard errors, which don't allow for correlation within a court beyond what the dummies absorb; every other coefficient keeps court clustering. *(Change 90 had recorded "clustered by court and consolidation group".)*
+
+**Scoring (08-z; change 93):** every baseline comes from the fold's training part (R² against the training mean, Brier skill against the training share of short cases, pseudo-R¹ against the training quantile). Errors in days use the prediction that suits each loss: absolute errors use exp(prediction) − 1, a median-type prediction; `rmse_days` uses the smeared mean. 08-z also flags plain logistic folds that didn't converge and penalties at the end of their path, and refuses to score a model whose folds came from different versions of `model_spec.csv`.
+
+**Outcomes:** log(1 + duration) for the OLS-type models **and for the quantile regressions** (Josh, 1 Nov 2026: logs in everything, for consistency); a predicted quantile of log duration converts exactly to days. Ended within 60 days for the short-case models.
