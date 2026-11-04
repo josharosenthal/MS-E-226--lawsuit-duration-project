@@ -57,19 +57,46 @@ xgb_training_data <- function(sets, n_folds, seed, inner_seed = NULL) {
 }
 
 # which rows of r/model_spec.csv each regression run uses, for the 08 models (reg_helpers.R) and
-# the matched tree sets reg_run1 / reg_run2 / reg_run3 (07-c, 07-f); `col` is the model family's
+# the matched tree sets reg_run1 ... reg_run4 (07-c, 07-f); `col` is the model family's
 # column (duration_ols, duration_quantile, short_case):
 #   run 1  set = main and "Yes"
 #   run 2  also the sensitivity rows, and rows marked "Sensitivity only"
 #   run 3  run 2 without n_counsel, and without any interaction that uses it (Josh, 2 Nov 2026;
 #          change 99: too much evidence that it leaks)
-spec_runs <- 1:3
+#   run 4  run 3's variables, with the judge labels that reveal what happened after filing
+#          pooled by recode_run4() below (Josh, 2 Nov 2026; change 100)
+spec_runs <- 1:4
 run3_drop <- "n_counsel"
 spec_keep <- function(sp, col, run) {
-  if (!(run %in% spec_runs)) stop("Run must be 1, 2 or 3.")
+  if (!(run %in% spec_runs)) stop("Run must be 1, 2, 3 or 4.")
   keep <- if (run == 1) sp$set == "main" & sp[[col]] == "Yes" else sp[[col]] %in% c("Yes", "Sensitivity only")
-  if (run == 3) keep <- keep & !vapply(strsplit(sp$term, " x ", fixed = TRUE), function(p) any(trimws(p) %in% run3_drop), TRUE)
+  if (run >= 3) keep <- keep & !vapply(strsplit(sp$term, " x ", fixed = TRUE), function(p) any(trimws(p) %in% run3_drop), TRUE)
   keep
+}
+
+# run 4 (change 100): the judge at collection can show what happened after filing. A case with
+# no judge yet ("unassigned", "(no judge listed)") likely ended before assignment; a judge
+# "appointed after filing" means the case was reassigned, mostly long cases. Those cases join
+# judge_group's existing cross-court level "other (fewer than 20 training cases)", and in
+# judge_type unassigned, no judge listed, appointed after filing and not matched become "unknown".
+# Named judges keep their own levels, so the differences between judges stay. Applied to the
+# model data only (train_fjc is unchanged), after the cases and folds are drawn. Reassignments
+# between judges already on the bench can't be seen and aren't fixed.
+recode_run4 <- function(d, quiet = FALSE) {
+  jt0 <- if ("judge_type" %in% names(d)) as.character(d$judge_type) else rep("", nrow(d))
+  if ("judge_group" %in% names(d)) {
+    jg <- as.character(d$judge_group)
+    pool <- jg %in% c("unassigned", "(no judge listed)") | jt0 == "appointed after filing"
+    jg[pool] <- "other (fewer than 20 training cases)"; d$judge_group <- factor(jg)
+    if (!quiet) cat(sprintf("Run 4: %s cases' judge_group pooled into \"other\" (now %s cases in it).\n",
+                            format(sum(pool), big.mark = ","), format(sum(jg == "other (fewer than 20 training cases)"), big.mark = ",")))
+  }
+  if ("judge_type" %in% names(d)) {
+    unk <- jt0 %in% c("unassigned", "no judge listed", "appointed after filing", "not matched")
+    jt0[unk] <- "unknown"; d$judge_type <- factor(jt0)
+    if (!quiet) cat(sprintf("Run 4: %s cases' judge_type set to \"unknown\".\n", format(sum(unk), big.mark = ",")))
+  }
+  d
 }
 
 # the cases and outcome for one outcome name:

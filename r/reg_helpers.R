@@ -7,6 +7,7 @@
 #   run 1  rows with set = main and "Yes"
 #   run 2  also the sensitivity rows, and rows marked "Sensitivity only"
 #   run 3  run 2 without n_counsel (change 99; spec_keep() in xgb_helpers.R)
+#   run 4  run 3 with the post-filing judge labels pooled (change 100; recode_run4() in xgb_helpers.R)
 # Decisions (changes 85-90, DATA_DICTIONARY.md section 5):
 #   - outcome log(1 + duration) for the duration models (cases that ended in court); ended
 #     within 60 days for the short-case models (cases transferred out before day 60 dropped)
@@ -58,6 +59,7 @@ reg_data <- function(family, run) {
   have <- dbListFields(con, "train_fjc"); miss <- setdiff(vars, have)
   if (length(miss)) stop("Not in train_fjc: ", paste(miss, collapse = ", "))
   d_all <- xgb_training_data(list(vars), n_folds, reg_seed, inner_seed = inner_seed)
+  if (run == 4) d_all <- recode_run4(d_all)
   od <- outcome_data(d_all, if (family == "short_case") "short_60" else "log_duration")
   od$terms <- tm; od
 }
@@ -288,9 +290,9 @@ model_info <- list(
 
 run_reg_job <- function(model, args) {
   mi <- model_info[[model]]
-  if (length(args) < 2) stop("Give the run (1, 2 or 3) and the fold (1-5 or full), e.g.  Rscript 08-a_ols.R 1 3")
+  if (length(args) < 2) stop("Give the run (1-4) and the fold (1-5 or full), e.g.  Rscript 08-a_ols.R 1 3")
   run <- as.integer(args[1]); fold <- args[2]
-  if (!(run %in% spec_runs) || !(fold %in% c(as.character(seq_len(n_folds)), "full"))) stop("Run must be 1, 2 or 3; fold 1-5 or full.")
+  if (!(run %in% spec_runs) || !(fold %in% c(as.character(seq_len(n_folds)), "full"))) stop("Run must be 1-4; fold 1-5 or full.")
   need <- list(ridge = c("glmnet", "doParallel"), logistic_ridge = c("glmnet", "doParallel"),
                logistic_lasso = c("glmnet", "doParallel"), group_lasso = "grpreg",
                quantile_50 = "quantreg", quantile_90 = "quantreg")[[model]]

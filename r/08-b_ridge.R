@@ -2,7 +2,7 @@
 # 08-b_ridge.R — ridge regression of log(1 + duration) (glmnet, alpha = 0) (Josh, 1 Nov 2026; change 91). TRAINING CASES ONLY.
 # Every level its own column (dummies not standardized); logged counts scaled to SD 0.5; penalty lambda.min, tuned by an inner cross-validation within each outer fold.
 # One job = one run and one outer fold, or "full" (fit on all training cases -> coefficients):
-#   Rscript ~/scales_setup/r/08-b_ridge.R <run 1|2|3> <fold 1-5|full>
+#   Rscript ~/scales_setup/r/08-b_ridge.R <run 1-4> <fold 1-5|full>
 # r/submit_regressions.sh submits every job. Settings and the specification: reg_helpers.R,
 # model_spec.csv (from model_spec.xlsx), DATA_DICTIONARY.md section 5.
 # Output: ~/scales_project/models/reg/ridge_run<run>_fold<fold>.rds (and _coefficients.csv for "full");

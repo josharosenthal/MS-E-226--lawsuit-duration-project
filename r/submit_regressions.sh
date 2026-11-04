@@ -7,6 +7,7 @@
 #   bash ~/scales_setup/r/submit_regressions.sh ols ridge       only these models
 #   env RUNS="1" FOLDS="1 2" bash ~/scales_setup/r/submit_regressions.sh ols   a subset (env: works from tcsh)
 #   env RUNS="3" bash ~/scales_setup/r/submit_regressions.sh ols logistic       run 3 (run 2 without n_counsel; change 99)
+#   env RUNS="4" bash ...   run 4 (run 3 with the post-filing judge labels pooled; change 100)
 # Models: ols ridge group_lasso quantile_50 quantile_90 logistic logistic_ridge logistic_lasso
 # Logs: ~/reg_logs/<model>_run<r>_fold<f>_<job id>.out   (the folder is made first: a missing
 # log folder makes Slurm fail jobs with exit code 0:53)
@@ -24,7 +25,7 @@ declare -A script=( [ols]=08-a_ols.R [ridge]=08-b_ridge.R [group_lasso]=08-c_gro
 # memory (GB): run 2 adds judge_group (about 1,450 more columns); group lasso needs a dense copy.
 # Group lasso raised after the pilot (run 1 ran out of 48 GB with 5 inner folds at once): 128 / 176 GB,
 # with 2 inner folds at a time (REG_GL_WORKERS in reg_helpers.R; change 96). 176 GB fits the
-# 191 GB nodes. Run 3 (run 2 less one count column) gets run 2's memory.
+# 191 GB nodes. Runs 3 and 4 get run 2's memory.
 declare -A mem1=( [ols]=16 [ridge]=32 [group_lasso]=128 [quantile_50]=32 [quantile_90]=32 [logistic]=24 [logistic_ridge]=32 [logistic_lasso]=32 )
 declare -A mem2=( [ols]=32 [ridge]=48 [group_lasso]=176 [quantile_50]=64 [quantile_90]=64 [logistic]=48 [logistic_ridge]=48 [logistic_lasso]=48 )
 n=0

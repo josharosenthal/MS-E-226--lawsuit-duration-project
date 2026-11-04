@@ -14,6 +14,7 @@
 # Sets reg_run1 / reg_run2: the variables of the 08 models' run 1 / run 2 in model_spec.csv, as
 # in 07-c (no logs or interaction terms). Cases and folds from xgb_training_data().
 # reg_run3 (change 99): run 3, run 2 without n_counsel (spec_keep() in xgb_helpers.R).
+# reg_run4 (change 100): run 3's variables with the post-filing judge labels pooled (recode_run4()).
 # Smearing factor for days (log_duration): each fold's mean of exp(residual) over its training
 # part, using that forest's OOB predictions (a forest's in-sample residuals are far too small).
 # Permutation importance (change 99) from the all-cases forest, as 07-a / 07-b: how much the
@@ -76,6 +77,7 @@ score <- function(outcome, y, p, base) {
 # ---- One outcome and set ---------------------------------------------------------------
 fit_one <- function(outcome, set_name) {
   od <- outcome_data(d_all, outcome); d <- od$d; y <- od$y
+  if (set_name == "reg_run4") d <- recode_run4(d)
   vars <- spec_vars(set_name, outcome); reg <- outcome == "log_duration"
   forest <- function(rows, write, importance = "none") {
     ranger::ranger(x = d[rows, vars, drop = FALSE],

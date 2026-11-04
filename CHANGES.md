@@ -1426,6 +1426,29 @@ This is a record of every edit to the scripts, for the project's AI-use disclosu
   - SHAP added up to the predictions (largest gap 6e-06); the SHAP rows matched the cross-validation file's; the saved model reloaded;
   - the location split found the planted effects: 96% of court's SHAP between circuits, and 74% of judge_group's between judges within a court.
 
+### 100. Run 4: run 3 with the post-filing judge labels pooled
+- **Why (Josh, 2 Nov 2026):** run 3's SHAP values showed that a few `judge_group` / `judge_type` labels carry what happened after filing. "unassigned" and "(no judge listed)" (no judge by collection: the case likely ended before assignment) and "appointed after filing" (the collection-time judge joined the bench after filing: the case was reassigned) are about 2.4% of cases but 21–36% of judge_group's within-court variation, with effects of up to 2.5 log units. Magistrate judges, by contrast, contribute less than their share of cases. Options offered: recover the judge at filing from the docket text; pool the leaking labels (option 2); drop those cases (advised against: it selects on what happens later). Josh: "at this point, I don't want to rebuild the data from scratch. create the run 4 (option 2)".
+- **`xgb_helpers.R`:** run 4 = run 3's variables (`spec_keep()`), and new `recode_run4()`:
+  - `judge_group`: "unassigned", "(no judge listed)" and every case whose `judge_type` is "appointed after filing" join the existing cross-court level "other (fewer than 20 training cases)";
+  - `judge_type`: unassigned, no judge listed, appointed after filing and not matched become "unknown";
+  - named judges keep their own levels, so the differences between judges stay; the variable names don't change, so the judge reference-level rule (change 93), the 10/10 rule and the SHAP location tables work as before;
+  - applied to the model data only, after the cases and folds are drawn (`train_fjc` unchanged); the log prints how many cases were pooled;
+  - not fixed: reassignments between judges already on the bench (invisible in these data), and `any_referral`.
+- **`reg_helpers.R`:** run 4 applies `recode_run4()` after reading the data; jobs accept runs 1–4 (08-a to 08-g usage lines say `<run 1-4>`).
+- **`07-c_xgboost.R`, `07-f_forest_cv.R`:** set `reg_run4` (the recode applied to that set only; SHAP and importance as for run 3).
+- **`08-y_compare_models.R`, `08-z_regression_summary.R`:** runs 1–4. **`submit_regressions.sh`:** run 4 gets run 2's memory.
+- **Docs:** EXPLAINER.md (scripts, run 4 note and command) and DATA_DICTIONARY.md (model key, `judge_group` and `judge_type` rows).
+- **Tested** on the synthetic data with the leak planted (2% "unassigned" cases 2 log units shorter, 3% "appointed after filing" 1.2 longer): OLS, both quantiles and plain logistic on runs 3 and 4 (folds 1–5, plus full for OLS and logistic), 07-c on `reg_run3,reg_run4`, 07-f on `reg_run4`, 08-z and 08-y. The log reported the pooled cases; run 4's SHAP file and OLS coefficients have no unassigned or appointed-after-filing level; R² fell from 0.57 to 0.47 (OLS), as it should once the planted leak is gone.
+
+### 101. The baseline as a row of the comparison table
+- **Why (Josh, 2 Nov 2026):** Project Part 1, 6(c), asks for a simple baseline reported with the same evaluation procedure. Josh: "just add the mean to the comparison table".
+- **`08-y_compare_models.R`:** a "baseline" model in every outcome and run: each case is predicted by its fold's training mean of log(1 + days) (for `rmse_days`, times that fold's smearing factor), or its fold's training share of short cases. It's scored on every metric and paired with every model, like the others. No new data or FarmShare jobs: it's built from the cases and folds already loaded.
+- **Tested** on the synthetic results from change 100: baseline R² and Brier skill 0 (they're measured against it); AUC 0.5 within each fold (0.49 pooled over all cases, since the five folds' training shares differ slightly and the pooled ranking picks that up); and baseline rows in `compare_scores.csv` and `compare_pairs.csv`.
+
+### 102. Sample sizes in the explainer
+- **Why (Josh, 3 Nov 2026):** for the report's holdout section (Project Part 1, section 4). Josh read the current holdout count, 66,583, from `00_sample.R`'s "Holdout split loaded" line on FarmShare (a count only).
+- **`EXPLAINER.md`:** a sample-size table after the sample definition: at the split (24 Oct 2026) 398,403 total, 318,709 training, 79,694 holdout (20.0%); now 333,027 total, 266,444 training, 66,583 holdout (20.0%); and the cases the log-duration (258,847) and 60-day (264,161) models use.
+
 ### Suggested but not made (Josh's decision)
 - **Party `raw_info` may contain addresses.** This is the text PACER shows under a party's name, and for people representing themselves it can include an address and phone number. Kept unchanged, which fits the decision above to keep contact information.
 - **Unreadable event-log rows.** `03_convert_eventlog.sh` leaves rows the CSV reader can't parse out of `eventlog.parquet` and lists them in `profiles/eventlog.rejected_lines.csv`. Kept unchanged; check that this count is small after the first real run.

@@ -33,7 +33,7 @@ reg_dir <- file.path(project_dir, "models", "reg")
 auc <- function(p, y) { r <- rank(p); n1 <- as.numeric(sum(y)); n0 <- as.numeric(length(y)) - n1
                         if (n1 == 0 || n0 == 0) return(NA_real_); (sum(r[y]) - n1 * (n1 + 1) / 2) / (n1 * n0) }
 
-files <- list.files(reg_dir, pattern = "_run[123]_fold[1-5]\\.rds$", full.names = TRUE)
+files <- list.files(reg_dir, pattern = "_run[1-4]_fold[1-5]\\.rds$", full.names = TRUE)
 if (!length(files)) stop("No fold results in ", reg_dir, " yet.")
 res <- lapply(files, readRDS)
 key <- vapply(res, function(r) paste(r$model, r$run), "")
@@ -102,7 +102,7 @@ for (k in unique(key)) {
   }
 }
 # quantile crossing: predicted 90th percentile below the predicted median
-for (run in 1:3) {
+for (run in 1:4) {
   a <- preds[[paste("quantile_50", run)]]; b <- preds[[paste("quantile_90", run)]]
   if (!is.null(a) && !is.null(b)) {
     m <- merge(a[c("row", "pred")], b[c("row", "pred")], by = "row", suffixes = c("_50", "_90"))

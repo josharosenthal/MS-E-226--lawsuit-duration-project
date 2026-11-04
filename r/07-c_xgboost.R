@@ -12,6 +12,7 @@
 # the 08 models' run 1 and run 2 in r/model_spec.csv (for log_duration the duration models'
 # list, for short_* the short-case list). No logs or interaction terms: trees don't need them.
 # reg_run3 (change 99): run 3, which is run 2 without n_counsel (spec_keep() in xgb_helpers.R).
+# reg_run4 (change 100): run 3's variables with the post-filing judge labels pooled (recode_run4()).
 #
 # A forest grows deep trees independently and averages them. Boosting grows many small
 # trees one after another, each fitted to what the earlier ones got wrong, so it can pick
@@ -192,6 +193,7 @@ shap_one <- function(full, X, col_var, d, y, vars, outcome, set_name) {
 # ---- Fit one outcome and set: cross-validated predictions, then importance --------------
 fit_one <- function(outcome, set_name) {
   od <- outcome_data(d_all, outcome); d <- od$d; y <- od$y; obj <- od$obj; dropped <- od$dropped
+  if (set_name == "reg_run4") d <- recode_run4(d)
   vars <- set_vars(set_name, outcome)
   dm <- design(d, vars); X <- dm$X
   cat(sprintf("\n%s, %s set: %s cases, %d covariates (%d columns). %s\n", outcome, set_name,

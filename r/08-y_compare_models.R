@@ -8,9 +8,9 @@
 #   Rscript 07-c_xgboost.R log_duration,short_60 reg_run1,reg_run2   first), and 07-f's random
 # forests on the same folds (models/forest_cv/rf_<outcome>_reg_run<r>_cv.rds; change 98).
 # A model whose file isn't there yet is listed under "Not included" and the rest are compared.
-# Runs 1, 2 and 3 (change 99: run 3 = run 2 without n_counsel; so far only OLS, the quantile
-# median, plain logistic, XGBoost and the forest are fitted on it, so the others are listed as not
-# included there).
+# Runs 1-4 (change 99: run 3 = run 2 without n_counsel; change 100: run 4 = run 3 with the
+# post-filing judge labels pooled). Runs 3 and 4 so far have OLS, the quantile median, plain
+# logistic, XGBoost and the forest; the others are listed as not included there.
 # Comparisons, each run separately:
 #   log duration   ols, ridge, group_lasso, quantile_50, xgboost, forest
 #   short_60       logistic, logistic_ridge, logistic_lasso, xgboost, forest
@@ -23,6 +23,9 @@
 #   short_60: auc, brier_skill, log_loss
 # So expect each model to do best on its own loss; a win there isn't overall superiority.
 # Baselines as 08-z (change 93): r_squared and brier_skill against each fold's TRAINING mean.
+# The baseline is also a row of its own, "baseline" (change 101; Project Part 1, 6(c)): it predicts
+# each fold's training mean of log(1 + days) (in days with that fold's smearing factor for
+# rmse_days), or the fold's training share of short cases, and is scored and paired like the rest.
 # (07-c's own summary uses the mean of all cases, which differs in the 4th decimal.)
 # Paired differences: the folds are shared, so for two models the SE of their difference is
 # sd(the 5 per-fold differences) / sqrt(5), usually much smaller than either model's own SE.
@@ -75,7 +78,7 @@ score <- function(outcome, y, p, smear, base) {
 }
 
 scores <- list(); pairs <- list(); notes <- character(0)
-for (outcome in names(families)) for (run in 1:3) {
+for (outcome in names(families)) for (run in 1:4) {
   ms <- lapply(setNames(families[[outcome]], families[[outcome]]), load_model, outcome = outcome, run = run)
   for (m in names(ms)) if (!is.null(ms[[m]]$why)) notes <- c(notes, sprintf("%s run %d, %s: %s", outcome, run, m, ms[[m]]$why))
   ms <- ms[vapply(ms, function(x) is.null(x$why), TRUE)]
@@ -91,6 +94,9 @@ for (outcome in names(families)) for (run in 1:3) {
   }
   y <- ref$y; fold <- ref$fold; K <- sort(unique(fold))
   base <- vapply(K, function(k) mean(y[fold != k]), 1)            # each fold's training mean / share
+  sm <- vapply(K, function(k) mean(exp(y[fold != k] - base[k == K])), 1)
+  ms <- c(list(baseline = list(d = data.frame(row = ref$row, fold = fold, y = y, pred = base[match(fold, K)],
+                                              smear = if (outcome == "log_duration") sm[match(fold, K)] else NA))), ms)
   per <- lapply(ms, function(x) sapply(K, function(k) { i <- fold == k
            score(outcome, y[i], x$d$pred[i], x$d$smear[i], base[k == K]) }))   # metrics x folds
   over <- lapply(ms, function(x) score(outcome, y, x$d$pred, x$d$smear, base[match(fold, K)]))

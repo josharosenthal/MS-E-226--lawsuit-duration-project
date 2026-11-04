@@ -2,7 +2,7 @@
 # 08-g_logistic_lasso.R — lasso logistic regression: ended within 60 days? (glmnet, alpha = 1) (Josh, 1 Nov 2026; change 91). TRAINING CASES ONLY.
 # As 08-f, with the lasso penalty.
 # One job = one run and one outer fold, or "full" (fit on all training cases -> coefficients):
-#   Rscript ~/scales_setup/r/08-g_logistic_lasso.R <run 1|2|3> <fold 1-5|full>
+#   Rscript ~/scales_setup/r/08-g_logistic_lasso.R <run 1-4> <fold 1-5|full>
 # r/submit_regressions.sh submits every job. Settings and the specification: reg_helpers.R,
 # model_spec.csv (from model_spec.xlsx), DATA_DICTIONARY.md section 5.
 # Output: ~/scales_project/models/reg/logistic_lasso_run<run>_fold<fold>.rds (and _coefficients.csv for "full");
