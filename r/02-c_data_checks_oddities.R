@@ -2,7 +2,7 @@
 # 02-c_data_checks_oddities.R — the case header for each training case with an
 # odd covariate value, to see what is going on before deciding how to code it.
 #
-# Flags (a case can have several), from DATA_DICTIONARY.md section 3:
+# Flags (a case can have several), from DATA_DICTIONARY.md section 3 (notes; before change 105, "things the counts turned up"):
 #   blank_nature_suit         nature of suit blank in SCALES
 #   blank_jurisdiction        jurisdiction blank in SCALES
 #   local_question            jurisdiction = "Local Question"

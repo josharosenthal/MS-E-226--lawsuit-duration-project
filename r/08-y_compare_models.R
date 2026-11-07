@@ -6,14 +6,15 @@
 # Reads the 08 fold predictions (models/reg/*_run<r>_fold<k>.rds) and 07-c's cross-validated
 # predictions for the matched sets (models/xgb_cv/xgb_<outcome>_reg_run<r>_cv.rds; run
 #   Rscript 07-c_xgboost.R log_duration,short_60 reg_run1,reg_run2   first), and 07-f's random
-# forests on the same folds (models/forest_cv/rf_<outcome>_reg_run<r>_cv.rds; change 98).
+# forests on the same folds (models/forest_cv/rf_<outcome>_reg_run<r>_cv.rds; change 98), and 07-g's
+# decision trees (models/tree_cv/tree_<outcome>_reg_run<r>_cv.rds; change 106).
 # A model whose file isn't there yet is listed under "Not included" and the rest are compared.
 # Runs 1-4 (change 99: run 3 = run 2 without n_counsel; change 100: run 4 = run 3 with the
 # post-filing judge labels pooled). Runs 3 and 4 so far have OLS, the quantile median, plain
 # logistic, XGBoost and the forest; the others are listed as not included there.
 # Comparisons, each run separately:
-#   log duration   ols, ridge, group_lasso, quantile_50, xgboost, forest
-#   short_60       logistic, logistic_ridge, logistic_lasso, xgboost, forest
+#   log duration   ols, ridge, group_lasso, quantile_50, xgboost, forest, tree
+#   short_60       logistic, logistic_ridge, logistic_lasso, xgboost, forest, tree
 # Every model is scored on EVERY metric, including the ones it wasn't fitted for:
 #   duration: r_squared, rmse_log (squared error: what OLS, ridge, group lasso and XGBoost
 #     minimize), mae_log (absolute error, = 2 x the median model's pinball loss: what
@@ -33,16 +34,25 @@
 # others; every model must have the same cases, outcomes and folds (stops otherwise).
 # Output: ~/scales_project/models/reg/compare_scores.csv (model, metric, value, se, per fold)
 #         ~/scales_project/models/reg/compare_pairs.csv  (model_a minus model_b, se, folds a ahead)
+# With the decision tree (change 106; Josh: a new csv rather than overwriting these):
+#   Rscript ~/scales_setup/r/08-y_compare_models.R tree
+# adds 07-g's tree and writes compare_scores_with_tree.csv and compare_pairs_with_tree.csv instead;
+# without "tree" the tree is left out and the two files above are made exactly as before.
 # =============================================================================
 
 project_dir <- path.expand(Sys.getenv("SCALES_PROJECT", "~/scales_project"))
 reg_dir <- file.path(project_dir, "models", "reg")
 cv_files <- c(xgboost = file.path(project_dir, "models", "xgb_cv", "xgb_%s_reg_run%d_cv.rds"),
-              forest  = file.path(project_dir, "models", "forest_cv", "rf_%s_reg_run%d_cv.rds"))
+              forest  = file.path(project_dir, "models", "forest_cv", "rf_%s_reg_run%d_cv.rds"),
+              tree    = file.path(project_dir, "models", "tree_cv", "tree_%s_reg_run%d_cv.rds"))
+cv_script <- c(xgboost = "07-c", forest = "07-f", tree = "07-g")
 auc <- function(p, y) { r <- rank(p); n1 <- as.numeric(sum(y)); n0 <- as.numeric(length(y)) - n1
                         if (n1 == 0 || n0 == 0) return(NA_real_); (sum(r[y]) - n1 * (n1 + 1) / 2) / (n1 * n0) }
-families <- list(log_duration = c("ols", "ridge", "group_lasso", "quantile_50", "xgboost", "forest"),
-                 short_60     = c("logistic", "logistic_ridge", "logistic_lasso", "xgboost", "forest"))
+with_tree <- "tree" %in% commandArgs(TRUE)
+out_tag <- if (with_tree) "_with_tree" else ""
+families <- list(log_duration = c("ols", "ridge", "group_lasso", "quantile_50", "xgboost", "forest", "tree"),
+                 short_60     = c("logistic", "logistic_ridge", "logistic_lasso", "xgboost", "forest", "tree"))
+if (!with_tree) families <- lapply(families, setdiff, "tree")
 lower_better <- c(rmse_log = TRUE, mae_log = TRUE, mean_abs_error_days = TRUE, median_abs_error_days = TRUE,
                   rmse_days = TRUE, log_loss = TRUE, r_squared = FALSE, auc = FALSE, brier_skill = FALSE)
 
@@ -50,7 +60,7 @@ lower_better <- c(rmse_log = TRUE, mae_log = TRUE, mean_abs_error_days = TRUE, m
 load_model <- function(model, outcome, run) {
   if (model %in% names(cv_files)) {
     f <- sprintf(cv_files[[model]], outcome, run)
-    if (!file.exists(f)) return(list(why = sprintf("not run yet (%s with reg_run%d)", if (model == "xgboost") "07-c" else "07-f", run)))
+    if (!file.exists(f)) return(list(why = sprintf("not run yet (%s with reg_run%d)", cv_script[[model]], run)))
     r <- readRDS(f); d <- r$pred[c("row", "fold", "y", "pred")]
     d$smear <- if (is.null(r$smear)) NA else unname(r$smear[as.character(d$fold)])
     return(list(d = d, md5 = r$spec_md5))
@@ -115,8 +125,9 @@ for (outcome in names(families)) for (run in 1:4) {
 }
 if (!length(scores)) stop("Nothing to compare yet.\n", paste(notes, collapse = "\n"))
 sc <- do.call(rbind, scores); pr <- do.call(rbind, pairs)
-write.csv(sc, file.path(reg_dir, "compare_scores.csv"), row.names = FALSE)
-write.csv(pr, file.path(reg_dir, "compare_pairs.csv"), row.names = FALSE)
+out_files <- sprintf(c("compare_scores%s.csv", "compare_pairs%s.csv"), out_tag)
+write.csv(sc, file.path(reg_dir, out_files[1]), row.names = FALSE)
+write.csv(pr, file.path(reg_dir, out_files[2]), row.names = FALSE)
 
 cat("Cross-validated scores, same cases, folds and variables (training cases only; the holdout is untouched):\n")
 for (o in unique(sc$outcome)) for (r in unique(sc$run[sc$outcome == o])) {
@@ -129,4 +140,4 @@ cat("\nPaired differences (model_a minus model_b; SE from the 5 per-fold differe
 key <- c(log_duration = "r_squared|mae_log|median_abs_error_days", short_60 = "auc|log_loss")
 for (o in unique(pr$outcome)) print(pr[pr$outcome == o & grepl(paste0("^(", key[[o]], ")$"), pr$metric), ], row.names = FALSE)
 if (length(notes)) cat("\nNot included:\n", paste(" ", notes, collapse = "\n"), "\n")
-cat("\nAll pairs and metrics saved in", reg_dir, "(compare_scores.csv, compare_pairs.csv)\n")
+cat("\nAll pairs and metrics saved in", reg_dir, sprintf("(%s)", paste(out_files, collapse = ", ")), "\n")

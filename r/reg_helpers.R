@@ -8,7 +8,7 @@
 #   run 2  also the sensitivity rows, and rows marked "Sensitivity only"
 #   run 3  run 2 without n_counsel (change 99; spec_keep() in xgb_helpers.R)
 #   run 4  run 3 with the post-filing judge labels pooled (change 100; recode_run4() in xgb_helpers.R)
-# Decisions (changes 85-90, DATA_DICTIONARY.md section 5):
+# Decisions (changes 85-90, DATA_DICTIONARY.md sections 1 and 3):
 #   - outcome log(1 + duration) for the duration models (cases that ended in court); ended
 #     within 60 days for the short-case models (cases transferred out before day 60 dropped)
 #   - counts as log(1 + count) in every model
@@ -72,7 +72,7 @@ rule10_ok <- function(g, y) { t1 <- tapply(y == 1, g, sum); t0 <- tapply(y == 0,
 # fit_rows: the rows the model is fitted on (a fold job's training part; all rows for "full").
 # Reference levels, the SD-0.5 scaling and the centring of the count product come from these
 # rows only (change 93), so nothing about the predicted fold is used to set them up. The 10/10
-# rule still counts on ALL training cases (Josh, change 89; DATA_DICTIONARY.md section 5).
+# rule still counts on ALL training cases (Josh, change 89; DATA_DICTIONARY.md sections 1 and 3).
 build_design <- function(od, penalized, rule10 = FALSE, fit_rows = seq_along(od$y)) {
   d <- od$d; y <- od$y; tm <- od$terms; notes <- character(0); fr <- fit_rows
   lc <- list()

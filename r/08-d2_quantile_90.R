@@ -4,7 +4,7 @@
 # One job = one run and one outer fold, or "full" (fit on all training cases -> coefficients):
 #   Rscript ~/scales_setup/r/08-d2_quantile_90.R <run 1-4> <fold 1-5|full>
 # r/submit_regressions.sh submits every job. Settings and the specification: reg_helpers.R,
-# model_spec.csv (from model_spec.xlsx), DATA_DICTIONARY.md section 5.
+# model_spec.csv (from model_spec.xlsx), DATA_DICTIONARY.md sections 1 and 3.
 # Output: ~/scales_project/models/reg/quantile_90_run<run>_fold<fold>.rds (and _coefficients.csv for "full");
 # scored by 08-z_regression_summary.R once all 5 folds are in.
 # =============================================================================
