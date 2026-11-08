@@ -21,9 +21,11 @@
 #   with another seed - for tuning a penalty inside each outer fold (the 08 regression scripts) -
 #   and cons_group, an anonymous code for the consolidation group (an MD5 of its key), for
 #   standard errors clustered by group (change 95)
-xgb_training_data <- function(sets, n_folds, seed, inner_seed = NULL) {
-  cat("Reading training cases...\n")
-  lead_sql <- if ("consolidation_role" %in% dbListFields(con, "train_fjc")) "consolidation_role = 'lead'" else "false"
+#   from (change 108): the table to read, "train_fjc" unless given; 09-a reads the holdout cases
+#   with from = "holdout_fjc", so they get exactly the same coding (their folds aren't used)
+xgb_training_data <- function(sets, n_folds, seed, inner_seed = NULL, from = "train_fjc") {
+  cat(if (from == "train_fjc") "Reading training cases...\n" else sprintf("Reading cases from %s...\n", from))
+  lead_sql <- if ("consolidation_role" %in% dbListFields(con, from)) "consolidation_role = 'lead'" else "false"
   d <- dbGetQuery(con, sprintf("
     WITH k AS (
       SELECT *,
@@ -32,14 +34,14 @@ xgb_training_data <- function(sets, n_folds, seed, inner_seed = NULL) {
         CASE WHEN nullif(trim(CAST(lead_case_id AS VARCHAR)), '') IS NOT NULL
              THEN regexp_extract(CAST(lead_case_id AS VARCHAR), '([0-9]{2})-[a-z]{2}-', 1) || '-' ||
                   ltrim(regexp_extract(CAST(lead_case_id AS VARCHAR), '-[a-z]{2}-([0-9]+)', 1), '0') END AS lead_key
-      FROM train_fjc
+      FROM %s
       WHERE duration_capped_days IS NOT NULL AND event_observed IS NOT NULL)
     SELECT ucid, %s, duration_capped_days, event_observed,
       md5(CASE WHEN lead_key IS NOT NULL AND lead_key <> '-' THEN court || '|' || lead_key
                WHEN coalesce(%s, false) AND own_key <> '-'    THEN court || '|' || own_key
                ELSE ucid END || '#' || '%d') AS fold_hash%s
     FROM k ORDER BY ucid",
-    paste(unique(unlist(sets)), collapse = ", "), lead_sql, as.integer(seed),
+    from, paste(unique(unlist(sets)), collapse = ", "), lead_sql, as.integer(seed),
     if (is.null(inner_seed)) "" else sprintf(",
       md5(CASE WHEN lead_key IS NOT NULL AND lead_key <> '-' THEN court || '|' || lead_key
                WHEN coalesce(%s, false) AND own_key <> '-'    THEN court || '|' || own_key
